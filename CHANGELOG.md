@@ -11,6 +11,7 @@
 * MIT license.
 * GitHub Actions configuration for testing, integrating commits and deploying staging branch.
 * Time's Up by Play-IT API plugin with `.env` variables.
+* Title and HTML metadata.
 
 ### 🚗 Classes
 
@@ -41,5 +42,6 @@
 * `sweetalert2` installed with version `11.2.0`.
 * `vue-i18n` installed with version `8.26.7`.
 * `vue-js-toggle-button` installed with version `1.3.3`.
+* `vue-meta` installed with version `3.0.0-alpha.9`.
 * `vue-toastification` installed with version `2.0.0-rc.5`.
 * `xss` installed with version `1.0.10`.

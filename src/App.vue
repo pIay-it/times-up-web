@@ -1,7 +1,22 @@
-<template id="app">
-    <i class="fa fa-user text-info"/>
+<template>
+    <!-- eslint-disable-next-line vue/no-unregistered-components -->
+    <metainfo>
+        <template #title="{ content }">
+            {{ content }}
+        </template>
+    </metainfo>
 </template>
 
 <script>
-export default { name: "App" };
+import { useMeta } from "vue-meta";
+
+export default {
+    name: "App",
+    setup() {
+        useMeta({
+            title: "Time's Up by Play-IT",
+            htmlAttrs: { lang: "fr", amp: true },
+        });
+    },
+};
 </script>

@@ -1,1 +1,27 @@
-{}
+{
+    "CardCategory": {
+        "personality": "Personnalité",
+        "character": "Personnage",
+        "activity": "Activité",
+        "object": "Objet",
+        "food": "Nourriture",
+        "nature": "Nature",
+        "place": "Lieu",
+        "event": "Évènement",
+        "art": "Art",
+        "technology": "Technologie",
+        "clothes": "Vêtement",
+        "movie": "Film",
+        "tv-series": "Série TV",
+        "book": "Livre",
+        "video-game": "Jeu-vidéo",
+        "painting": "Peinture",
+        "theatre-play": "Pièce de théâtre",
+        "sculpture": "Sculpture",
+        "architecture": "Architecture",
+        "music": "Musique",
+        "animal": "Animal",
+        "sport": "Sport",
+        "job": "Métier"
+    }
+}
