@@ -63,6 +63,14 @@ Complete list of all enabled rules is available in the **[.eslintrc.js file](htt
 1. Install dependencies with `npm install` (add `--production` to omit dev dependencies).
 2. Copy `.env.example` and paste it as `.env`.
 3. Replace environment values in the fresh new `.env` file if necessary (When **⚠️️ Required** is specified):
+    * **VUE_APP_BASE_URL**: Base URL of Time's Up by Play-IT Web app. Set to `localhost:8080` if in development mode.
+        -  _**⚠️️ Required**_
+    * **VUE_APP_IS_SENTRY_ENABLED**: If you want to enable error tracking with Sentry.
+        -  _**Not Required - Default value**_: `false`
+    * **VUE_APP_SENTRY_KEY**: Private key used by Sentry for authenticating the project.
+        -  _**Not Required**_
+    * **VUE_APP_SENTRY_PROJECT_ID**: Project ID used by Sentry.
+        -  _**Not Required**_
 
 ## <a name="lets-go">🔌 Let's go</a>
 To start the web app **on development mode**, simply run `npm start`.
