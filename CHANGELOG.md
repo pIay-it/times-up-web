@@ -11,6 +11,18 @@
 * MIT license.
 * GitHub Actions configuration for testing, integrating commits and deploying staging branch.
 
+### 🚗 Classes
+
+* `Card` class.
+* `Game` class.
+* `GameHistory` class.
+* `GameOptions` class.
+* `GameQueue` class.
+* `GameSummary` class.
+* `GameSummaryRound` class.
+* `GameSummaryScore` class.
+* `Player` class.
+
 ### 📦 Packages
 
 * Set of required packages installed for Vue, lint and tests.
