@@ -64,13 +64,23 @@ Complete list of all enabled rules is available in the **[.eslintrc.js file](htt
 2. Copy `.env.example` and paste it as `.env`.
 3. Replace environment values in the fresh new `.env` file if necessary (When **⚠️️ Required** is specified):
     * **VUE_APP_BASE_URL**: Base URL of Time's Up by Play-IT Web app. Set to `localhost:8080` if in development mode.
-        -  _**⚠️️ Required**_
+        - _**⚠️️ Required**_
+    * **VUE_APP_TIMES_UP_API_BASE_URL**: Base URL of Time's Up by Play-IT API.
+        - _**⚠️️ Required**_
+    * **VUE_APP_TIMES_UP_API_BASIC_AUTH_USERNAME**: Basic authentication username of Time's Up by Play-IT API.
+        - _**⚠️️ Required**_
+    * **VUE_APP_TIMES_UP_API_BASIC_AUTH_PASSWORD**: Basic authentication password of Time's Up by Play-IT API.
+        - _**⚠️️ Required**_
+    * **VUE_APP_I18N_LOCALE**: Locale of Time's Up by Play-IT Web app.
+        - _**Not Required - Default value**_: `fr`
+    * **VUE_APP_I18N_FALLBACK_LOCALE**: Fallback locale of Time's Up by Play-IT Web app. If a translation is not available in `VUE_APP_I18N_LOCALE`, the app will try to translate it into this one.
+       - _**Not Required - Default value**_: `fr`
     * **VUE_APP_IS_SENTRY_ENABLED**: If you want to enable error tracking with Sentry.
-        -  _**Not Required - Default value**_: `false`
+        - _**Not Required - Default value**_: `false`
     * **VUE_APP_SENTRY_KEY**: Private key used by Sentry for authenticating the project.
-        -  _**Not Required**_
+        - _**Not Required**_
     * **VUE_APP_SENTRY_PROJECT_ID**: Project ID used by Sentry.
-        -  _**Not Required**_
+        - _**Not Required**_
 
 ## <a name="lets-go">🔌 Let's go</a>
 To start the web app **on development mode**, simply run `npm start`.

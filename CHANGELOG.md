@@ -10,6 +10,7 @@
 * `.editorconfig` file added for code constancy.
 * MIT license.
 * GitHub Actions configuration for testing, integrating commits and deploying staging branch.
+* Time's Up by Play-IT API plugin with `.env` variables.
 
 ### 🚗 Classes
 
