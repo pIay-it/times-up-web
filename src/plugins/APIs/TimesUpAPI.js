@@ -36,5 +36,7 @@ export default {
         app.config.globalProperties.$timesUpAPI.deleteGame = gameId => axios.delete(`/games/${gameId}`, { auth });
 
         app.config.globalProperties.$timesUpAPI.makeGamePlay = (gameId, play) => axios.post(`/games/${gameId}/play`, play);
+
+        app.provide("timesUpAPI", app.config.globalProperties.$timesUpAPI);
     },
 };

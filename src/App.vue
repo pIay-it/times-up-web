@@ -1,10 +1,10 @@
 <template>
-    <!-- eslint-disable-next-line vue/no-unregistered-components -->
     <metainfo>
         <template #title="{ content }">
             {{ content }}
         </template>
     </metainfo>
+    <router-view class="h-100"/>
 </template>
 
 <script>

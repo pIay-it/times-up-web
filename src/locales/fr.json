@@ -23,5 +23,23 @@
         "animal": "Animal",
         "sport": "Sport",
         "job": "Métier"
+    },
+    "Error": {
+        "API": {
+            "BAD_REQUEST": "Requête serveur incorrecte",
+            "UNAUTHORIZED": "Accès interdit",
+            "INTERNAL_SERVER_ERROR": "Erreur côté serveur, l'équipe a été prévenue",
+            "PLAYERS_NAME_NOT_UNIQUE": "Impossible de créer le jeu: tous les noms des joueurs ne sont pas uniques",
+            "GAME_NOT_PLAYING": "Impossible de faire avancer le jeu: elle n'est pas en cours",
+            "GAME_NOT_FOUND": "Partie non trouvée",
+            "CARD_NOT_FOUND": "Carte non trouvée",
+            "CARD_NOT_IN_GAME": "Impossible de faire avancer le jeu: une carte jouée ne fait pas partie du jeu",
+            "CARD_ALREADY_GUESSED": "Impossible de faire avancer le jeu: une carte devinée sur ce tour l'était déjà",
+            "CANT_SKIP_CARD": "Impossible de faire avancer le jeu: il est interdit de passer une carte durant la première manche",
+            "CANT_PLAY_CARD_TWICE": "Impossible de faire avancer le jeu: une carte est jouée 2 fois",
+            "MISSING_TIME_TO_GUESS": "Impossible de faire avancer le jeu: une carte devinée ne possède pas son `timeToGuess`",
+            "FORBIDDEN_TIME_TO_GUESS": "Impossible de faire avancer le jeu: une carte non devinée possède un `timeToGuess`"
+        },
+        "unknown": "Erreur inconnue"
     }
 }

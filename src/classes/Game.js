@@ -5,6 +5,7 @@ import GameHistory from "@/classes/GameHistory";
 import GameSummary from "@/classes/GameSummary";
 import GameOptions from "@/classes/GameOptions";
 import { getProp } from "@/helpers/functions/Class";
+import { filterOutHTMLTags } from "@/helpers/functions/String";
 
 class Game {
     constructor(game = null) {
@@ -92,7 +93,30 @@ class Game {
     }
 
     getPlayerWithId(id) {
-        return this.players?.find(({ _id }) => id === _id);
+        return this.players?.find(({ _id }) => _id === id);
+    }
+
+    getPlayerWithName(playerName) {
+        return this.players?.find(({ name }) => name === playerName);
+    }
+
+    isPlayerNameTaken(playerName) {
+        playerName = filterOutHTMLTags(playerName).trim();
+        return !!this.getPlayerWithName(playerName);
+    }
+
+    addPlayer(player) {
+        if (player.name) {
+            player.name = filterOutHTMLTags(player.name).trim();
+        }
+        this.players.push(new Player(player));
+    }
+
+    removePlayerByName(playerName) {
+        const idx = this.players.findIndex(({ name }) => name === playerName);
+        if (idx !== -1) {
+            this.players.splice(idx, 1);
+        }
     }
 
     getCardWithId(id) {

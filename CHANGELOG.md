@@ -35,7 +35,6 @@
 * `@sentry/tracing` installed with version `6.15.0`.
 * `axios` installed with version `0.24.0`.
 * `bootstrap` installed with version `5.1.3`.
-* `epic-spinners` installed with version `1.1.0`.
 * `qs` installed with version `6.10.1`.
 * `sass-loader` installed with version `12.3.0`.
 * `sass` installed with version `1.43.4`.
