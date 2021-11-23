@@ -18,7 +18,15 @@
         "update": "Modifier",
         "close": "Fermer",
         "label": "Label",
-        "categories": "Catégories"
+        "categories": "Catégories",
+        "noMatchingCategory": "Aucune catégorie trouvée",
+        "noMoreCategory": "Plus aucune catégorie à ajouter",
+        "difficulty": "Difficulté à deviner",
+        "easy": "Facile",
+        "medium": "Moyenne",
+        "hard": "Difficile",
+        "description": "Description",
+        "imageURL": "URL de l'image"
     },
     "CardCategory": {
         "personality": "Personnalité",

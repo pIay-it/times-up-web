@@ -35,6 +35,7 @@
 * `@sentry/tracing` installed with version `6.15.0`.
 * `axios` installed with version `0.24.0`.
 * `bootstrap` installed with version `5.1.3`.
+* `fuse.js` installed with version `6.4.6`.
 * `qs` installed with version `6.10.1`.
 * `sass-loader` installed with version `12.3.0`.
 * `sass` installed with version `1.43.4`.
