@@ -1,6 +1,6 @@
 <template>
     <div id="card-category-icon-container" class="text-center">
-        <i id="card-category-icon" :class="categoryClasses"/>
+        <i id="card-category-icon" :class="categoryIconClasses"/>
     </div>
 </template>
 
@@ -14,9 +14,10 @@ export default {
         },
     },
     computed: {
-        categoryClasses() {
+        categoryIconClasses() {
             return {
-                "fa fa-user-astronaut text-success": this.category === "personality",
+                [`${this.category}-card-category-color`]: true,
+                "fa fa-user-astronaut": this.category === "personality",
                 "fa fa-robot": this.category === "character",
                 "fa fa-bag-shopping": this.category === "activity",
                 "fa fa-lightbulb": this.category === "object",
@@ -45,7 +46,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #card-category-icon-container {
         min-width: 20px;
     }

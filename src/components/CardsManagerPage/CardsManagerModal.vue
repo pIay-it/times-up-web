@@ -16,7 +16,7 @@
                         <div class="mb-3">
                             <label class="form-label" for="card-categories" v-html="$t('CardsManagerModal.categories')"/>
                             <RedAsterisk/>
-                            <VSelect id="card-categories" :options="cardCategories" :close-on-select="false" clearable="true"
+                            <VSelect id="card-categories" :options="cardCategories" :close-on-select="false"
                                      :placeholder="$t('Form.required')" label="category" multiple :value="card.categories"
                                      :disabled="isSubmitting" @update:model-value="setCardCategories" @option:deselected="unsetCardCategory">
                                 <template #selected-option="{ category, displayedLabel }">
