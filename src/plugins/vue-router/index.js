@@ -3,6 +3,7 @@ import HomePage from "@/components/HomePage/HomePage";
 import AboutPage from "@/components/AboutPage/AboutPage";
 import GameLobbyPage from "@/components/GameLobbyPage/GameLobbyPage";
 import GamePage from "@/components/GamePage/GamePage";
+import CardsManagerPage from "@/components/CardsManagerPage/CardsManagerPage";
 import NotFoundPage from "@/components/NotFoundPage/NotFoundPage";
 
 const routes = [
@@ -22,6 +23,10 @@ const routes = [
         path: "/game/:id",
         name: "Game",
         component: GamePage,
+    }, {
+        path: "/cards-manager",
+        name: "CardsManager",
+        component: CardsManagerPage,
     }, {
         path: "/404",
         name: "NotFound",

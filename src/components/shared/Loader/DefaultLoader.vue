@@ -1,22 +1,24 @@
 <template>
     <div id="loading" class="d-flex justify-content-center align-items-center text-center">
-        <DualRingLoader :size="iconSize"/>
-        <div id="loading-text">
-            <slot/>
-        </div>
+        <DualRingSpinner :size="iconSize"/>
+        <div id="loading-text" v-html="text"/>
     </div>
 </template>
 
 <script>
-import DualRingLoader from "@/components/shared/Loading/DualRingLoader";
+import DualRingSpinner from "@/components/shared/Loader/DualRingSpinner";
 
 export default {
-    name: "LoadingText",
-    components: { DualRingLoader },
+    name: "DefaultLoader",
+    components: { DualRingSpinner },
     props: {
+        text: {
+            type: String,
+            default: "",
+        },
         iconSize: {
             type: Number,
-            default: 35,
+            default: 45,
         },
     },
 };
@@ -29,5 +31,6 @@ export default {
 
     #loading-text {
         margin-left: 5px;
+        font-size: 1.5rem;
     }
 </style>

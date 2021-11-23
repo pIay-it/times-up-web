@@ -1,10 +1,10 @@
 <template>
-    <metainfo>
+    <Metainfo>
         <template #title="{ content }">
             {{ content }}
         </template>
-    </metainfo>
-    <router-view class="h-100"/>
+    </Metainfo>
+    <RouterView class="h-100 pt-2 px-2"/>
 </template>
 
 <script>

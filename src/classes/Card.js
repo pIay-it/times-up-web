@@ -14,6 +14,10 @@ class Card {
         this.updatedAt = getProp(card, "updatedAt", new Date(), updatedAt => new Date(updatedAt));
     }
 
+    get doesExistInDB() {
+        return !!this._id;
+    }
+
     get isToGuess() {
         return this.status === "to-guess";
     }
@@ -28,6 +32,13 @@ class Card {
 
     get isGuessed() {
         return this.status === "guessed";
+    }
+
+    unsetCardCategory(category) {
+        const idx = this.categories.findIndex(cardCategory => cardCategory === category);
+        if (idx !== -1) {
+            this.categories.splice(idx, 1);
+        }
     }
 }
 

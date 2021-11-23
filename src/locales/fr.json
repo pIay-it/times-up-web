@@ -1,4 +1,25 @@
 {
+    "CardsManagerPage": {
+        "fetchingCards": "Récupération des cartes",
+        "cardsManager": "Gestionnaire de cartes",
+        "label": "Label",
+        "categories": "Catégories",
+        "difficulty": "Difficulté",
+        "description": "Description",
+        "imageURL": "Image",
+        "actions": "Actions",
+        "noCardsYet": "Aucune carte pour le moment",
+        "addCard": "Ajouter une carte"
+    },
+    "CardsManagerModal": {
+        "createCard": "Ajouter une carte",
+        "updateCard": "Modifier une carte",
+        "create": "Ajouter",
+        "update": "Modifier",
+        "close": "Fermer",
+        "label": "Label",
+        "categories": "Catégories"
+    },
     "CardCategory": {
         "personality": "Personnalité",
         "character": "Personnage",
@@ -23,6 +44,14 @@
         "animal": "Animal",
         "sport": "Sport",
         "job": "Métier"
+    },
+    "APIError": {
+        "anErrorOccurred": "Une erreur est survenue, l'équipe a été prévenue qu'un bug s'est faufilé par ici...",
+        "retry": "Réessayer"
+    },
+    "Form": {
+        "required": "Requis",
+        "optional": "Facultatif"
     },
     "Error": {
         "API": {

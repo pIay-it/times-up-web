@@ -29,7 +29,7 @@
 
 * Set of required packages installed for Vue, lint and tests.
 * `@chenfengyuan/vue-countdown` installed with version `1.1.5`.
-* `@fortawesome/fontawesome-free` installed with version `5.15.4`.
+* `@fortawesome/fontawesome-free` installed with version `6.0.0-beta3`.
 * `@popperjs/core` installed with version `2.10.2`.
 * `@sentry/vue` installed with version `6.15.0`.
 * `@sentry/tracing` installed with version `6.15.0`.
@@ -39,8 +39,10 @@
 * `sass-loader` installed with version `12.3.0`.
 * `sass` installed with version `1.43.4`.
 * `sweetalert2` installed with version `11.2.0`.
+* `vue-good-table-next` installed with version `0.1.0`.
 * `vue-i18n` installed with version `8.26.7`.
 * `vue-js-toggle-button` installed with version `1.3.3`.
 * `vue-meta` installed with version `3.0.0-alpha.9`.
+* `vue-select` installed with version `4.0.0-beta.1`.
 * `vue-toastification` installed with version `2.0.0-rc.5`.
 * `xss` installed with version `1.0.10`.

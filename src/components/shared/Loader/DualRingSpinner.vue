@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: "DualRingLoader",
+    name: "DualRingSpinner",
     props: {
         size: {
             type: Number,
