@@ -7,6 +7,7 @@ import Vuei18n from "./vue-i18n";
 import VSelect from "vue-select";
 import VueToggleButton from "vue-js-toggle-button";
 import { setupVueMeta } from "@/plugins/vue-meta";
+import { setupVueLazyload } from "./vue-lazy-load";
 import { setupVueToastification } from "./vue-toastification";
 import TimesUpAPI from "./APIs/TimesUpAPI";
 import Config from "../../config";
@@ -20,6 +21,7 @@ export function usePlugins(app) {
     app.use(Vuei18n);
     app.use(VueToggleButton);
     setupVueMeta(app);
+    setupVueLazyload(app);
     setupVueToastification(app);
     app.use(TimesUpAPI);
     app.component(VueCountdown.name, VueCountdown);

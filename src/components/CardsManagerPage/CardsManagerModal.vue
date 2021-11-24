@@ -16,10 +16,9 @@
                         <div class="mb-3">
                             <label class="form-label" v-html="$t('CardsManagerModal.categories')"/>
                             <RedAsterisk/>
-                            <VSelect id="card-categories" :options="cardCategories" :close-on-select="false"
-                                     :placeholder="$t('Form.required')" label="category" multiple :value="card.categories"
-                                     :filter="filterByCategoryLabel" :disabled="isSubmitting" @update:model-value="setCardCategories"
-                                     @option:deselected="unsetCardCategory">
+                            <VSelect id="card-categories" v-model="selectedCardCategories" :options="cardCategories"
+                                     :close-on-select="false" :placeholder="$t('Form.required')" label="category" multiple
+                                     :filter="filterByCategoryLabel" :disabled="isSubmitting">
                                 <template #selected-option="{ category, displayedLabel }">
                                     <div class="d-flex align-items-center">
                                         <CardCategoryIcon :category="category" class="me-1"/>
@@ -128,12 +127,17 @@ export default {
         cardCategories() {
             const categories = getCardCategories();
             let filteredCategories = categories.filter(category => !this.card.categories.includes(category));
-            filteredCategories = filteredCategories.map(category => ({
-                category,
-                displayedLabel: this.$t(`CardCategory.${category}`),
-            }));
+            filteredCategories = this.getFormattedCardCategoriesForSelect(filteredCategories);
             sortAlphabeticallyByKey(filteredCategories, "displayedLabel");
             return filteredCategories;
+        },
+        selectedCardCategories: {
+            get() {
+                return this.getFormattedCardCategoriesForSelect(this.card.categories);
+            },
+            set(categories) {
+                this.card.categories = categories.map(({ category }) => category);
+            },
         },
         noOptionsText() {
             return this.cardCategories.length ? this.$t("CardsManagerModal.noMatchingCategory") : this.$t("CardsManagerModal.noMoreCategory");
@@ -161,12 +165,6 @@ export default {
         hide() {
             this.modal.hide();
         },
-        setCardCategories(categories) {
-            this.card.categories = categories.map(({ category }) => category);
-        },
-        unsetCardCategory({ category }) {
-            this.card.unsetCardCategory(category);
-        },
         filterByCategoryLabel(list, search) {
             const fuse = new Fuse(list, {
                 keys: ["displayedLabel"],
@@ -174,6 +172,12 @@ export default {
                 threshold: 0.3,
             });
             return search.length ? fuse.search(search).map(({ item }) => item) : fuse.list;
+        },
+        getFormattedCardCategoriesForSelect(categories) {
+            return categories.map(category => ({
+                category,
+                displayedLabel: this.$t(`CardCategory.${category}`),
+            }));
         },
         async createCard() {
             const { data: newCard } = await this.$timesUpAPI.createCard(this.card);

@@ -1,5 +1,5 @@
 <template>
-    <img id="card-image" class="card-image small-shadow" :src="imageUrl" alt="Card Image Helper"/>
+    <img id="card-image" v-lazy="imageUrl" class="card-image small-shadow" alt="Card Image Helper"/>
 </template>
 
 <script>
