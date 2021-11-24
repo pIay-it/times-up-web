@@ -2,14 +2,24 @@
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",
         "cardsManager": "Gestionnaire de cartes",
+        "cardCreated": "Carte créée"
+    },
+    "CardsManagerTable": {
         "label": "Label",
         "categories": "Catégories",
-        "difficulty": "Difficulté",
+        "difficulty": "Difficulté à deviner",
         "description": "Description",
         "imageURL": "Image",
         "actions": "Actions",
         "noCardsYet": "Aucune carte pour le moment",
-        "addCard": "Ajouter une carte"
+        "addCard": "Ajouter une carte",
+        "cardsPerPage": "Cartes par page",
+        "pageOfWithTotalCards": "Page {currentPage} sur {totalPages} sur {totalRecords} cartes au total"
+    },
+    "DeleteCardButton": {
+        "delete": "Supprimer",
+        "areYouSure": "Êtes-vous sûr de vouloir supprimer cette carte ?",
+        "cardDeleted": "Carte supprimée"
     },
     "CardsManagerModal": {
         "createCard": "Ajouter une carte",
@@ -53,6 +63,13 @@
         "sport": "Sport",
         "job": "Métier"
     },
+    "CardDifficultyPillBadge": {
+        "difficultyLevel": {
+            "1": "Facile",
+            "2": "Moyenne",
+            "3": "Difficile"
+        }
+    },
     "APIError": {
         "anErrorOccurred": "Une erreur est survenue, l'équipe a été prévenue qu'un bug s'est faufilé par ici...",
         "retry": "Réessayer"
@@ -60,6 +77,20 @@
     "Form": {
         "required": "Requis",
         "optional": "Facultatif"
+    },
+    "NotDefinedText": {
+        "notDefined": "Non défini"
+    },
+    "SweetAlert": {
+        "actionIsIrreversible": "Cette action est irréversible",
+        "confirm": "Confirmer",
+        "cancel": "Annuler"
+    },
+    "VueGoodTable": {
+        "prev": "Précédent",
+        "next": "Suivant",
+        "all": "Tout afficher",
+        "of": "de"
     },
     "Error": {
         "API": {

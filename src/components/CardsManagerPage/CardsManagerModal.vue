@@ -5,7 +5,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" v-html="modalTitleText"/>
                 </div>
-                <form @submit.prevent>
+                <form @submit.prevent="submit">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label" for="card-label" v-html="$t('CardsManagerModal.label')"/>
@@ -46,19 +46,19 @@
                                     <input id="card-easy-difficulty" v-model="card.difficulty" type="radio" class="btn-check" name="difficulty"
                                            :value="1" :disabled="isSubmitting"/>
                                     <label class="btn btn-outline-success" for="card-easy-difficulty">
-                                        <i class="fa fa-seedling me-2"/>
+                                        <CardDifficultyIcon :difficulty="1" class="me-2"/>
                                         <span v-html="$t('CardsManagerModal.easy')"/>
                                     </label>
                                     <input id="card-medium-difficulty" v-model="card.difficulty" type="radio" class="btn-check" name="difficulty"
                                            :value="2" :disabled="isSubmitting"/>
                                     <label class="btn btn-outline-primary" for="card-medium-difficulty">
-                                        <i class="fa fa-cloud-rain me-2"/>
+                                        <CardDifficultyIcon :difficulty="2" class="me-2"/>
                                         <span v-html="$t('CardsManagerModal.medium')"/>
                                     </label>
                                     <input id="card-hard-difficulty" v-model="card.difficulty" type="radio" class="btn-check" name="difficulty"
                                            :value="3" :disabled="isSubmitting"/>
                                     <label class="btn btn-outline-danger" for="card-hard-difficulty">
-                                        <i class="fa fa-fire-flame-curved me-2"/>
+                                        <CardDifficultyIcon :difficulty="3" class="me-2"/>
                                         <span v-html="$t('CardsManagerModal.hard')"/>
                                     </label>
                                 </div>
@@ -97,10 +97,17 @@ import CardCategoryIcon from "@/components/shared/Card/Category/CardCategoryIcon
 import RedAsterisk from "@/components/shared/Form/RedAsterisk";
 import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import SubmitButton from "@/components/shared/Form/SubmitButton";
+import useErrorManager from "@/composables/Error/useErrorManager";
+import CardDifficultyIcon from "@/components/shared/Card/Difficulty/CardDifficultyIcon";
 
 export default {
     name: "CardsManagerModal",
-    components: { SubmitButton, RedAsterisk, CardCategoryIcon },
+    components: { CardDifficultyIcon, SubmitButton, RedAsterisk, CardCategoryIcon },
+    emits: { "card-created": card => card instanceof Card },
+    setup() {
+        const { displayError } = useErrorManager();
+        return { displayError };
+    },
     data() {
         return {
             modal: undefined,
@@ -167,6 +174,30 @@ export default {
                 threshold: 0.3,
             });
             return search.length ? fuse.search(search).map(({ item }) => item) : fuse.list;
+        },
+        async createCard() {
+            const { data: newCard } = await this.$timesUpAPI.createCard(this.card);
+            this.$emit("card-created", new Card(newCard));
+        },
+        /*
+         * Async updateCard() {
+         *
+         * },
+         */
+        async submit() {
+            try {
+                this.isSubmitting = true;
+                if (this.mode === "create") {
+                    await this.createCard();
+                } else {
+                    // Await this.updateCard();
+                }
+                this.hide();
+            } catch (err) {
+                this.displayError(err);
+            } finally {
+                this.isSubmitting = false;
+            }
         },
     },
 };

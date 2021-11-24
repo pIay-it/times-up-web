@@ -7,7 +7,7 @@
                 <div v-if="!isLoading" key="text">
                     <slot/>
                 </div>
-                <DualRingSpinner v-else key="isLoading" :size="24" color="white"/>
+                <DualRingSpinner v-else key="isLoading" :size="loaderSize" color="white"/>
             </transition>
         </button>
     </div>
@@ -31,6 +31,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        loaderSize: {
+            type: Number,
+            default: 24,
         },
     },
     emits: { click: () => true },

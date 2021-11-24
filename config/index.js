@@ -12,8 +12,8 @@ export default {
         timesUp: {
             baseURL: process.env.VUE_APP_TIMES_UP_API_BASE_URL,
             basicAuth: {
-                username: process.env.VUE_APP_BASIC_AUTH_USERNAME,
-                password: process.env.VUE_APP_BASIC_AUTH_PASSWORD,
+                username: process.env.VUE_APP_TIMES_UP_API_BASIC_AUTH_USERNAME,
+                password: process.env.VUE_APP_TIMES_UP_API_BASIC_AUTH_PASSWORD,
             },
         },
     },

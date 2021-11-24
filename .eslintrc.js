@@ -466,7 +466,7 @@ module.exports = {
         "vue/match-component-file-name": ["error", { extensions: ["vue"], shouldMatchCase: true }],
         "vue/new-line-between-multi-line-property": "off",
         "vue/next-tick-style": "error",
-        "vue/no-bare-strings-in-template": "error",
+        "vue/no-bare-strings-in-template": "off",
         "vue/no-boolean-default": ["error", "default-false"],
         "vue/no-child-content": "error",
         "vue/no-duplicate-attr-inheritance": "error",

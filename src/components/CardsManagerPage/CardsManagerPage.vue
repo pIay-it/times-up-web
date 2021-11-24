@@ -8,75 +8,36 @@
                     <span v-html="$t('CardsManagerPage.cardsManager')"/>
                 </h2>
                 <hr/>
-                <VueGoodTable :columns="columns" :rows="cards">
-                    <template #table-actions>
-                        <button type="button" class="btn btn-primary me-2" @click.prevent="showCardsManagerModal">
-                            <i class="fa fa-plus-circle me-2"/>
-                            <span v-html="$t('CardsManagerPage.addCard')"/>
-                        </button>
-                    </template>
-                    <template #emptystate>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <i class="fa fa-address-card me-2"/>
-                            <span v-html="$t('CardsManagerPage.noCardsYet')"/>
-                        </div>
-                    </template>
-                </VueGoodTable>
+                <CardsManagerTable :cards="cards" @show-cards-manager-modal="showCardsManagerModal" @card-deleted="deleteCard"/>
             </div>
             <APIError v-else key="cards" class="h-100" @retry="fetchCards"/>
         </transition>
-        <CardsManagerModal ref="cardsManagerPage"/>
+        <CardsManagerModal ref="cardsManagerPage" @card-created="addCard"/>
     </div>
 </template>
 
 <script>
+import { useToast } from "vue-toastification";
 import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 import APIError from "@/components/shared/Error/APIError";
 import CardsManagerModal from "@/components/CardsManagerPage/CardsManagerModal";
 import useErrorManager from "@/composables/Error/useErrorManager";
 import Card from "@/classes/Card";
+import CardsManagerTable from "@/components/CardsManagerPage/CardsManagerTable/CardsManagerTable";
 
 export default {
     name: "CardsManagerPage",
-    components: { CardsManagerModal, APIError, DefaultLoader },
+    components: { CardsManagerTable, CardsManagerModal, APIError, DefaultLoader },
     setup() {
         const { displayError } = useErrorManager();
-        return { displayError };
+        const toast = useToast();
+        return { displayError, toast };
     },
     data() {
         return {
             cards: undefined,
             isFetchingCards: true,
         };
-    },
-    computed: {
-        columns() {
-            return [
-                {
-                    label: this.$t("CardsManagerPage.label"),
-                    field: "label",
-                }, {
-                    label: this.$t("CardsManagerPage.categories"),
-                    sortable: false,
-                    field: "categories",
-                }, {
-                    label: this.$t("CardsManagerPage.difficulty"),
-                    field: "difficulty",
-                }, {
-                    label: this.$t("CardsManagerPage.description"),
-                    sortable: false,
-                    field: "description",
-                }, {
-                    label: this.$t("CardsManagerPage.imageURL"),
-                    sortable: false,
-                    field: "imageURL",
-                }, {
-                    label: this.$t("CardsManagerPage.actions"),
-                    sortable: false,
-                    field: "actions",
-                },
-            ];
-        },
     },
     async created() {
         await this.fetchCards();
@@ -95,6 +56,16 @@ export default {
         },
         showCardsManagerModal() {
             this.$refs.cardsManagerPage.show();
+        },
+        addCard(newCard) {
+            this.cards.push(newCard);
+            this.toast.success(this.$t("CardsManagerPage.cardCreated"));
+        },
+        deleteCard(card) {
+            const cardIndex = this.cards.findIndex(({ _id }) => _id === card._id);
+            if (cardIndex !== -1) {
+                this.cards.splice(cardIndex, 1);
+            }
         },
     },
 };
