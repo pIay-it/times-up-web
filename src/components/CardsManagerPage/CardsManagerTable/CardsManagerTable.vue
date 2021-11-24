@@ -1,5 +1,6 @@
 <template>
-    <VueGoodTable id="cards-manager-table" :columns="columns" :rows="cards" :line-numbers="true" :pagination-options="paginationOptions">
+    <VueGoodTable id="cards-manager-table" :columns="columns" :rows="cards" :line-numbers="true"
+                  :pagination-options="paginationOptions" :search-options="searchOptions">
         <template #table-actions>
             <button type="button" class="btn btn-primary me-2" @click.prevent="$emit('show-cards-manager-modal')">
                 <i class="fa fa-plus-circle me-2"/>
@@ -9,7 +10,7 @@
         <template #emptystate>
             <div class="d-flex justify-content-center align-items-center">
                 <i class="fa fa-address-card me-2"/>
-                <span v-html="$t('CardsManagerTable.noCardsYet')"/>
+                <span v-html="$t('CardsManagerTable.noCardsToDisplay')"/>
             </div>
         </template>
         <template #table-row="props">
@@ -67,7 +68,7 @@ export default {
         paginationOptions() {
             return {
                 enabled: true,
-                perPageDropdown: [1, 5, 10, 50, 100, 500],
+                perPageDropdown: [5, 10, 50, 100, 500],
                 prevLabel: this.$t("VueGoodTable.prev"),
                 nextLabel: this.$t("VueGoodTable.next"),
                 allLabel: this.$t("VueGoodTable.all"),
@@ -75,6 +76,9 @@ export default {
                 rowsPerPageLabel: this.$t("CardsManagerTable.cardsPerPage"),
                 infoFn: params => this.$t("CardsManagerTable.pageOfWithTotalCards", params),
             };
+        },
+        searchOptions() {
+            return { enabled: true };
         },
     },
     methods: {

@@ -4,7 +4,7 @@
             {{ content }}
         </template>
     </Metainfo>
-    <RouterView class="h-100 pt-2 px-2"/>
+    <RouterView class="pt-2 h-100 container-fluid"/>
 </template>
 
 <script>

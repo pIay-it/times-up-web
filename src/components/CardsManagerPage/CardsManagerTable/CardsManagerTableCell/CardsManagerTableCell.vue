@@ -1,6 +1,6 @@
 <template>
     <div v-if="column === 'categories'">
-        <CardCategoryPillBadge v-for="category of formattedValue" :key="category" :category="category" class="mx-1"/>
+        <CardCategoryPillBadge v-for="category of formattedValue" :key="category" :category="category" class="m-1"/>
     </div>
     <div v-else-if="column === 'difficulty'" class="text-center">
         <CardDifficultyPillBadge :difficulty="formattedValue"/>
@@ -9,7 +9,7 @@
     <div v-else-if="column === `imageURL`">
         <NotDefinedText v-if="!formattedValue" :value="formattedValue"/>
         <div v-else class="text-center">
-            <img :src="formattedValue" width="60" alt="Card Helper"/>
+            <CardImage :image-url="formattedValue"/>
         </div>
     </div>
     <div v-else-if="column === `actions`" class="d-flex justify-content-center">
@@ -24,10 +24,11 @@ import DeleteCardButton from "@/components/CardsManagerPage/CardsManagerTable/Ca
 import Card from "@/classes/Card";
 import CardDifficultyPillBadge from "@/components/shared/Card/Difficulty/CardDifficultyPillBadge";
 import CardCategoryPillBadge from "@/components/shared/Card/Category/CardCategoryPillBadge";
+import CardImage from "@/components/shared/Card/Image/CardImage";
 
 export default {
     name: "CardsManagerTableCell",
-    components: { CardCategoryPillBadge, CardDifficultyPillBadge, DeleteCardButton, NotDefinedText },
+    components: { CardImage, CardCategoryPillBadge, CardDifficultyPillBadge, DeleteCardButton, NotDefinedText },
     props: {
         props: {
             type: Object,

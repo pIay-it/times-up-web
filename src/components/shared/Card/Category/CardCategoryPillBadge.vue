@@ -1,5 +1,5 @@
 <template>
-    <div id="card-category-pill-badge" class="card-category-pill-badge badge rounded-pill bg-light" :class="badgeClasses">
+    <div id="card-category-pill-badge" class="card-category-pill-badge badge rounded-pill bg-light small-shadow" :class="badgeClasses">
         <div class="d-flex">
             <CardCategoryIcon :category="category" class="me-1"/>
             <span class="text-dark" v-html="badgeText"/>

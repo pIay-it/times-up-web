@@ -43,6 +43,7 @@
 * `vue-good-table-next` installed with version `0.1.0`.
 * `vue-i18n` installed with version `8.26.7`.
 * `vue-js-toggle-button` installed with version `1.3.3`.
+* `vue3-lazyload` installed with version `0.2.2-beta`.
 * `vue-meta` installed with version `3.0.0-alpha.9`.
 * `vue-select` installed with version `4.0.0-beta.1`.
 * `vue-toastification` installed with version `2.0.0-rc.5`.

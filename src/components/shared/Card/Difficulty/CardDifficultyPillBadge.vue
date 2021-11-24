@@ -1,5 +1,5 @@
 <template>
-    <span id="card-difficulty-pill-badge" class="badge rounded-pill" :class="badgeClasses">
+    <span id="card-difficulty-pill-badge" class="card-difficulty-pill-badge badge rounded-pill small-shadow" :class="badgeClasses">
         <CardDifficultyIcon :difficulty="difficulty" class="me-2"/>
         <span v-html="badgeText"/>
     </span>

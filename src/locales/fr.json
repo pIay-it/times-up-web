@@ -11,7 +11,7 @@
         "description": "Description",
         "imageURL": "Image",
         "actions": "Actions",
-        "noCardsYet": "Aucune carte pour le moment",
+        "noCardsToDisplay": "Aucune carte à afficher",
         "addCard": "Ajouter une carte",
         "cardsPerPage": "Cartes par page",
         "pageOfWithTotalCards": "Page {currentPage} sur {totalPages} sur {totalRecords} cartes au total"

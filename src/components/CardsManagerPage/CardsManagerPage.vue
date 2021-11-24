@@ -4,7 +4,7 @@
             <DefaultLoader v-if="isFetchingCards" key="fetching-cards" class="h-100" :text="$t('CardsManagerPage.fetchingCards')"/>
             <div v-else-if="cards" key="cards-manager" class="h-100">
                 <h2 class="d-flex align-items-center justify-content-center">
-                    <i class="fa fa-address-card text-info me-2"/>
+                    <i class="fa fa-address-card text-primary me-2"/>
                     <span v-html="$t('CardsManagerPage.cardsManager')"/>
                 </h2>
                 <hr/>
