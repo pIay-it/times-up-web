@@ -1,0 +1,11 @@
+img[lazy] {
+    opacity: 0;
+    -webkit-animation-name: fade-in;
+    animation-name: fade-in;
+    -webkit-animation-duration: 0.3s;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+    animation-timing-function: ease-out;
+}

@@ -1,0 +1,118 @@
+{
+    "CardsManagerPage": {
+        "fetchingCards": "Récupération des cartes",
+        "cardsManager": "Gestionnaire de cartes"
+    },
+    "CardsManagerTable": {
+        "label": "Label",
+        "categories": "Catégories",
+        "difficulty": "Difficulté à deviner",
+        "description": "Description",
+        "imageURL": "Image",
+        "actions": "Actions",
+        "noCardsToDisplay": "Aucune carte à afficher",
+        "addCard": "Ajouter une carte",
+        "cardsPerPage": "Cartes par page",
+        "pageOfWithTotalCards": "Page {currentPage} sur {totalPages} sur {totalRecords} cartes au total",
+        "searchForCards": "Rechercher des cartes"
+    },
+    "CardsManagerTableCell": {
+        "updateCard": "Modifier la carte"
+    },
+    "DeleteCardButton": {
+        "deleteCard": "Supprimer la carte",
+        "areYouSure": "Êtes-vous sûr de vouloir supprimer cette carte ?",
+        "cardDeleted": "Carte supprimée"
+    },
+    "CardsManagerModal": {
+        "createCard": "Ajouter une carte",
+        "updateCard": "Modifier une carte",
+        "create": "Ajouter",
+        "update": "Modifier",
+        "close": "Fermer",
+        "label": "Label",
+        "categories": "Catégories",
+        "noMatchingCategory": "Aucune catégorie trouvée",
+        "noMoreCategory": "Plus aucune catégorie à ajouter",
+        "difficulty": "Difficulté à deviner",
+        "easy": "Facile",
+        "medium": "Moyenne",
+        "hard": "Difficile",
+        "description": "Description",
+        "imageURL": "URL de l'image",
+        "cardCreated": "Carte créée",
+        "cardUpdated": "Carte modifiée"
+    },
+    "CardCategory": {
+        "personality": "Personnalité",
+        "character": "Personnage",
+        "activity": "Activité",
+        "object": "Objet",
+        "food": "Nourriture",
+        "nature": "Nature",
+        "place": "Lieu",
+        "event": "Évènement",
+        "art": "Art",
+        "technology": "Technologie",
+        "clothes": "Vêtement",
+        "movie": "Film",
+        "tv-series": "Série TV",
+        "book": "Livre",
+        "video-game": "Jeu-vidéo",
+        "painting": "Peinture",
+        "theatre-play": "Pièce de théâtre",
+        "sculpture": "Sculpture",
+        "architecture": "Architecture",
+        "music": "Musique",
+        "animal": "Animal",
+        "sport": "Sport",
+        "job": "Métier"
+    },
+    "CardDifficultyPillBadge": {
+        "difficultyLevel": {
+            "1": "Facile",
+            "2": "Moyenne",
+            "3": "Difficile"
+        }
+    },
+    "APIError": {
+        "anErrorOccurred": "Une erreur est survenue, l'équipe a été prévenue qu'un bug s'est faufilé par ici...",
+        "retry": "Réessayer"
+    },
+    "Form": {
+        "required": "Requis",
+        "optional": "Facultatif"
+    },
+    "NotDefinedText": {
+        "notDefined": "Non défini"
+    },
+    "SweetAlert": {
+        "actionIsIrreversible": "Cette action est irréversible",
+        "confirm": "Confirmer",
+        "cancel": "Annuler"
+    },
+    "VueGoodTable": {
+        "prev": "Précédent",
+        "next": "Suivant",
+        "all": "Tout afficher",
+        "of": "de"
+    },
+    "Error": {
+        "API": {
+            "BAD_REQUEST": "Requête serveur incorrecte",
+            "UNAUTHORIZED": "Accès interdit",
+            "INTERNAL_SERVER_ERROR": "Erreur côté serveur, l'équipe a été prévenue",
+            "PLAYERS_NAME_NOT_UNIQUE": "Impossible de créer le jeu: tous les noms des joueurs ne sont pas uniques",
+            "GAME_NOT_PLAYING": "Impossible de faire avancer le jeu: elle n'est pas en cours",
+            "GAME_NOT_FOUND": "Partie non trouvée",
+            "CARD_NOT_FOUND": "Carte non trouvée",
+            "CARD_NOT_IN_GAME": "Impossible de faire avancer le jeu: une carte jouée ne fait pas partie du jeu",
+            "CARD_ALREADY_GUESSED": "Impossible de faire avancer le jeu: une carte devinée sur ce tour l'était déjà",
+            "CANT_SKIP_CARD": "Impossible de faire avancer le jeu: il est interdit de passer une carte durant la première manche",
+            "CANT_PLAY_CARD_TWICE": "Impossible de faire avancer le jeu: une carte est jouée 2 fois",
+            "MISSING_TIME_TO_GUESS": "Impossible de faire avancer le jeu: une carte devinée ne possède pas son `timeToGuess`",
+            "FORBIDDEN_TIME_TO_GUESS": "Impossible de faire avancer le jeu: une carte non devinée possède un `timeToGuess`"
+        },
+        "unknown": "Erreur inconnue"
+    }
+}
