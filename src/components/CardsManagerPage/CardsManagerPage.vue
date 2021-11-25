@@ -12,26 +12,24 @@
             </div>
             <APIError v-else key="cards" class="h-100" @retry="fetchCards"/>
         </transition>
-        <CardsManagerModal ref="cardsManagerPage" @card-created="addCard"/>
+        <CardsManagerModal ref="cardsManagerPage" @card-created="addCard" @card-updated="updateCard"/>
     </div>
 </template>
 
 <script>
-import { useToast } from "vue-toastification";
 import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 import APIError from "@/components/shared/Error/APIError";
 import CardsManagerModal from "@/components/CardsManagerPage/CardsManagerModal";
+import CardsManagerTable from "@/components/CardsManagerPage/CardsManagerTable/CardsManagerTable";
 import useErrorManager from "@/composables/Error/useErrorManager";
 import Card from "@/classes/Card";
-import CardsManagerTable from "@/components/CardsManagerPage/CardsManagerTable/CardsManagerTable";
 
 export default {
     name: "CardsManagerPage",
     components: { CardsManagerTable, CardsManagerModal, APIError, DefaultLoader },
     setup() {
         const { displayError } = useErrorManager();
-        const toast = useToast();
-        return { displayError, toast };
+        return { displayError };
     },
     data() {
         return {
@@ -54,12 +52,17 @@ export default {
                 this.isFetchingCards = false;
             }
         },
-        showCardsManagerModal() {
-            this.$refs.cardsManagerPage.show();
+        showCardsManagerModal(card) {
+            this.$refs.cardsManagerPage.show(card);
         },
         addCard(newCard) {
             this.cards.push(newCard);
-            this.toast.success(this.$t("CardsManagerPage.cardCreated"));
+        },
+        updateCard(card) {
+            const cardIndex = this.cards.findIndex(({ _id }) => _id === card._id);
+            if (cardIndex !== -1) {
+                this.cards.splice(cardIndex, 1, new Card(card));
+            }
         },
         deleteCard(card) {
             const cardIndex = this.cards.findIndex(({ _id }) => _id === card._id);

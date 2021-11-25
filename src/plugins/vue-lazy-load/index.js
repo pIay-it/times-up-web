@@ -6,5 +6,12 @@ export function setupVueLazyload(app) {
     app.use(VueLazyLoad, {
         loading,
         error,
+        attempt: 1,
+        silent: true,
+        lifecycle: {
+            loading: () => null,
+            error: () => null,
+            loaded: () => null,
+        },
     });
 }

@@ -40,6 +40,8 @@
 * `sass-loader` installed with version `12.3.0`.
 * `sass` installed with version `1.43.4`.
 * `sweetalert2` installed with version `11.2.0`.
+* `v-tooltip` installed with version `4.0.0-beta.2`.
+* `vee-validate` installed with version `4.5.6`.
 * `vue-good-table-next` installed with version `0.1.0`.
 * `vue-i18n` installed with version `8.26.7`.
 * `vue-js-toggle-button` installed with version `1.3.3`.

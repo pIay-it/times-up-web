@@ -1,8 +1,8 @@
 <template>
     <VueGoodTable id="cards-manager-table" :columns="columns" :rows="cards" :line-numbers="true"
-                  :pagination-options="paginationOptions" :search-options="searchOptions">
+                  :pagination-options="paginationOptions" :search-options="searchOptions" :sort-options="sortOptions">
         <template #table-actions>
-            <button type="button" class="btn btn-primary me-2" @click.prevent="$emit('show-cards-manager-modal')">
+            <button type="button" class="btn btn-primary me-2" @click.prevent="emitShowCardsManagerModal">
                 <i class="fa fa-plus-circle me-2"/>
                 <span v-html="$t('CardsManagerTable.addCard')"/>
             </button>
@@ -14,12 +14,13 @@
             </div>
         </template>
         <template #table-row="props">
-            <CardsManagerTableCell :props="props" @card-deleted="emitCardDeleted"/>
+            <CardsManagerTableCell :props="props" @show-cards-manager-modal="emitShowCardsManagerModal" @card-deleted="emitCardDeleted"/>
         </template>
     </VueGoodTable>
 </template>
 
 <script>
+import Fuse from "fuse.js";
 import Card from "@/classes/Card";
 import CardsManagerTableCell from "@/components/CardsManagerPage/CardsManagerTable/CardsManagerTableCell/CardsManagerTableCell";
 
@@ -78,15 +79,36 @@ export default {
             };
         },
         searchOptions() {
-            return { enabled: true };
+            return {
+                enabled: true,
+                placeholder: this.$t("CardsManagerTable.searchForCards"),
+                searchFn: this.searchForCards,
+            };
+        },
+        sortOptions() {
+            return {
+                enabled: true,
+                initialSortBy: { field: "label", type: "asc" },
+            };
         },
     },
     methods: {
-        showCardsManagerModal() {
-            this.$refs.cardsManagerPage.show();
+        emitShowCardsManagerModal(card) {
+            this.$emit("show-cards-manager-modal", card);
         },
         emitCardDeleted(card) {
             this.$emit("card-deleted", card);
+        },
+        searchForCards(row, col, cellValue, searchTerm) {
+            if (col.field === "label") {
+                const fuse = new Fuse([cellValue], {
+                    threshold: 0.3,
+                    shouldSort: false,
+                });
+                const result = fuse.search(searchTerm);
+                return !!result.length;
+            }
+            return false;
         },
     },
 };

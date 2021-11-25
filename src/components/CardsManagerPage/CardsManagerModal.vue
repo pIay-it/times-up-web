@@ -7,16 +7,17 @@
                 </div>
                 <form @submit.prevent="submit">
                     <div class="modal-body">
-                        <div class="mb-3">
+                        <div>
                             <label class="form-label" for="card-label" v-html="$t('CardsManagerModal.label')"/>
                             <RedAsterisk/>
-                            <input id="card-label" ref="cardLabelInput" v-model="card.label" required class="form-control"
-                                   :placeholder="$t('Form.required')" :disabled="isSubmitting"/>
+                            <input id="card-label" ref="cardLabelInput" v-model="labelInput" required class="form-control"
+                                   :placeholder="$t('Form.required')" :disabled="isSubmitting" name="label"/>
+                            <InputErrorMessage :text="labelErrorMessage"/>
                         </div>
-                        <div class="mb-3">
+                        <div>
                             <label class="form-label" v-html="$t('CardsManagerModal.categories')"/>
                             <RedAsterisk/>
-                            <VSelect id="card-categories" v-model="selectedCardCategories" :options="cardCategories"
+                            <VSelect id="card-categories" v-model="selectedCardCategories" :options="selectableCategories"
                                      :close-on-select="false" :placeholder="$t('Form.required')" label="category" multiple
                                      :filter="filterByCategoryLabel" :disabled="isSubmitting">
                                 <template #selected-option="{ category, displayedLabel }">
@@ -37,7 +38,7 @@
                                 </template>
                             </VSelect>
                         </div>
-                        <div class="mb-3">
+                        <div>
                             <label class="form-label" for="card-label" v-html="$t('CardsManagerModal.difficulty')"/>
                             <RedAsterisk/>
                             <div class="d-flex justify-content-center">
@@ -63,12 +64,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div>
                             <label class="form-label" for="card-description" v-html="$t('CardsManagerModal.description')"/>
                             <input id="card-description" v-model="card.description" class="form-control"
                                    :placeholder="$t('Form.optional')" :disabled="isSubmitting"/>
                         </div>
-                        <div class="mb-3">
+                        <div>
                             <label class="form-label" for="card-image-url" v-html="$t('CardsManagerModal.imageURL')"/>
                             <input id="card-image-url" v-model="card.imageURL" class="form-control"
                                    :placeholder="$t('Form.optional')" :disabled="isSubmitting"/>
@@ -90,6 +91,8 @@
 <script>
 import { Modal } from "bootstrap";
 import Fuse from "fuse.js";
+import { useToast } from "vue-toastification";
+import { useField } from "vee-validate";
 import Card from "@/classes/Card";
 import { getCardCategories } from "@/helpers/functions/Card";
 import CardCategoryIcon from "@/components/shared/Card/Category/CardCategoryIcon";
@@ -98,14 +101,20 @@ import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import SubmitButton from "@/components/shared/Form/SubmitButton";
 import useErrorManager from "@/composables/Error/useErrorManager";
 import CardDifficultyIcon from "@/components/shared/Card/Difficulty/CardDifficultyIcon";
+import InputErrorMessage from "@/components/shared/Form/InputErrorMessage";
 
 export default {
     name: "CardsManagerModal",
-    components: { CardDifficultyIcon, SubmitButton, RedAsterisk, CardCategoryIcon },
-    emits: { "card-created": card => card instanceof Card },
+    components: { InputErrorMessage, CardDifficultyIcon, SubmitButton, RedAsterisk, CardCategoryIcon },
+    emits: {
+        "card-created": card => card instanceof Card,
+        "card-updated": card => card instanceof Card,
+    },
     setup() {
+        const toast = useToast();
         const { displayError } = useErrorManager();
-        return { displayError };
+        const { value: labelValue, errorMessage: labelErrorMessage } = useField("label", value => !!value);
+        return { toast, displayError, labelValue, labelErrorMessage };
     },
     data() {
         return {
@@ -124,12 +133,21 @@ export default {
         modalSubmitButtonText() {
             return this.mode === "create" ? this.$t("CardsManagerModal.create") : this.$t("CardsManagerModal.update");
         },
-        cardCategories() {
+        selectableCategories() {
             const categories = getCardCategories();
             let filteredCategories = categories.filter(category => !this.card.categories.includes(category));
             filteredCategories = this.getFormattedCardCategoriesForSelect(filteredCategories);
             sortAlphabeticallyByKey(filteredCategories, "displayedLabel");
             return filteredCategories;
+        },
+        labelInput: {
+            get() {
+                return this.card.label;
+            },
+            set(label) {
+                this.card.label = label;
+                this.labelValue = label;
+            },
         },
         selectedCardCategories: {
             get() {
@@ -140,7 +158,7 @@ export default {
             },
         },
         noOptionsText() {
-            return this.cardCategories.length ? this.$t("CardsManagerModal.noMatchingCategory") : this.$t("CardsManagerModal.noMoreCategory");
+            return this.selectableCategories.length ? this.$t("CardsManagerModal.noMatchingCategory") : this.$t("CardsManagerModal.noMoreCategory");
         },
     },
     mounted() {
@@ -182,19 +200,20 @@ export default {
         async createCard() {
             const { data: newCard } = await this.$timesUpAPI.createCard(this.card);
             this.$emit("card-created", new Card(newCard));
+            this.toast.success(this.$t("CardsManagerModal.cardCreated"));
         },
-        /*
-         * Async updateCard() {
-         *
-         * },
-         */
+        async updateCard() {
+            const { data: updatedCard } = await this.$timesUpAPI.updateCard(this.card._id, this.card);
+            this.$emit("card-updated", new Card(updatedCard));
+            this.toast.success(this.$t("CardsManagerModal.cardUpdated"));
+        },
         async submit() {
             try {
                 this.isSubmitting = true;
                 if (this.mode === "create") {
                     await this.createCard();
                 } else {
-                    // Await this.updateCard();
+                    await this.updateCard();
                 }
                 this.hide();
             } catch (err) {

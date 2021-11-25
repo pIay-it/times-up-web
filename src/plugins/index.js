@@ -6,6 +6,7 @@ import VueGoodTablePlugin from "vue-good-table-next";
 import Vuei18n from "./vue-i18n";
 import VSelect from "vue-select";
 import VueToggleButton from "vue-js-toggle-button";
+import { setupVTooltip } from "@/plugins/v-tooltip";
 import { setupVueMeta } from "@/plugins/vue-meta";
 import { setupVueLazyload } from "./vue-lazy-load";
 import { setupVueToastification } from "./vue-toastification";
@@ -20,6 +21,7 @@ export function usePlugins(app) {
     app.use(VueGoodTablePlugin);
     app.use(Vuei18n);
     app.use(VueToggleButton);
+    setupVTooltip(app);
     setupVueMeta(app);
     setupVueLazyload(app);
     setupVueToastification(app);

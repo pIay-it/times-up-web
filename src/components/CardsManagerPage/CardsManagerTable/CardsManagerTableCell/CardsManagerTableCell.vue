@@ -13,6 +13,10 @@
         </div>
     </div>
     <div v-else-if="column === `actions`" class="d-flex justify-content-center">
+        <button v-tooltip="$t('CardsManagerTableCell.updateCard')" type="button" class="btn btn-sm btn-warning me-1 text-white"
+                @click.prevent="emitShowCardsManagerModal">
+            <i class="fa fa-pen mx-1"/>
+        </button>
         <DeleteCardButton :card="props.row" @card-deleted="emitCardDeleted"/>
     </div>
     <span v-else v-html="formattedValue"/>
@@ -35,7 +39,10 @@ export default {
             required: true,
         },
     },
-    emits: { "card-deleted": card => card instanceof Card },
+    emits: {
+        "show-cards-manager-modal": card => card instanceof Card,
+        "card-deleted": card => card instanceof Card,
+    },
     computed: {
         column() {
             return this.props.column.field;
@@ -45,6 +52,9 @@ export default {
         },
     },
     methods: {
+        emitShowCardsManagerModal() {
+            this.$emit("show-cards-manager-modal", new Card(this.props.row));
+        },
         emitCardDeleted(card) {
             this.$emit("card-deleted", card);
         },

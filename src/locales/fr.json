@@ -1,8 +1,7 @@
 {
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",
-        "cardsManager": "Gestionnaire de cartes",
-        "cardCreated": "Carte créée"
+        "cardsManager": "Gestionnaire de cartes"
     },
     "CardsManagerTable": {
         "label": "Label",
@@ -14,10 +13,14 @@
         "noCardsToDisplay": "Aucune carte à afficher",
         "addCard": "Ajouter une carte",
         "cardsPerPage": "Cartes par page",
-        "pageOfWithTotalCards": "Page {currentPage} sur {totalPages} sur {totalRecords} cartes au total"
+        "pageOfWithTotalCards": "Page {currentPage} sur {totalPages} sur {totalRecords} cartes au total",
+        "searchForCards": "Rechercher des cartes"
+    },
+    "CardsManagerTableCell": {
+        "updateCard": "Modifier la carte"
     },
     "DeleteCardButton": {
-        "delete": "Supprimer",
+        "deleteCard": "Supprimer la carte",
         "areYouSure": "Êtes-vous sûr de vouloir supprimer cette carte ?",
         "cardDeleted": "Carte supprimée"
     },
@@ -36,7 +39,9 @@
         "medium": "Moyenne",
         "hard": "Difficile",
         "description": "Description",
-        "imageURL": "URL de l'image"
+        "imageURL": "URL de l'image",
+        "cardCreated": "Carte créée",
+        "cardUpdated": "Carte modifiée"
     },
     "CardCategory": {
         "personality": "Personnalité",

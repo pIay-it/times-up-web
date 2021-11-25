@@ -1,5 +1,6 @@
 <template>
-    <SubmitButton classes="btn btn-sm btn-danger" :is-loading="isDeleting" :loader-size="21" @click.prevent="deleteCard">
+    <SubmitButton v-tooltip="$t('DeleteCardButton.deleteCard')" classes="btn btn-sm btn-danger" :is-loading="isDeleting"
+                  :loader-size="21" @click.prevent="deleteCard">
         <i class="fa fa-trash mx-1"/>
     </SubmitButton>
 </template>
