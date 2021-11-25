@@ -37,6 +37,7 @@
                                     <span v-html="noOptionsText"/>
                                 </template>
                             </VSelect>
+                            <InputErrorMessage/>
                         </div>
                         <div>
                             <label class="form-label" for="card-label" v-html="$t('CardsManagerModal.difficulty')"/>
@@ -63,16 +64,19 @@
                                     </label>
                                 </div>
                             </div>
+                            <InputErrorMessage/>
                         </div>
                         <div>
                             <label class="form-label" for="card-description" v-html="$t('CardsManagerModal.description')"/>
                             <input id="card-description" v-model="card.description" class="form-control"
                                    :placeholder="$t('Form.optional')" :disabled="isSubmitting"/>
+                            <InputErrorMessage/>
                         </div>
                         <div>
                             <label class="form-label" for="card-image-url" v-html="$t('CardsManagerModal.imageURL')"/>
                             <input id="card-image-url" v-model="card.imageURL" class="form-control"
                                    :placeholder="$t('Form.optional')" :disabled="isSubmitting"/>
+                            <InputErrorMessage/>
                         </div>
                     </div>
                     <div class="modal-footer">
