@@ -1,30 +1,22 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+    <Metainfo>
+        <template #title="{ content }">
+            {{ content }}
+        </template>
+    </Metainfo>
+    <RouterView class="pt-2 h-100 container-fluid"/>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { useMeta } from "vue-meta";
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+export default {
+    name: "App",
+    setup() {
+        useMeta({
+            title: "Time's Up by Play-IT",
+            htmlAttrs: { lang: "fr", amp: true },
+        });
+    },
+};
+</script>

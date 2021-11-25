@@ -1,6 +1,9 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import router from './router';
-import store from './store';
+import { createApp } from "vue";
+import App from "./App.vue";
+import store from "./store";
+import { usePlugins } from "@/plugins";
+import "./assets/scss/styles.scss";
 
-createApp(App).use(store).use(router).mount('#app');
+const timesUpApp = createApp(App);
+usePlugins(timesUpApp);
+timesUpApp.use(store).mount("#app");
