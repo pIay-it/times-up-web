@@ -2,7 +2,7 @@
     <VueGoodTable id="cards-manager-table" :columns="columns" :rows="cards" :line-numbers="true"
                   :pagination-options="paginationOptions" :search-options="searchOptions" :sort-options="sortOptions">
         <template #table-actions>
-            <button type="button" class="btn btn-primary me-2" @click.prevent="emitShowCardsManagerModal">
+            <button type="button" class="btn btn-primary me-2" @click.prevent="emitShowCardsManagerModal(null)">
                 <i class="fa fa-plus-circle me-2"/>
                 <span v-html="$t('CardsManagerTable.addCard')"/>
             </button>
