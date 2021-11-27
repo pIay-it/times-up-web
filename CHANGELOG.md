@@ -50,3 +50,4 @@
 * `vue-select` installed with version `4.0.0-beta.1`.
 * `vue-toastification` installed with version `2.0.0-rc.5`.
 * `xss` installed with version `1.0.10`.
+* `yup` installed with version `0.32.11`.

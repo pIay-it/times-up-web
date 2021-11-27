@@ -7,3 +7,16 @@
         color: white !important;
     }
 }
+
+.v-select {
+    &.is-valid {
+        .vs__dropdown-toggle {
+            border-color: green;
+        }
+    }
+    &.is-invalid {
+        .vs__dropdown-toggle {
+            border-color: red;
+        }
+    }
+}

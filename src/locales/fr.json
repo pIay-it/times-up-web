@@ -31,6 +31,7 @@
         "update": "Modifier",
         "close": "Fermer",
         "label": "Label",
+        "theCardLabel": "Le label de la carte",
         "categories": "Catégories",
         "noMatchingCategory": "Aucune catégorie trouvée",
         "noMoreCategory": "Plus aucune catégorie à ajouter",
@@ -39,9 +40,13 @@
         "medium": "Moyenne",
         "hard": "Difficile",
         "description": "Description",
+        "theCardDescription": "La description de la carte",
         "imageURL": "URL de l'image",
+        "theCardImageURL": "L'URL d'image de la carte",
         "cardCreated": "Carte créée",
-        "cardUpdated": "Carte modifiée"
+        "cardUpdated": "Carte modifiée",
+        "reset": "Réinitialiser",
+        "oneCategoryRequired": "Au moins une catégorie est requise"
     },
     "CardCategory": {
         "personality": "Personnalité",

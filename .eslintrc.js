@@ -488,7 +488,7 @@ module.exports = {
         "vue/no-template-target-blank": "error",
         "vue/no-this-in-before-route-enter": "error",
         "vue/no-undef-properties": "error",
-        "vue/no-unregistered-components": ["error", { ignorePatterns: ["Metainfo", "RouterView", "VueGoodTable", "VSelect"] }],
+        "vue/no-unregistered-components": ["error", { ignorePatterns: ["Metainfo", "RouterView", "VueGoodTable", "VSelect", "VForm", "VField"] }],
         "vue/no-unsupported-features": "error",
         "vue/no-unused-properties": "error",
         "vue/no-unused-refs": "error",

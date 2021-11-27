@@ -5,21 +5,18 @@
                 <div class="modal-header">
                     <h5 class="modal-title" v-html="modalTitleText"/>
                 </div>
-                <form @submit.prevent="submit">
+                <VForm #default="{ isSubmitting }" :validation-schema="formSchema" @submit="submit">
                     <div class="modal-body">
-                        <div>
-                            <label class="form-label" for="card-label" v-html="$t('CardsManagerModal.label')"/>
-                            <RedAsterisk/>
-                            <input id="card-label" ref="cardLabelInput" v-model="labelInput" required class="form-control"
-                                   :placeholder="$t('Form.required')" :disabled="isSubmitting" name="label"/>
-                            <InputErrorMessage :text="labelErrorMessage"/>
-                        </div>
+                        <TextInput ref="labelTextInput" :label="$t('CardsManagerModal.label')" :is-required="true" name="label"
+                                   :is-disabled="isSubmitting"/>
                         <div>
                             <label class="form-label" v-html="$t('CardsManagerModal.categories')"/>
                             <RedAsterisk/>
+                            <VField v-model="categories" name="categories" type="text" class="d-none" :disabled="true"/>
                             <VSelect id="card-categories" v-model="selectedCardCategories" :options="selectableCategories"
                                      :close-on-select="false" :placeholder="$t('Form.required')" label="category" multiple
-                                     :filter="filterByCategoryLabel" :disabled="isSubmitting">
+                                     :filter="filterByCategoryLabel" :disabled="isSubmitting" :class="categoriesSelectClasses"
+                                     @close="setCategoriesTouched(true)" @deselected="setCategoriesTouched(true)">
                                 <template #selected-option="{ category, displayedLabel }">
                                     <div class="d-flex align-items-center">
                                         <CardCategoryIcon :category="category" class="me-1"/>
@@ -37,26 +34,27 @@
                                     <span v-html="noOptionsText"/>
                                 </template>
                             </VSelect>
-                            <InputErrorMessage/>
+                            <InputMessage :error-message="categoriesErrorMessage" :is-valid="false"/>
                         </div>
-                        <div>
-                            <label class="form-label" for="card-label" v-html="$t('CardsManagerModal.difficulty')"/>
+                        <div class="mb-2">
+                            <label class="form-label" for="card-easy-difficulty" v-html="$t('CardsManagerModal.difficulty')"/>
                             <RedAsterisk/>
+                            <VField v-model="difficulty" name="difficulty" type="number" class="d-none" :disabled="true"/>
                             <div class="d-flex justify-content-center">
                                 <div class="btn-group" role="group">
-                                    <input id="card-easy-difficulty" v-model="card.difficulty" type="radio" class="btn-check" name="difficulty"
+                                    <input id="card-easy-difficulty" v-model="difficulty" type="radio" class="btn-check" name="difficulty"
                                            :value="1" :disabled="isSubmitting"/>
                                     <label class="btn btn-outline-success" for="card-easy-difficulty">
                                         <CardDifficultyIcon :difficulty="1" class="me-2"/>
                                         <span v-html="$t('CardsManagerModal.easy')"/>
                                     </label>
-                                    <input id="card-medium-difficulty" v-model="card.difficulty" type="radio" class="btn-check" name="difficulty"
+                                    <input id="card-medium-difficulty" v-model="difficulty" type="radio" class="btn-check" name="difficulty"
                                            :value="2" :disabled="isSubmitting"/>
                                     <label class="btn btn-outline-primary" for="card-medium-difficulty">
                                         <CardDifficultyIcon :difficulty="2" class="me-2"/>
                                         <span v-html="$t('CardsManagerModal.medium')"/>
                                     </label>
-                                    <input id="card-hard-difficulty" v-model="card.difficulty" type="radio" class="btn-check" name="difficulty"
+                                    <input id="card-hard-difficulty" v-model="difficulty" type="radio" class="btn-check" name="difficulty"
                                            :value="3" :disabled="isSubmitting"/>
                                     <label class="btn btn-outline-danger" for="card-hard-difficulty">
                                         <CardDifficultyIcon :difficulty="3" class="me-2"/>
@@ -64,68 +62,68 @@
                                     </label>
                                 </div>
                             </div>
-                            <InputErrorMessage/>
                         </div>
-                        <div>
-                            <label class="form-label" for="card-description" v-html="$t('CardsManagerModal.description')"/>
-                            <input id="card-description" v-model="card.description" class="form-control"
-                                   :placeholder="$t('Form.optional')" :disabled="isSubmitting"/>
-                            <InputErrorMessage/>
-                        </div>
-                        <div>
-                            <label class="form-label" for="card-image-url" v-html="$t('CardsManagerModal.imageURL')"/>
-                            <input id="card-image-url" v-model="card.imageURL" class="form-control"
-                                   :placeholder="$t('Form.optional')" :disabled="isSubmitting"/>
-                            <InputErrorMessage/>
-                        </div>
+                        <TextInput ref="descriptionTextInput" :label="$t('CardsManagerModal.description')" name="description"
+                                   :is-required="false" :is-disabled="isSubmitting"/>
+                        <TextInput ref="imageURLTextInput" :label="$t('CardsManagerModal.imageURL')" name="imageURL"
+                                   :is-required="false" :is-disabled="isSubmitting"/>
                     </div>
                     <div class="modal-footer">
+                        <div class="me-auto">
+                            <button type="button" class="btn btn-outline-secondary" @click.prevent="resetForm"
+                                    v-html="$t('CardsManagerModal.reset')"/>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" :disabled="isSubmitting"
                                 v-html="$t('CardsManagerModal.close')"/>
                         <SubmitButton :is-loading="isSubmitting" classes="btn btn-primary">
                             {{ modalSubmitButtonText }}
                         </SubmitButton>
                     </div>
-                </form>
+                </VForm>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { Modal } from "bootstrap";
+import { ref } from "vue";
 import Fuse from "fuse.js";
-import { useToast } from "vue-toastification";
 import { useField } from "vee-validate";
-import Card from "@/classes/Card";
-import { getCardCategories } from "@/helpers/functions/Card";
+import { object as createSchema, string as checkString, array as checkArray, number as checkNumber } from "yup";
 import CardCategoryIcon from "@/components/shared/Card/Category/CardCategoryIcon";
 import RedAsterisk from "@/components/shared/Form/RedAsterisk";
-import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import SubmitButton from "@/components/shared/Form/SubmitButton";
-import useErrorManager from "@/composables/Error/useErrorManager";
 import CardDifficultyIcon from "@/components/shared/Card/Difficulty/CardDifficultyIcon";
-import InputErrorMessage from "@/components/shared/Form/InputErrorMessage";
+import TextInput from "@/components/shared/Form/Input/TextInput";
+import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessage";
+import useErrorManager from "@/composables/Error/useErrorManager";
+import useBootstrapModal from "@/composables/useBootstrapModal";
+import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
+import { getCardCategories } from "@/helpers/functions/Card";
+import Card from "@/classes/Card";
 
 export default {
     name: "CardsManagerModal",
-    components: { InputErrorMessage, CardDifficultyIcon, SubmitButton, RedAsterisk, CardCategoryIcon },
+    components: { InputMessage, TextInput, CardDifficultyIcon, SubmitButton, RedAsterisk, CardCategoryIcon },
     emits: {
         "card-created": card => card instanceof Card,
         "card-updated": card => card instanceof Card,
     },
     setup() {
-        const toast = useToast();
+        const cardsManagerModal = ref(null);
         const { displayError } = useErrorManager();
-        const { value: labelValue, errorMessage: labelErrorMessage } = useField("label", value => !!value);
-        return { toast, displayError, labelValue, labelErrorMessage };
+        const { showModal, hideModal, lockModal, unlockModal } = useBootstrapModal(cardsManagerModal);
+        const { value: categories, setTouched: setCategoriesTouched, meta: metaCategories } = useField("categories", undefined, { initialValue: [] });
+        const { value: difficulty } = useField("difficulty", undefined, { initialValue: 1 });
+        return {
+            displayError,
+            categories, setCategoriesTouched, metaCategories,
+            difficulty,
+            cardsManagerModal, showModal, hideModal, lockModal, unlockModal,
+        };
     },
     data() {
-        return {
-            modal: undefined,
-            card: new Card(),
-            isSubmitting: false,
-        };
+        return { card: new Card() };
     },
     computed: {
         mode() {
@@ -137,36 +135,45 @@ export default {
         modalSubmitButtonText() {
             return this.mode === "create" ? this.$t("CardsManagerModal.create") : this.$t("CardsManagerModal.update");
         },
+        formSchema() {
+            return createSchema().shape({
+                label: checkString().trim().required().label(this.$t("CardsManagerModal.theCardLabel")),
+                categories: checkArray().min(1).required(),
+                difficulty: checkNumber(),
+                description: checkString().optional().trim(),
+                imageURL: checkString().optional().trim(),
+            });
+        },
         selectableCategories() {
             const categories = getCardCategories();
-            let filteredCategories = categories.filter(category => !this.card.categories.includes(category));
+            let filteredCategories = categories.filter(category => !this.categories.includes(category));
             filteredCategories = this.getFormattedCardCategoriesForSelect(filteredCategories);
             sortAlphabeticallyByKey(filteredCategories, "displayedLabel");
             return filteredCategories;
         },
-        labelInput: {
-            get() {
-                return this.card.label;
-            },
-            set(label) {
-                this.card.label = label;
-                this.labelValue = label;
-            },
-        },
         selectedCardCategories: {
             get() {
-                return this.getFormattedCardCategoriesForSelect(this.card.categories);
+                return this.getFormattedCardCategoriesForSelect(this.categories);
             },
             set(categories) {
-                this.card.categories = categories.map(({ category }) => category);
+                this.categories = categories.map(({ category }) => category);
             },
+        },
+        areCategoriesValid() {
+            return this.categories.length;
+        },
+        categoriesErrorMessage() {
+            return !this.areCategoriesValid && this.metaCategories.touched ? this.$t("CardsManagerModal.oneCategoryRequired") : undefined;
+        },
+        categoriesSelectClasses() {
+            return {
+                "is-valid": this.areCategoriesValid && this.metaCategories.touched,
+                "is-invalid": !this.areCategoriesValid && this.metaCategories.touched,
+            };
         },
         noOptionsText() {
             return this.selectableCategories.length ? this.$t("CardsManagerModal.noMatchingCategory") : this.$t("CardsManagerModal.noMoreCategory");
         },
-    },
-    mounted() {
-        this.modal = new Modal(this.$refs.cardsManagerModal);
     },
     errorCaptured(err) {
         if (err instanceof TypeError && err.stack?.includes("vue-select")) {
@@ -179,13 +186,9 @@ export default {
     },
     methods: {
         show(card = null) {
-            card ||= { difficulty: 1 };
             this.card = new Card(card);
-            this.modal.show();
-            setTimeout(() => this.$refs.cardLabelInput.focus(), 500);
-        },
-        hide() {
-            this.modal.hide();
+            this.resetForm();
+            this.showModal(() => this.$refs.labelTextInput.focus());
         },
         filterByCategoryLabel(list, search) {
             const fuse = new Fuse(list, {
@@ -196,34 +199,49 @@ export default {
             return search.length ? fuse.search(search).map(({ item }) => item) : fuse.list;
         },
         getFormattedCardCategoriesForSelect(categories) {
-            return categories.map(category => ({
-                category,
-                displayedLabel: this.$t(`CardCategory.${category}`),
-            }));
+            return categories.map(category => ({ category, displayedLabel: this.$t(`CardCategory.${category}`) }));
         },
-        async createCard() {
-            const { data: newCard } = await this.$timesUpAPI.createCard(this.card);
+        async createCard(formValues) {
+            const { data: newCard } = await this.$timesUpAPI.createCard(formValues);
             this.$emit("card-created", new Card(newCard));
-            this.toast.success(this.$t("CardsManagerModal.cardCreated"));
+            this.$toast.success(this.$t("CardsManagerModal.cardCreated"));
         },
-        async updateCard() {
-            const { data: updatedCard } = await this.$timesUpAPI.updateCard(this.card._id, this.card);
+        async updateCard(formValues) {
+            const { data: updatedCard } = await this.$timesUpAPI.updateCard(this.card._id, formValues);
             this.$emit("card-updated", new Card(updatedCard));
-            this.toast.success(this.$t("CardsManagerModal.cardUpdated"));
+            this.$toast.success(this.$t("CardsManagerModal.cardUpdated"));
         },
-        async submit() {
+        async submit(formValues) {
+            formValues = this.formSchema.cast(formValues);
             try {
-                this.isSubmitting = true;
+                this.lockModal();
                 if (this.mode === "create") {
-                    await this.createCard();
+                    await this.createCard(formValues);
                 } else {
-                    await this.updateCard();
+                    await this.updateCard(formValues);
                 }
-                this.hide();
+                this.hideModal();
             } catch (err) {
                 this.displayError(err);
             } finally {
-                this.isSubmitting = false;
+                this.unlockModal();
+            }
+        },
+        resetForm() {
+            if (this.mode === "create") {
+                this.$refs.labelTextInput.reset();
+                this.categories = [];
+                this.setCategoriesTouched(false);
+                this.difficulty = 1;
+                this.$refs.descriptionTextInput.reset();
+                this.$refs.imageURLTextInput.reset();
+            } else {
+                this.$refs.labelTextInput.setValue(this.card.label);
+                this.categories = [...this.card.categories];
+                this.setCategoriesTouched(true);
+                this.difficulty = this.card.difficulty;
+                this.$refs.descriptionTextInput.setValue(this.card.description);
+                this.$refs.imageURLTextInput.setValue(this.card.imageURL);
             }
         },
     },
