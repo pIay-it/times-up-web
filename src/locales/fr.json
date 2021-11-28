@@ -14,7 +14,8 @@
         "addCard": "Ajouter une carte",
         "cardsPerPage": "Cartes par page",
         "pageOfWithTotalCards": "Page {currentPage} sur {totalPages} sur {totalRecords} cartes au total",
-        "searchForCards": "Rechercher des cartes"
+        "searchForCards": "Rechercher des cartes",
+        "createdAt": "Créée le"
     },
     "CardsManagerTableCell": {
         "updateCard": "Modifier la carte"
@@ -47,6 +48,15 @@
         "cardUpdated": "Carte modifiée",
         "reset": "Réinitialiser",
         "oneCategoryRequired": "Au moins une catégorie est requise"
+    },
+    "CardImageFinder": {
+        "searchForImageByTypingRequest": "Faites une recherche d'images provenant des articles Wikipédia en renseignant des mots-clefs ci-dessus."
+    },
+    "CardsManagerModalResetButton": {
+        "clearFormValues": "Vider les champs",
+        "restoreFormValues": "Restaurer les champs",
+        "eraseAllFormValues": "Effacer tous les champs du formulaire",
+        "restoreFormValuesFromCard": "Restaurer tous les champs de la carte avant modifications"
     },
     "CardCategory": {
         "personality": "Personnalité",

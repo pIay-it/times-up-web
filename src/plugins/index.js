@@ -11,6 +11,7 @@ import { setupVTooltip } from "@/plugins/v-tooltip";
 import { setupVueMeta } from "@/plugins/vue-meta";
 import { setupVueLazyload } from "./vue-lazy-load";
 import VueToastification from "./vue-toastification";
+import "./yup";
 import TimesUpAPI from "./APIs/TimesUpAPI";
 import Config from "../../config";
 

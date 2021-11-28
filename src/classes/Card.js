@@ -1,4 +1,5 @@
 import { getProp } from "@/helpers/functions/Class";
+import { getFormattedDate } from "@/helpers/functions/Date";
 
 class Card {
     constructor(card = null) {
@@ -32,6 +33,10 @@ class Card {
 
     get isGuessed() {
         return this.status === "guessed";
+    }
+
+    get formattedCreatedAt() {
+        return getFormattedDate(this.createdAt);
     }
 
     unsetCardCategory(category) {

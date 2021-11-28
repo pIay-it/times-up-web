@@ -3,8 +3,8 @@
         <label class="form-label" :for="name" v-html="label"/>
         <RedAsterisk v-if="isRequired"/>
         <input :id="name" ref="input" :name="name" type="text" :value="inputValue" :placeholder="placeholderText" class="form-control"
-               :class="inputClasses" :disabled="isDisabled" @input="handleChange" @blur="onBlur"/>
-        <InputMessage :is-valid="meta.valid" :error-message="errorMessage" :success-message="successMessage"/>
+               :class="inputClasses" :disabled="isDisabled" @input="onChange" @blur="onBlur"/>
+        <InputMessage :is-shown="isTouchedOrDirty" :is-valid="meta.valid" :error-message="errorMessage" :success-message="successMessage"/>
     </div>
 </template>
 
@@ -46,6 +46,7 @@ export default {
             default: "",
         },
     },
+    emits: { change: () => true, blur: () => true },
     setup(props) {
         const options = { initialValue: props.value };
         const {
@@ -66,11 +67,15 @@ export default {
             }
             return this.isRequired ? this.$t("Form.required") : this.$t("Form.optional");
         },
+        isTouchedOrDirty() {
+            const { dirty, touched } = this.meta;
+            return dirty || touched;
+        },
         inputClasses() {
-            const { dirty, valid, touched } = this.meta;
+            const { valid } = this.meta;
             return {
-                "is-valid": (dirty || touched) && valid,
-                "is-invalid": (dirty || touched) && !valid,
+                "is-valid": this.isTouchedOrDirty && valid,
+                "is-invalid": this.isTouchedOrDirty && !valid,
             };
         },
     },
@@ -81,7 +86,15 @@ export default {
         setValue(value) {
             this.inputValue = value;
         },
+        getValue() {
+            return this.inputValue;
+        },
+        onChange(value) {
+            this.handleChange(value);
+            this.$emit("change", this.inputValue);
+        },
         onBlur(event) {
+            this.$emit("blur", event);
             this.validate();
             this.handleBlur(event);
         },

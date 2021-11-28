@@ -39,7 +39,8 @@
         "vue3-lazyload": "^0.2.2-beta",
         "vuex": "^4.0.0",
         "xss": "^1.0.10",
-        "yup": "^0.32.11"
+        "yup": "^0.32.11",
+        "yup-locales": "^1.2.0"
     },
     "devDependencies": {
         "@babel/core": "^7.12.16",

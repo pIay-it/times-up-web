@@ -34,7 +34,8 @@
                                     <span v-html="noOptionsText"/>
                                 </template>
                             </VSelect>
-                            <InputMessage :error-message="categoriesErrorMessage" :is-valid="false"/>
+                            <InputMessage :is-shown="categoriesErrorMessage" :error-message="categoriesErrorMessage"
+                                          :is-valid="!categoriesErrorMessage"/>
                         </div>
                         <div class="mb-2">
                             <label class="form-label" for="card-easy-difficulty" v-html="$t('CardsManagerModal.difficulty')"/>
@@ -64,14 +65,19 @@
                             </div>
                         </div>
                         <TextInput ref="descriptionTextInput" :label="$t('CardsManagerModal.description')" name="description"
-                                   :is-required="false" :is-disabled="isSubmitting"/>
-                        <TextInput ref="imageURLTextInput" :label="$t('CardsManagerModal.imageURL')" name="imageURL"
-                                   :is-required="false" :is-disabled="isSubmitting"/>
+                                   :is-disabled="isSubmitting"/>
+                        <div class="d-flex align-items-center">
+                            <TextInput ref="imageURLTextInput" :label="$t('CardsManagerModal.imageURL')" name="imageURL"
+                                       :is-disabled="isSubmitting" class="w-100" @change="setImageURL"/>
+                            <div id="card-image-preview-container" class="d-flex justify-content-center">
+                                <CardImage :image-url="imageURL" :max-height="50" :max-width="50" class="ms-2"/>
+                            </div>
+                        </div>
+                        <CardImageFinder @image-url-selected="imageSelectedFromCardImageFinder"/>
                     </div>
                     <div class="modal-footer">
                         <div class="me-auto">
-                            <button type="button" class="btn btn-outline-secondary" @click.prevent="resetForm"
-                                    v-html="$t('CardsManagerModal.reset')"/>
+                            <CardsManagerModalResetButton :mode="mode" @click.prevent="resetForm"/>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" :disabled="isSubmitting"
                                 v-html="$t('CardsManagerModal.close')"/>
@@ -101,10 +107,23 @@ import useBootstrapModal from "@/composables/useBootstrapModal";
 import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import { getCardCategories } from "@/helpers/functions/Card";
 import Card from "@/classes/Card";
+import CardsManagerModalResetButton from "@/components/CardsManagerPage/CardsManagerModal/CardsManagerModalResetButton";
+import CardImage from "@/components/shared/Card/Image/CardImage";
+import CardImageFinder from "@/components/CardsManagerPage/CardsManagerModal/CardImageFinder";
 
 export default {
     name: "CardsManagerModal",
-    components: { InputMessage, TextInput, CardDifficultyIcon, SubmitButton, RedAsterisk, CardCategoryIcon },
+    components: {
+        CardImageFinder,
+        CardImage,
+        CardsManagerModalResetButton,
+        InputMessage,
+        TextInput,
+        CardDifficultyIcon,
+        SubmitButton,
+        RedAsterisk,
+        CardCategoryIcon,
+    },
     emits: {
         "card-created": card => card instanceof Card,
         "card-updated": card => card instanceof Card,
@@ -123,7 +142,10 @@ export default {
         };
     },
     data() {
-        return { card: new Card() };
+        return {
+            card: new Card(),
+            imageURL: undefined,
+        };
     },
     computed: {
         mode() {
@@ -141,7 +163,7 @@ export default {
                 categories: checkArray().min(1).required(),
                 difficulty: checkNumber(),
                 description: checkString().optional().trim(),
-                imageURL: checkString().optional().trim(),
+                imageURL: checkString().optional().trim().url().label(this.$t("CardsManagerModal.theCardImageURL")),
             });
         },
         selectableCategories() {
@@ -235,6 +257,7 @@ export default {
                 this.difficulty = 1;
                 this.$refs.descriptionTextInput.reset();
                 this.$refs.imageURLTextInput.reset();
+                this.imageURL = undefined;
             } else {
                 this.$refs.labelTextInput.setValue(this.card.label);
                 this.categories = [...this.card.categories];
@@ -242,8 +265,23 @@ export default {
                 this.difficulty = this.card.difficulty;
                 this.$refs.descriptionTextInput.setValue(this.card.description);
                 this.$refs.imageURLTextInput.setValue(this.card.imageURL);
+                this.imageURL = this.card.imageURL;
             }
+            this.$refs.labelTextInput.focus();
+        },
+        setImageURL(imageURL) {
+            this.imageURL = imageURL;
+        },
+        imageSelectedFromCardImageFinder(imageURL) {
+            this.$refs.imageURLTextInput.setValue(imageURL);
+            this.imageURL = imageURL;
         },
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    #card-image-preview-container {
+        width: 80px;
+    }
+</style>
