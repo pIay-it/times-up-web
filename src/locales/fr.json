@@ -50,7 +50,10 @@
         "oneCategoryRequired": "Au moins une catégorie est requise"
     },
     "CardImageFinder": {
-        "searchForImageByTypingRequest": "Faites une recherche d'images provenant des articles Wikipédia en renseignant des mots-clefs ci-dessus."
+        "searchForImageByTypingRequest": "Faites une recherche d'images provenant des articles Wikipédia en renseignant des mots-clefs ci-dessus.",
+        "noResultFound": "Aucun résultat pour cette recherche",
+        "searchForCardImage": "Rechercher une image pour la carte",
+        "loadingImages": "Chargement des images"
     },
     "CardsManagerModalResetButton": {
         "clearFormValues": "Vider les champs",

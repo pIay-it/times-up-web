@@ -70,10 +70,10 @@
                             <TextInput ref="imageURLTextInput" :label="$t('CardsManagerModal.imageURL')" name="imageURL"
                                        :is-disabled="isSubmitting" class="w-100" @change="setImageURL"/>
                             <div id="card-image-preview-container" class="d-flex justify-content-center">
-                                <CardImage :image-url="imageURL" :max-height="50" :max-width="50" class="ms-2"/>
+                                <CardImage :image-url="imageURL" :max-height="80" :max-width="80" class="ms-3"/>
                             </div>
                         </div>
-                        <CardImageFinder @image-url-selected="imageSelectedFromCardImageFinder"/>
+                        <CardImageFinder ref="cardImageFinder" @image-url-selected="imageSelectedFromCardImageFinder"/>
                     </div>
                     <div class="modal-footer">
                         <div class="me-auto">
@@ -209,6 +209,7 @@ export default {
     methods: {
         show(card = null) {
             this.card = new Card(card);
+            this.$refs.cardImageFinder.reset();
             this.resetForm();
             this.showModal(() => this.$refs.labelTextInput.focus());
         },
@@ -267,6 +268,7 @@ export default {
                 this.$refs.imageURLTextInput.setValue(this.card.imageURL);
                 this.imageURL = this.card.imageURL;
             }
+            this.$refs.cardImageFinder.reset();
             this.$refs.labelTextInput.focus();
         },
         setImageURL(imageURL) {
@@ -282,6 +284,6 @@ export default {
 
 <style lang="scss" scoped>
     #card-image-preview-container {
-        width: 80px;
+        width: 100px;
     }
 </style>
