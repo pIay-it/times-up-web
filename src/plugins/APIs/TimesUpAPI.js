@@ -37,6 +37,6 @@ export default {
 
         app.config.globalProperties.$timesUpAPI.makeGamePlay = (gameId, play) => axios.post(`/games/${gameId}/play`, play);
 
-        app.provide("timesUpAPI ", app.config.globalProperties.$timesUpAPI);
+        app.provide("timesUpAPI", app.config.globalProperties.$timesUpAPI);
     },
 };

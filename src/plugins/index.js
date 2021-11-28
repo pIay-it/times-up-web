@@ -6,10 +6,12 @@ import VueGoodTablePlugin from "vue-good-table-next";
 import Vuei18n from "./vue-i18n";
 import VSelect from "vue-select";
 import VueToggleButton from "vue-js-toggle-button";
+import { setupVeeValidate } from "./vee-validate";
 import { setupVTooltip } from "@/plugins/v-tooltip";
 import { setupVueMeta } from "@/plugins/vue-meta";
 import { setupVueLazyload } from "./vue-lazy-load";
-import { setupVueToastification } from "./vue-toastification";
+import VueToastification from "./vue-toastification";
+import "./yup";
 import TimesUpAPI from "./APIs/TimesUpAPI";
 import Config from "../../config";
 
@@ -21,10 +23,11 @@ export function usePlugins(app) {
     app.use(VueGoodTablePlugin);
     app.use(Vuei18n);
     app.use(VueToggleButton);
+    setupVeeValidate(app);
     setupVTooltip(app);
     setupVueMeta(app);
     setupVueLazyload(app);
-    setupVueToastification(app);
+    app.use(VueToastification);
     app.use(TimesUpAPI);
     app.component(VueCountdown.name, VueCountdown);
     app.component("VSelect", VSelect);

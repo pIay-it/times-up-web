@@ -21,3 +21,13 @@
 .fade-in-enter-from, .fade-in-leave-to {
     opacity: 0;
 }
+
+// TRANSLATE DOWN FADE
+.translate-down-fade-enter-active, .translate-down-fade-leave-active {
+    transition: all .20s ease-out;
+}
+
+.translate-down-fade-enter-from, .translate-down-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-5px);
+}
