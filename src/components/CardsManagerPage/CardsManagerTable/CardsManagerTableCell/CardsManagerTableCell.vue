@@ -12,6 +12,7 @@
             <CardImage :image-url="formattedValue"/>
         </div>
     </div>
+    <div v-else-if="column === `createdAt`" v-html="getFormattedDate(formattedValue)"/>
     <div v-else-if="column === `actions`" class="d-flex justify-content-center">
         <button v-tooltip="$t('CardsManagerTableCell.updateCard')" type="button" class="btn btn-sm btn-warning me-1 text-white"
                 @click.prevent="emitShowCardsManagerModal">
@@ -25,10 +26,11 @@
 <script>
 import NotDefinedText from "@/components/shared/misc/NotDefinedText";
 import DeleteCardButton from "@/components/CardsManagerPage/CardsManagerTable/CardsManagerTableCell/DeleteCardButton";
-import Card from "@/classes/Card";
 import CardDifficultyPillBadge from "@/components/shared/Card/Difficulty/CardDifficultyPillBadge";
 import CardCategoryPillBadge from "@/components/shared/Card/Category/CardCategoryPillBadge";
 import CardImage from "@/components/shared/Card/Image/CardImage";
+import Card from "@/classes/Card";
+import { getFormattedDate } from "@/helpers/functions/Date";
 
 export default {
     name: "CardsManagerTableCell",
@@ -58,6 +60,7 @@ export default {
         emitCardDeleted(card) {
             this.$emit("card-deleted", card);
         },
+        getFormattedDate,
     },
 };
 </script>

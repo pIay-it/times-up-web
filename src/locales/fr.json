@@ -14,7 +14,8 @@
         "addCard": "Ajouter une carte",
         "cardsPerPage": "Cartes par page",
         "pageOfWithTotalCards": "Page {currentPage} sur {totalPages} sur {totalRecords} cartes au total",
-        "searchForCards": "Rechercher des cartes"
+        "searchForCards": "Rechercher des cartes",
+        "createdAt": "Créée le"
     },
     "CardsManagerTableCell": {
         "updateCard": "Modifier la carte"
@@ -31,6 +32,7 @@
         "update": "Modifier",
         "close": "Fermer",
         "label": "Label",
+        "theCardLabel": "Le label de la carte",
         "categories": "Catégories",
         "noMatchingCategory": "Aucune catégorie trouvée",
         "noMoreCategory": "Plus aucune catégorie à ajouter",
@@ -39,9 +41,25 @@
         "medium": "Moyenne",
         "hard": "Difficile",
         "description": "Description",
+        "theCardDescription": "La description de la carte",
         "imageURL": "URL de l'image",
+        "theCardImageURL": "L'URL d'image de la carte",
         "cardCreated": "Carte créée",
-        "cardUpdated": "Carte modifiée"
+        "cardUpdated": "Carte modifiée",
+        "reset": "Réinitialiser",
+        "oneCategoryRequired": "Au moins une catégorie est requise"
+    },
+    "CardImageFinder": {
+        "searchForImageByTypingRequest": "Faites une recherche d'images provenant des articles Wikipédia en renseignant des mots-clefs ci-dessus.",
+        "noResultFound": "Aucun résultat pour cette recherche",
+        "searchForCardImage": "Rechercher une image pour la carte",
+        "loadingImages": "Chargement des images"
+    },
+    "CardsManagerModalResetButton": {
+        "clearFormValues": "Vider les champs",
+        "restoreFormValues": "Restaurer les champs",
+        "eraseAllFormValues": "Effacer tous les champs du formulaire",
+        "restoreFormValuesFromCard": "Restaurer tous les champs de la carte avant modifications"
     },
     "CardCategory": {
         "personality": "Personnalité",

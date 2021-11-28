@@ -60,6 +60,9 @@ export default {
                     sortable: false,
                     field: "imageURL",
                 }, {
+                    label: this.$t("CardsManagerTable.createdAt"),
+                    field: "createdAt",
+                }, {
                     label: this.$t("CardsManagerTable.actions"),
                     sortable: false,
                     field: "actions",
@@ -88,7 +91,7 @@ export default {
         sortOptions() {
             return {
                 enabled: true,
-                initialSortBy: { field: "label", type: "asc" },
+                initialSortBy: { field: "createdAt", type: "desc" },
             };
         },
     },

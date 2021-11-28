@@ -1,7 +1,7 @@
 <template>
     <div id="loading" class="d-flex justify-content-center align-items-center text-center">
         <DualRingSpinner :size="iconSize"/>
-        <div id="loading-text" v-html="text"/>
+        <div id="loading-text" :style="loadingTextStyle" v-html="text"/>
     </div>
 </template>
 
@@ -20,6 +20,15 @@ export default {
             type: Number,
             default: 45,
         },
+        textSize: {
+            type: Number,
+            default: 26,
+        },
+    },
+    computed: {
+        loadingTextStyle() {
+            return { "font-size": `${this.textSize}px` };
+        },
     },
 };
 </script>
@@ -31,6 +40,5 @@ export default {
 
     #loading-text {
         margin-left: 5px;
-        font-size: 1.5rem;
     }
 </style>

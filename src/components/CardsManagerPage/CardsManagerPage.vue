@@ -19,7 +19,7 @@
 <script>
 import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 import APIError from "@/components/shared/Error/APIError";
-import CardsManagerModal from "@/components/CardsManagerPage/CardsManagerModal";
+import CardsManagerModal from "@/components/CardsManagerPage/CardsManagerModal/CardsManagerModal";
 import CardsManagerTable from "@/components/CardsManagerPage/CardsManagerTable/CardsManagerTable";
 import useErrorManager from "@/composables/Error/useErrorManager";
 import Card from "@/classes/Card";

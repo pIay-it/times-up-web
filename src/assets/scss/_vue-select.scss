@@ -1,3 +1,5 @@
+@import "~bootstrap/scss/variables";
+
 .vs__search::placeholder {
     color: #6c757d;
 }
@@ -5,5 +7,18 @@
 .vs__dropdown-option--highlight {
     i {
         color: white !important;
+    }
+}
+
+.v-select {
+    &.is-valid {
+        .vs__dropdown-toggle {
+            border-color: $success;
+        }
+    }
+    &.is-invalid {
+        .vs__dropdown-toggle {
+            border-color: $danger;
+        }
     }
 }
