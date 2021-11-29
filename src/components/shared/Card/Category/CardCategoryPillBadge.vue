@@ -1,5 +1,6 @@
 <template>
-    <div id="card-category-pill-badge" class="card-category-pill-badge badge rounded-pill bg-light small-shadow" :class="badgeClasses">
+    <div id="card-category-pill-badge" v-tooltip="badgeTooltipText"
+         class="card-category-pill-badge badge rounded-pill bg-light small-shadow cursor-default" :class="badgeClasses">
         <div class="d-flex">
             <CardCategoryIcon :category="category" class="me-1"/>
             <span class="text-dark" v-html="badgeText"/>
@@ -24,7 +25,10 @@ export default {
             return { [`${this.category}-card-category-border-color`]: true };
         },
         badgeText() {
-            return this.$t(`CardCategory.${this.category}`);
+            return this.$t(`CardCategory.${this.category}.label`);
+        },
+        badgeTooltipText() {
+            return this.$t(`CardCategory.${this.category}.description`);
         },
     },
 };
