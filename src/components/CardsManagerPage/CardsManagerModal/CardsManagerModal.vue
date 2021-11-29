@@ -8,7 +8,8 @@
                 <VForm #default="{ isSubmitting }" :validation-schema="formSchema" @submit="submit">
                     <div class="modal-body">
                         <TextInput ref="labelTextInput" :label="$t('CardsManagerModal.label')" :is-required="true" name="label"
-                                   :is-disabled="isSubmitting"/>
+                                   :is-disabled="isSubmitting" :success-message="labelInputSuccessMessage"
+                                   :success-message-type="labelInputSuccessMessageType" @change="setLabel"/>
                         <div>
                             <label class="form-label" v-html="$t('CardsManagerModal.categories')"/>
                             <RedAsterisk/>
@@ -34,7 +35,7 @@
                                     <span v-html="noOptionsText"/>
                                 </template>
                             </VSelect>
-                            <InputMessage :is-shown="categoriesErrorMessage" :error-message="categoriesErrorMessage"
+                            <InputMessage :is-shown="!!categoriesErrorMessage" :error-message="categoriesErrorMessage"
                                           :is-valid="!categoriesErrorMessage"/>
                         </div>
                         <div class="mb-2">
@@ -102,14 +103,14 @@ import SubmitButton from "@/components/shared/Form/SubmitButton";
 import CardDifficultyIcon from "@/components/shared/Card/Difficulty/CardDifficultyIcon";
 import TextInput from "@/components/shared/Form/Input/TextInput";
 import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessage";
+import CardsManagerModalResetButton from "@/components/CardsManagerPage/CardsManagerModal/CardsManagerModalResetButton";
+import CardImage from "@/components/shared/Card/Image/CardImage";
+import CardImageFinder from "@/components/CardsManagerPage/CardsManagerModal/CardImageFinder";
 import useErrorManager from "@/composables/Error/useErrorManager";
 import useBootstrapModal from "@/composables/useBootstrapModal";
 import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import { getCardCategories } from "@/helpers/functions/Card";
 import Card from "@/classes/Card";
-import CardsManagerModalResetButton from "@/components/CardsManagerPage/CardsManagerModal/CardsManagerModalResetButton";
-import CardImage from "@/components/shared/Card/Image/CardImage";
-import CardImageFinder from "@/components/CardsManagerPage/CardsManagerModal/CardImageFinder";
 
 export default {
     name: "CardsManagerModal",
@@ -123,6 +124,13 @@ export default {
         SubmitButton,
         RedAsterisk,
         CardCategoryIcon,
+    },
+    props: {
+        cards: {
+            type: Array,
+            required: true,
+            validator: cards => cards.every(card => card instanceof Card),
+        },
     },
     emits: {
         "card-created": card => card instanceof Card,
@@ -144,6 +152,7 @@ export default {
     data() {
         return {
             card: new Card(),
+            label: undefined,
             imageURL: undefined,
         };
     },
@@ -196,6 +205,27 @@ export default {
         noOptionsText() {
             return this.selectableCategories.length ? this.$t("CardsManagerModal.noMatchingCategory") : this.$t("CardsManagerModal.noMoreCategory");
         },
+        lookAlikeCards() {
+            const fuse = new Fuse(this.cards, {
+                keys: ["label"],
+                threshold: 0.2,
+                minMatchCharLength: 3,
+                shouldSort: false,
+            });
+            return !this.label?.length ? this.cards : fuse.search(this.label).map(({ item }) => item);
+        },
+        doesCardLabelLookAlikeAnotherOne() {
+            return this.lookAlikeCards.length && (this.lookAlikeCards.length !== 1 || this.lookAlikeCards[0]._id !== this.card._id);
+        },
+        labelInputSuccessMessageType() {
+            return this.doesCardLabelLookAlikeAnotherOne ? "info" : "success";
+        },
+        labelInputSuccessMessage() {
+            if (this.doesCardLabelLookAlikeAnotherOne) {
+                return this.$t("CardsManagerModal.someCardsLookAlike", { label: this.lookAlikeCards[0].label });
+            }
+            return this.$t("CardsManagerModal.thisCardIsUnique");
+        },
     },
     errorCaptured(err) {
         if (err instanceof TypeError && err.stack?.includes("vue-select")) {
@@ -222,7 +252,7 @@ export default {
             return search.length ? fuse.search(search).map(({ item }) => item) : fuse.list;
         },
         getFormattedCardCategoriesForSelect(categories) {
-            return categories.map(category => ({ category, displayedLabel: this.$t(`CardCategory.${category}`) }));
+            return categories.map(category => ({ category, displayedLabel: this.$t(`CardCategory.${category}.label`) }));
         },
         async createCard(formValues) {
             const { data: newCard } = await this.$timesUpAPI.createCard(formValues);
@@ -258,6 +288,7 @@ export default {
                 this.difficulty = 1;
                 this.$refs.descriptionTextInput.reset();
                 this.$refs.imageURLTextInput.reset();
+                this.label = undefined;
                 this.imageURL = undefined;
             } else {
                 this.$refs.labelTextInput.setValue(this.card.label);
@@ -266,10 +297,14 @@ export default {
                 this.difficulty = this.card.difficulty;
                 this.$refs.descriptionTextInput.setValue(this.card.description);
                 this.$refs.imageURLTextInput.setValue(this.card.imageURL);
+                this.label = this.card.label;
                 this.imageURL = this.card.imageURL;
             }
             this.$refs.cardImageFinder.reset();
             this.$refs.labelTextInput.focus();
+        },
+        setLabel(label) {
+            this.label = label;
         },
         setImageURL(imageURL) {
             this.imageURL = imageURL;

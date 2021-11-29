@@ -9,10 +9,10 @@
                 </h2>
                 <hr/>
                 <CardsManagerTable :cards="cards" @show-cards-manager-modal="showCardsManagerModal" @card-deleted="deleteCard"/>
+                <CardsManagerModal ref="cardsManagerPage" :cards="cards" @card-created="addCard" @card-updated="updateCard"/>
             </div>
             <APIError v-else key="cards" class="h-100" @retry="fetchCards"/>
         </transition>
-        <CardsManagerModal ref="cardsManagerPage" @card-created="addCard" @card-updated="updateCard"/>
     </div>
 </template>
 

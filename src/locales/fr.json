@@ -47,7 +47,9 @@
         "cardCreated": "Carte créée",
         "cardUpdated": "Carte modifiée",
         "reset": "Réinitialiser",
-        "oneCategoryRequired": "Au moins une catégorie est requise"
+        "oneCategoryRequired": "Au moins une catégorie est requise",
+        "thisCardIsUnique": "Ce label ne semble pas être déjà pris par une autre carte",
+        "someCardsLookAlike": "Ce label ressemble à celui d'une autre carte ({label})"
     },
     "CardImageFinder": {
         "searchForImageByTypingRequest": "Faites une recherche d'images provenant des articles Wikipédia en renseignant des mots-clefs ci-dessus.",
@@ -62,29 +64,98 @@
         "restoreFormValuesFromCard": "Restaurer tous les champs de la carte avant modifications"
     },
     "CardCategory": {
-        "personality": "Personnalité",
-        "character": "Personnage",
-        "activity": "Activité",
-        "object": "Objet",
-        "food": "Nourriture",
-        "nature": "Nature",
-        "place": "Lieu",
-        "event": "Évènement",
-        "art": "Art",
-        "technology": "Technologie",
-        "clothes": "Vêtement",
-        "movie": "Film",
-        "tv-series": "Série TV",
-        "book": "Livre",
-        "video-game": "Jeu-vidéo",
-        "painting": "Peinture",
-        "theatre-play": "Pièce de théâtre",
-        "sculpture": "Sculpture",
-        "architecture": "Architecture",
-        "music": "Musique",
-        "animal": "Animal",
-        "sport": "Sport",
-        "job": "Métier"
+        "personality": {
+            "label": "Personnalité",
+            "description": "Description de personnalité"
+        },
+        "character": {
+            "label": "Personnage",
+            "description": "Description de personnage"
+        },
+        "activity": {
+            "label": "Activité",
+            "description": "Description d'activité"
+        },
+        "object": {
+            "label": "Objet",
+            "description": "Description d'objet"
+        },
+        "food": {
+            "label": "Nourriture",
+            "description": "Description de nourriture"
+        },
+        "nature": {
+            "label": "Nature",
+            "description": "Description de nature"
+        },
+        "place": {
+            "label": "Lieu",
+            "description": "Description de lieu"
+        },
+        "event": {
+            "label": "Évènement",
+            "description": "Description d'évènement"
+        },
+        "art": {
+            "label": "Art",
+            "description": "Description d'art"
+        },
+        "technology": {
+            "label": "Technologie",
+            "description": "Description de technologie"
+        },
+        "clothes": {
+            "label": "Vêtement",
+            "description": "Description de vêtement"
+        },
+        "movie": {
+            "label": "Film",
+            "description": "Description de film"
+        },
+        "tv-series": {
+            "label": "Série",
+            "description": "Description de série"
+        },
+        "book": {
+            "label": "Livre",
+            "description": "Description de livre"
+        },
+        "video-game": {
+            "label": "Jeu-vidéo",
+            "description": "Description de jeu-vidéo"
+        },
+        "painting": {
+            "label": "Peinture",
+            "description": "Description de peinture"
+        },
+        "theatre-play": {
+            "label": "Pièce de théâtre",
+            "description": "Description de pièce de théâtre"
+        },
+        "sculpture": {
+            "label": "Sculpture",
+            "description": "Description de sculpture"
+        },
+        "architecture": {
+            "label": "Archicture",
+            "description": "Description d'architecture"
+        },
+        "music": {
+            "label": "Musique",
+            "description": "Description de musique"
+        },
+        "animal": {
+            "label": "Animal",
+            "description": "Description d'animal"
+        },
+        "sport": {
+            "label": "Sport",
+            "description": "Description de sport"
+        },
+        "job": {
+            "label": "Métier",
+            "description": "Description de métier"
+        }
     },
     "CardDifficultyPillBadge": {
         "difficultyLevel": {

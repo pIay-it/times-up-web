@@ -4,7 +4,8 @@
         <RedAsterisk v-if="isRequired"/>
         <input :id="name" ref="input" :name="name" type="text" :value="inputValue" :placeholder="placeholderText" class="form-control"
                :class="inputClasses" :disabled="isDisabled" @input="onChange" @blur="onBlur"/>
-        <InputMessage :is-shown="isTouchedOrDirty" :is-valid="meta.valid" :error-message="errorMessage" :success-message="successMessage"/>
+        <InputMessage :is-shown="isTouchedOrDirty" :is-valid="meta.valid" :error-message="errorMessage" :success-message="successMessage"
+                      :success-message-type="successMessageType"/>
     </div>
 </template>
 
@@ -40,6 +41,10 @@ export default {
         successMessage: {
             type: String,
             default: "",
+        },
+        successMessageType: {
+            type: String,
+            default: "success",
         },
         placeholder: {
             type: String,
