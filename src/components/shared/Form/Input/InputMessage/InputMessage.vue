@@ -2,7 +2,8 @@
     <div id="input-message" class="input-message d-flex align-items-center">
         <transition name="translate-down-fade" mode="out-in">
             <InputErrorMessage v-if="isShown && errorMessage" key="error-message" :text="errorMessage"/>
-            <InputSuccessMessage v-else-if="isShown && isValid && successMessage" key="success-message" :text="successMessage"/>
+            <InputSuccessMessage v-else-if="isShown && isValid && successMessage" key="success-message" :text="successMessage"
+                                 :type="successMessageType"/>
         </transition>
     </div>
 </template>
@@ -30,6 +31,10 @@ export default {
         successMessage: {
             type: String,
             default: "",
+        },
+        successMessageType: {
+            type: String,
+            default: "success",
         },
     },
 };

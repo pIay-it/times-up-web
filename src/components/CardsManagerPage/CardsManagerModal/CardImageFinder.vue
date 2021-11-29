@@ -76,6 +76,7 @@ export default {
     },
     methods: {
         async getImagesOnWikipedia() {
+            const search = this.cleanSearch;
             const requestId = uniqid();
             this.requestId = requestId;
             this.isFetchingImages = true;
@@ -84,7 +85,7 @@ export default {
                 return;
             }
             try {
-                const queryString = stringify({ q: this.search, limit: 20 });
+                const queryString = stringify({ q: search, limit: 20 });
                 const { data } = await Axios.get(`https://fr.wikipedia.org/w/rest.php/v1/search/title?${queryString}`);
                 this.imagesFound = data.pages.reduce((acc, page) => {
                     if (page?.thumbnail && !acc.includes(page?.thumbnail.url)) {
