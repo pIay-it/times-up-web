@@ -18,7 +18,7 @@
         <div class="row">
             <div v-for="player of game.players" :key="player.name" v-html="player.name"/>
         </div>
-        <div class="row">
+        <div class="row d-flex justify-content-center">
             <SubmitButton classes="btn btn-primary btn-lg" :is-loading="isCreatingGame" :disabled="!game.canStart" @click="createGame">
                 <i class="fa fa-gamepad me-2"/>
                 <span v-html="$t('GameLobby.startGame')"/>
@@ -32,17 +32,19 @@ import { useStore } from "vuex";
 import { computed, ref } from "vue";
 import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessage";
 import SubmitButton from "@/components/shared/Form/SubmitButton";
-import useErrorManager from "@/composables/Error/useErrorManager";
+import useError from "@/composables/Error/useError";
 import { filterOutHTMLTags } from "@/helpers/functions/String";
+import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage";
 
 export default {
     name: "GameLobby",
     components: { SubmitButton, InputMessage },
     setup() {
         const store = useStore();
-        const displayError = useErrorManager();
+        const { displayError } = useError();
+        const { setGameIdInLocalStorage } = useGameFromLocalStorage();
         return {
-            playerName: ref(""), displayError,
+            playerName: ref(""), displayError, setGameIdInLocalStorage,
             game: computed(() => store.state.game.game),
             isCreatingGame: computed(() => store.state.game.isCreating),
         };
@@ -70,6 +72,11 @@ export default {
         async createGame() {
             try {
                 await this.$store.dispatch("game/setIsCreatingGame", true);
+                const { data: game } = await this.$timesUpAPI.createGame({ ...this.game, status: "playing" });
+                this.setGameIdInLocalStorage(game._id);
+                await this.$store.dispatch("game/setGame", game);
+                this.$toast.success(this.$t("GameLobby.gameCreated"));
+                await this.$router.push(`/game/${game._id}`);
             } catch (err) {
                 this.displayError(err);
             } finally {

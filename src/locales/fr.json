@@ -10,7 +10,11 @@
         "playerName": "Nom du joueur",
         "maxPlayerReached": "Limite de joueurs atteinte",
         "playerNameAlreadyTaken": "Ce nom de joueur est déjà pris",
-        "startGame": "Commencer la partie"
+        "startGame": "Commencer la partie",
+        "gameCreated": "Partie créée"
+    },
+    "GamePage": {
+        "fetchingGame": "Récupération de la partie"
     },
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",

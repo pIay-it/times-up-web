@@ -21,14 +21,14 @@ import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 import APIError from "@/components/shared/Error/APIError";
 import CardsManagerModal from "@/components/CardsManagerPage/CardsManagerModal/CardsManagerModal";
 import CardsManagerTable from "@/components/CardsManagerPage/CardsManagerTable/CardsManagerTable";
-import useErrorManager from "@/composables/Error/useErrorManager";
+import useError from "@/composables/Error/useError";
 import Card from "@/classes/Card";
 
 export default {
     name: "CardsManagerPage",
     components: { CardsManagerTable, CardsManagerModal, APIError, DefaultLoader },
     setup() {
-        const { displayError } = useErrorManager();
+        const { displayError } = useError();
         return { displayError };
     },
     data() {

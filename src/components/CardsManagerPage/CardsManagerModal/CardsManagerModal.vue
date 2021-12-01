@@ -106,7 +106,7 @@ import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessa
 import CardsManagerModalResetButton from "@/components/CardsManagerPage/CardsManagerModal/CardsManagerModalResetButton";
 import CardImage from "@/components/shared/Card/Image/CardImage";
 import CardImageFinder from "@/components/CardsManagerPage/CardsManagerModal/CardImageFinder";
-import useErrorManager from "@/composables/Error/useErrorManager";
+import useError from "@/composables/Error/useError";
 import useBootstrapModal from "@/composables/useBootstrapModal";
 import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import { getCardCategories } from "@/helpers/functions/Card";
@@ -138,7 +138,7 @@ export default {
     },
     setup() {
         const cardsManagerModal = ref(null);
-        const { displayError } = useErrorManager();
+        const { displayError } = useError();
         const { showModal, hideModal, lockModal, unlockModal } = useBootstrapModal(cardsManagerModal);
         const { value: categories, setTouched: setCategoriesTouched, meta: metaCategories } = useField("categories", undefined, { initialValue: [] });
         const { value: difficulty } = useField("difficulty", undefined, { initialValue: 1 });

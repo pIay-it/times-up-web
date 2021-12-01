@@ -41,7 +41,7 @@
 import Axios from "axios";
 import uniqid from "uniqid";
 import { stringify } from "qs";
-import useErrorManager from "@/composables/Error/useErrorManager";
+import useError from "@/composables/Error/useError";
 import CardImage from "@/components/shared/Card/Image/CardImage";
 import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 import { timeout } from "@/helpers/functions/Misc";
@@ -51,7 +51,7 @@ export default {
     components: { DefaultLoader, CardImage },
     emits: { "image-url-selected": URL => typeof URL === "string" },
     setup() {
-        const { displayError } = useErrorManager();
+        const { displayError } = useError();
         return { displayError };
     },
     data() {

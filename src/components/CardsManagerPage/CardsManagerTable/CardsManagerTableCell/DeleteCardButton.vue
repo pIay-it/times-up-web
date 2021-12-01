@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
 import Card from "@/classes/Card";
 import SubmitButton from "@/components/shared/Form/SubmitButton";
-import useErrorManager from "@/composables/Error/useErrorManager";
+import useError from "@/composables/Error/useError";
 
 export default {
     name: "DeleteCardButton",
@@ -24,7 +24,7 @@ export default {
     emits: { "card-deleted": card => card instanceof Card },
     setup() {
         const toast = useToast();
-        const { displayError } = useErrorManager();
+        const { displayError } = useError();
         return { displayError, toast };
     },
     data() {
