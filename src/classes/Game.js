@@ -32,6 +32,14 @@ class Game {
         return this.players.reduce((acc, { team }) => !acc.includes(team) ? [...acc, team] : acc, []);
     }
 
+    get isMaxPlayerReached() {
+        return this.players.length >= 20;
+    }
+
+    get canStart() {
+        return this.players.length >= 4;
+    }
+
     get currentToGuessCard() {
         return this.cards?.length ? this.cards[0] : undefined;
     }
@@ -103,6 +111,10 @@ class Game {
     isPlayerNameTaken(playerName) {
         playerName = filterOutHTMLTags(playerName).trim();
         return !!this.getPlayerWithName(playerName);
+    }
+
+    canAddPlayerWithName(playerName) {
+        return !this.isMaxPlayerReached && !this.isPlayerNameTaken(playerName);
     }
 
     addPlayer(player) {

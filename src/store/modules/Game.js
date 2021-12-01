@@ -6,6 +6,7 @@ export default {
     state: {
         game: new Game(),
         isFetching: false,
+        isCreating: false,
     },
     getters: {
         game(state) {
@@ -13,6 +14,9 @@ export default {
         },
         isFetchingGame(state) {
             return state.isFetching;
+        },
+        isCreatingGame(state) {
+            return state.isCreating;
         },
     },
     mutations: {
@@ -28,6 +32,9 @@ export default {
         setIsFetchingGame(state, isFetchingGame) {
             state.isFetching = isFetchingGame;
         },
+        setIsCreatingGame(state, isCreating) {
+            state.isCreating = isCreating;
+        },
     },
     actions: {
         setGame({ commit }, game) {
@@ -41,6 +48,9 @@ export default {
         },
         setIsFetchingGame({ commit }, isFetchingGame) {
             commit("setIsFetchingGame", isFetchingGame);
+        },
+        setIsCreatingGame({ commit }, isCreatingGame) {
+            commit("setIsCreatingGame", isCreatingGame);
         },
     },
 };

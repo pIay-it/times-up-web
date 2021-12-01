@@ -493,6 +493,7 @@ module.exports = {
                 ignorePatterns: [
                     "Metainfo",
                     "RouterView",
+                    "RouterLink",
                     "VueGoodTable",
                     "VSelect",
                     "VForm",

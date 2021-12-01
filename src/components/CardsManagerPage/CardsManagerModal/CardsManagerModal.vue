@@ -36,7 +36,7 @@
                                 </template>
                             </VSelect>
                             <InputMessage :is-shown="!!categoriesErrorMessage" :error-message="categoriesErrorMessage"
-                                          :is-valid="!categoriesErrorMessage"/>
+                                          :is-input-valid="!categoriesErrorMessage"/>
                         </div>
                         <div class="mb-2">
                             <label class="form-label" for="card-easy-difficulty" v-html="$t('CardsManagerModal.difficulty')"/>

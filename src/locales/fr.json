@@ -1,4 +1,17 @@
 {
+    "HomePage": {
+        "timesUp": "Time's Up !",
+        "cardTitle": "Titre de carte",
+        "play": "Jouer",
+        "about": "À propos"
+    },
+    "GameLobby": {
+        "add": "Ajouter",
+        "playerName": "Nom du joueur",
+        "maxPlayerReached": "Limite de joueurs atteinte",
+        "playerNameAlreadyTaken": "Ce nom de joueur est déjà pris",
+        "startGame": "Commencer la partie"
+    },
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",
         "cardsManager": "Gestionnaire de cartes"
