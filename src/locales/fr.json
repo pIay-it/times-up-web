@@ -16,6 +16,11 @@
     "GamePage": {
         "fetchingGame": "Récupération de la partie"
     },
+    "TurnSummaryPlayedCard": {
+        "skipped": "Passée",
+        "guessed": "Trouvée",
+        "discarded": "Défaussée"
+    },
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",
         "cardsManager": "Gestionnaire de cartes"

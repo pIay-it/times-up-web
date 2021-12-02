@@ -17,13 +17,10 @@
         </div>
         <hr/>
         <div>
-            <VueCountdown #default="{ seconds }" :time="turnTimeLimit">
+            <VueCountdown #default="{ seconds }" :time="turnTimeLimit" @end="$emit('turn-is-over')">
                 Time Remaining：{{ seconds }} seconds.
             </VueCountdown>
         </div>
-        <button type="button" class="btn btn-danger" @click.prevent="subtractSecondsToTimeLimit(2)">
-            SUBTRACT TWO SECONDS
-        </button>
     </div>
 </template>
 
@@ -52,7 +49,7 @@ export default {
             return this.game.currentToGuessCard;
         },
         isTurnOver() {
-            return !this.turnTimeLimit || !this.game.currentToGuessCard;
+            return !this.game.currentToGuessCard;
         },
     },
     watch: {
@@ -63,13 +60,6 @@ export default {
         },
     },
     methods: {
-        subtractSecondsToTimeLimit(seconds) {
-            if (seconds >= this.turnTimeLimit) {
-                this.turnTimeLimit = 0;
-            } else {
-                this.turnTimeLimit -= seconds * 1000;
-            }
-        },
         playCurrentCard(status) {
             const { currentToGuessCard } = this.game;
             const now = new Date();
