@@ -23,6 +23,9 @@ export default {
         setGame(state, game) {
             state.game = new Game(game);
         },
+        updateGameCardById(state, { _id, data }) {
+            state.game.updateCardById(_id, data);
+        },
         addGamePlayer(state, player) {
             state.game.addPlayer(new Player(player));
         },
@@ -39,6 +42,9 @@ export default {
     actions: {
         setGame({ commit }, game) {
             commit("setGame", game);
+        },
+        updateGameCardById({ commit }, payload) {
+            commit("updateGameCardById", payload);
         },
         addGamePlayer({ commit }, player) {
             commit("addGamePlayer", player);

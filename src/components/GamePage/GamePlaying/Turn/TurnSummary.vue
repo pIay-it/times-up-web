@@ -1,6 +1,6 @@
 <template>
-    <div id="turn-over">
-        TURN OVER
+    <div id="turn-summary">
+        TURN SUMMARY
     </div>
 </template>
 
@@ -9,7 +9,7 @@ import { useStore } from "vuex";
 import { computed } from "vue";
 
 export default {
-    name: "TurnOver",
+    name: "TurnSummary",
     setup() {
         const store = useStore();
         return { game: computed(() => store.state.game.game) };

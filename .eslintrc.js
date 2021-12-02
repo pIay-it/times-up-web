@@ -500,6 +500,7 @@ module.exports = {
                     "VField",
                     "VTooltip",
                     "VDropDown",
+                    "VueCountdown",
                 ],
             },
         ],

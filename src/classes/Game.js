@@ -41,11 +41,11 @@ class Game {
     }
 
     get currentToGuessCard() {
-        return this.cards?.length ? this.cards[0] : undefined;
+        return this.cards?.find(({ isToGuess }) => isToGuess);
     }
 
-    get nextToGuessCard() {
-        return this.cards?.find(({ isToGuess }) => isToGuess);
+    get roundsTurnsTimeLimit() {
+        return this.options.roundsTurnsTimeLimit;
     }
 
     get isTurnOver() {
@@ -131,8 +131,16 @@ class Game {
         }
     }
 
-    getCardWithId(id) {
+    getCardById(id) {
         return this.cards?.find(({ _id }) => id === _id);
+    }
+
+    updateCardById(cardId, dataToUpdate) {
+        const idx = this.cards.findIndex(({ _id }) => _id === cardId);
+        if (idx !== -1) {
+            const cardToUpdate = this.cards[idx];
+            this.cards.splice(idx, 1, new Card({ ...cardToUpdate, ...dataToUpdate }));
+        }
     }
 
     getRoundTeamScore(roundNumber, team) {
