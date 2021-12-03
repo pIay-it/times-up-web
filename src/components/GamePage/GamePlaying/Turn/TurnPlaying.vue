@@ -8,11 +8,11 @@
             <button type="button" class="btn btn-success me-1" @click.prevent="playCurrentCard('guessed')">
                 GUESSED
             </button>
-            <button type="button" class="btn btn-warning me-1" @click.prevent="playCurrentCard('skipped')">
-                SKIPPED
+            <button v-if="game.canSkipCard" type="button" class="btn btn-warning me-1" @click.prevent="playCurrentCard('skipped')">
+                SKIP
             </button>
             <button type="button" class="btn btn-secondary me-1" @click.prevent="playCurrentCard('discarded')">
-                DISCARDED
+                DISCARD
             </button>
         </div>
         <hr/>

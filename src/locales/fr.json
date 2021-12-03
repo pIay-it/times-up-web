@@ -16,6 +16,9 @@
     "GamePage": {
         "fetchingGame": "Récupération de la partie"
     },
+    "TurnSummary": {
+        "areYouSureYouWantToResetTurn": "Êtes-vous sûr de vouloir rejouer ce tour ?"
+    },
     "TurnSummaryPlayedCard": {
         "skipped": "Passée",
         "guessed": "Trouvée",

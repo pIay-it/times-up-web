@@ -49,7 +49,7 @@ class Game {
     }
 
     get isTurnOver() {
-        return !this.nextToGuessCard;
+        return !this.currentToGuessCard;
     }
 
     get isPreparing() {
@@ -74,6 +74,10 @@ class Game {
 
     get isStarting() {
         return this.isPlaying && this.round === 1 && this.turn === 1;
+    }
+
+    get canSkipCard() {
+        return this.round !== 1;
     }
 
     get lastPlay() {

@@ -1,6 +1,8 @@
 <template>
-    <div id="turn-starting">
-        TURN STARTING FOR {{ game.speaker.name }}
+    <div id="turn-starting" class="text-center">
+        <div>
+            TURN STARTING FOR {{ game.speaker.name }}
+        </div>
         <button type="button" class="btn btn-primary" @click.prevent="$emit('player-is-ready')">
             I AM READY
         </button>

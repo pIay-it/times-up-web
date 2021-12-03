@@ -6,13 +6,13 @@
             <label class="btn btn-outline-success" :for="`guessed-card-${card._id}`">
                 <span v-html="$t('TurnSummaryPlayedCard.guessed')"/>
             </label>
+            <input v-if="game.canSkipCard" :id="`skipped-card-${card._id}`" v-model="status" type="radio" class="btn-check" value="skipped"/>
+            <label v-if="game.canSkipCard" class="btn btn-outline-warning" :for="`skipped-card-${card._id}`">
+                <span v-html="$t('TurnSummaryPlayedCard.skipped')"/>
+            </label>
             <input :id="`discarded-card-${card._id}`" v-model="status" type="radio" class="btn-check" value="discarded"/>
             <label class="btn btn-outline-danger" :for="`discarded-card-${card._id}`">
                 <span v-html="$t('TurnSummaryPlayedCard.discarded')"/>
-            </label>
-            <input :id="`skipped-card-${card._id}`" v-model="status" type="radio" class="btn-check" value="skipped"/>
-            <label class="btn btn-outline-warning" :for="`skipped-card-${card._id}`">
-                <span v-html="$t('TurnSummaryPlayedCard.skipped')"/>
             </label>
         </div>
         <hr/>
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
 import Card from "@/classes/Card";
 
 export default {
@@ -31,6 +33,10 @@ export default {
         },
     },
     emits: { "update-played-card-status": card => card._id && card.status },
+    setup() {
+        const store = useStore();
+        return { game: computed(() => store.state.game.game) };
+    },
     computed: {
         status: {
             get() {
