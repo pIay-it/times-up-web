@@ -14,6 +14,7 @@ import { useStore } from "vuex";
 import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 import GameLobby from "@/components/GameLobbyPage/GameLobby";
 import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage";
+import useUserAuth from "@/composables/User/useUserAuth";
 import useError from "@/composables/Error/useError";
 import GameCurrentlyPlaying from "@/components/GameLobbyPage/GameCurrentlyPlaying";
 
@@ -22,11 +23,12 @@ export default {
     components: { GameCurrentlyPlaying, GameLobby, DefaultLoader },
     setup() {
         const store = useStore();
+        const { checkUserAuthentication } = useUserAuth();
         const { displayError, isAPIErrorType } = useError();
         const { gameIdLocalStorage, getAndSetGameFromLocalStorage } = useGameFromLocalStorage();
         onBeforeMount(async() => {
             try {
-                await store.dispatch("user/checkUserAuthentication");
+                await checkUserAuthentication();
                 if (gameIdLocalStorage.value) {
                     await getAndSetGameFromLocalStorage();
                 }

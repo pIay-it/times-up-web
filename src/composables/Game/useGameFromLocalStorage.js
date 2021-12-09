@@ -21,7 +21,8 @@ export default function useGameFromLocalStorage() {
             const { data: game } = await timesUpAPI.getGame(gameId);
             await store.dispatch("game/setGame", game);
         } catch (err) {
-            if (isAPIErrorType(err, "GAME_NOT_FOUND") && gameIdLocalStorage.value === gameId) {
+            if ((isAPIErrorType(err, "GAME_NOT_FOUND") || isAPIErrorType(err, "GAME_DOESNT_BELONG_TO_USER")) &&
+                gameIdLocalStorage.value === gameId) {
                 localStorage.removeItem(localStorageGameIdKey);
             }
             throw err;

@@ -1,19 +1,25 @@
-import { decode as decodeJWT } from "jsonwebtoken";
+import { inject } from "vue";
+import { useStore } from "vuex";
 
 export default function useUserAuth() {
-    function checkTokenAndAuth() {
-        const localStorageTokenKey = "times-up-jwt";
-        const JWT = localStorage.getItem(localStorageTokenKey);
-        if (JWT) {
-            const decodedJWT = decodeJWT(JWT);
-            if (decodedJWT) {
-                localStorage.setItem(localStorageTokenKey, JWT);
-                this.$timesUpAPI.setJSONWebToken(JWT);
-                this.$store.dispatch("user/setIsLogged", true);
-            }
-        }
-        this.$store.dispatch("user/setIsLogged", false);
+    const store = useStore();
+    const timesUpAPI = inject("timesUpAPI");
+    const localStorageUserTokenKey = "times-up-jwt";
+
+    function getJWT() {
+        return localStorage.getItem(localStorageUserTokenKey);
     }
 
-    return { checkTokenAndAuth };
+    async function checkUserAuthentication() {
+        let JWT = getJWT();
+        if (!JWT) {
+            const { data } = await timesUpAPI.registerAnonymously();
+            JWT = data.token;
+            localStorage.setItem(localStorageUserTokenKey, JWT);
+        }
+        timesUpAPI.setJSONWebToken(JWT);
+        await store.dispatch("user/setIsLogged", true);
+    }
+
+    return { checkUserAuthentication };
 }

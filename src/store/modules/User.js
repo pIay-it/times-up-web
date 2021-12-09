@@ -1,6 +1,3 @@
-import { useRouter } from "vue-router";
-import { useI18n } from "vue-i18n";
-import { useToast } from "vue-toastification";
 import User from "@/classes/User";
 
 export default {
@@ -28,16 +25,6 @@ export default {
         },
         setIsLogged({ commit }, isLogged) {
             commit("setIsLogged", isLogged);
-        },
-        async checkUserAuthentication({ getters }) {
-            const toast = useToast();
-            const { t } = useI18n();
-            const router = useRouter();
-            if (!getters.isLogged) {
-                toast.error(t("Error.unauthorized"));
-                await router.push("/");
-            }
-            return getters.isLogged;
         },
     },
 };
