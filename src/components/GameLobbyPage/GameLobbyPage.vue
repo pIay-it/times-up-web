@@ -26,6 +26,7 @@ export default {
         const { gameIdLocalStorage, getAndSetGameFromLocalStorage } = useGameFromLocalStorage();
         onBeforeMount(async() => {
             try {
+                await store.dispatch("user/checkUserAuthentication");
                 if (gameIdLocalStorage.value) {
                     await getAndSetGameFromLocalStorage();
                 }

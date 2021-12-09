@@ -63,9 +63,9 @@ export default {
         playCurrentCard(status) {
             const { currentToGuessCard } = this.game;
             const now = new Date();
-            const timeToGuess = status === "guessed" ? (now - this.currentCardStartedAt) / 1000 : undefined;
+            const playingTime = (now - this.currentCardStartedAt) / 1000;
             this.currentCardStartedAt = new Date();
-            this.$emit("card-played", new Card({ ...currentToGuessCard, status, timeToGuess }));
+            this.$emit("card-played", new Card({ ...currentToGuessCard, status, playingTime }));
         },
     },
 };

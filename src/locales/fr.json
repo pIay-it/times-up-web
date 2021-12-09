@@ -224,9 +224,12 @@
             "CARD_ALREADY_GUESSED": "Impossible de faire avancer le jeu: une carte devinée sur ce tour l'était déjà",
             "CANT_SKIP_CARD": "Impossible de faire avancer le jeu: il est interdit de passer une carte durant la première manche",
             "CANT_PLAY_CARD_TWICE": "Impossible de faire avancer le jeu: une carte est jouée 2 fois",
-            "MISSING_TIME_TO_GUESS": "Impossible de faire avancer le jeu: une carte devinée ne possède pas son `timeToGuess`",
-            "FORBIDDEN_TIME_TO_GUESS": "Impossible de faire avancer le jeu: une carte non devinée possède un `timeToGuess`"
+            "GAME_DOESNT_BELONG_TO_USER": "Cette partie ne vous appartient pas.",
+            "USER_HAS_ON_GOING_GAMES": "Vous avez déjà une partie en cours. Veuillez la continuer ou l'annuler.",
+            "GAME_NOT_UPDATABLE": "Cette partie n'est pas modifiable dans son état actuel.",
+            "FORBIDDEN_NEW_GAME_STATUS": "Ce nouveau statut est interdit selon vos droits."
         },
+        "unauthorized": "Vous n'êtes pas autorisé à accéder à cette page",
         "unknown": "Erreur inconnue"
     }
 }

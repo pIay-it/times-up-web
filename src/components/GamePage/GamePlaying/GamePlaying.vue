@@ -52,7 +52,7 @@ export default {
         async resetTurn() {
             this.gameState = "turn-starting";
             for (const playedCard of this.play.cards) {
-                await this.$store.dispatch("game/updateGameCardById", { _id: playedCard._id, data: { status: "to-guess", timeToGuess: undefined } });
+                await this.$store.dispatch("game/updateGameCardById", { _id: playedCard._id, data: { status: "to-guess", playingTime: undefined } });
             }
             this.resetPlay();
         },

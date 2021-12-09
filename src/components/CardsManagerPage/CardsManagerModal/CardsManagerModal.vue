@@ -107,7 +107,7 @@ import CardsManagerModalResetButton from "@/components/CardsManagerPage/CardsMan
 import CardImage from "@/components/shared/Card/Image/CardImage";
 import CardImageFinder from "@/components/CardsManagerPage/CardsManagerModal/CardImageFinder";
 import useError from "@/composables/Error/useError";
-import useBootstrapModal from "@/composables/useBootstrapModal";
+import useBootstrapModal from "@/composables/Bootstrap/useBootstrapModal";
 import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import { getCardCategories } from "@/helpers/functions/Card";
 import Card from "@/classes/Card";

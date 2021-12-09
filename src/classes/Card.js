@@ -8,7 +8,7 @@ class Card {
         this.status = getProp(card, "status");
         this.categories = getProp(card, "categories", []);
         this.difficulty = getProp(card, "difficulty");
-        this.timeToGuess = getProp(card, "timeToGuess");
+        this.playingTime = getProp(card, "playingTime");
         this.description = getProp(card, "description");
         this.imageURL = getProp(card, "imageURL");
         this.createdAt = getProp(card, "createdAt", new Date(), createdAt => new Date(createdAt));

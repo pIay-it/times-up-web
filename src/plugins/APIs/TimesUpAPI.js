@@ -15,6 +15,12 @@ export default {
 
         app.config.globalProperties.$timesUpAPI = {};
 
+        app.config.globalProperties.$timesUpAPI.setJSONWebToken = token => {
+            axios.defaults.headers.Authorization = `Bearer ${token}`;
+        };
+
+        app.config.globalProperties.$timesUpAPI.registerAnonymously = () => axios.post(`/anonymous-users`);
+
         app.config.globalProperties.$timesUpAPI.getCards = queryString => axios.get(`/cards?${stringify(queryString)}`);
 
         app.config.globalProperties.$timesUpAPI.getCard = cardId => axios.get(`/cards/${cardId}`);
