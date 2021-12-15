@@ -77,10 +77,11 @@
         "someCardsLookAlike": "Ce label ressemble à celui d'une autre carte ({label})"
     },
     "CardImageFinder": {
-        "searchForImageByTypingRequest": "Faites une recherche d'images provenant des articles Wikipédia en renseignant des mots-clefs ci-dessus.",
+        "searchForImageByTypingRequest": "Faites une recherche d'images provenant des articles Wikipédia et galeries Flickr en renseignant des mots-clefs ci-dessus.",
         "noResultFound": "Aucun résultat pour cette recherche",
         "searchForCardImage": "Rechercher une image pour la carte",
-        "loadingImages": "Chargement des images"
+        "loadingImages": "Chargement des images",
+        "foundOn": "Trouvée sur"
     },
     "CardsManagerModalResetButton": {
         "clearFormValues": "Vider les champs",

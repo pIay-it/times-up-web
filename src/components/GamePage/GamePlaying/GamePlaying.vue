@@ -35,7 +35,7 @@ export default {
     },
     data() {
         return {
-            gameState: "turn-playing",
+            gameState: "turn-starting",
             play: { cards: [] },
         };
     },

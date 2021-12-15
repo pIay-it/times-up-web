@@ -24,6 +24,7 @@
 * `GameSummaryRound` class.
 * `GameSummaryScore` class.
 * `Player` class.
+* `User` class.
 
 ### 📦 Packages
 
@@ -31,15 +32,15 @@
 * `@chenfengyuan/vue-countdown` installed with version `1.1.5`.
 * `@fortawesome/fontawesome-free` installed with version `6.0.0-beta3`.
 * `@popperjs/core` installed with version `2.10.2`.
-* `@sentry/vue` installed with version `6.15.0`.
-* `@sentry/tracing` installed with version `6.15.0`.
+* `@sentry/vue` installed with version `6.16.1`.
+* `@sentry/tracing` installed with version `6.16.1`.
 * `axios` installed with version `0.24.0`.
 * `bootstrap` installed with version `5.1.3`.
 * `fuse.js` installed with version `6.4.6`.
 * `image-search-google` installed with version `1.3.0`.
 * `qs` installed with version `6.10.1`.
 * `sass-loader` installed with version `12.3.0`.
-* `sass` installed with version `1.43.4`.
+* `sass` installed with version `1.45.0`.
 * `sweetalert2` installed with version `11.2.0`.
 * `uniqid` installed with version `5.4.0`.
 * `v-tooltip` installed with version `4.0.0-beta.2`.
