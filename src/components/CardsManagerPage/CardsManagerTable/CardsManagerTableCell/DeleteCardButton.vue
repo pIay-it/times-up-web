@@ -8,9 +8,9 @@
 <script>
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
-import Card from "@/classes/Card";
 import SubmitButton from "@/components/shared/Form/SubmitButton";
 import useError from "@/composables/Error/useError";
+import Card from "@/classes/Card";
 
 export default {
     name: "DeleteCardButton",
@@ -48,7 +48,7 @@ export default {
                 if (isConfirmed) {
                     await this.$timesUpAPI.deleteCard(this.card._id);
                     this.toast.success(this.$t("DeleteCardButton.cardDeleted"));
-                    this.$emit("card-deleted", this.card);
+                    this.$emit("card-deleted", new Card(this.card));
                 }
             } catch (e) {
                 this.displayError(e);

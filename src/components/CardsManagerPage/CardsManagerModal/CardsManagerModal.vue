@@ -5,7 +5,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" v-html="modalTitleText"/>
                 </div>
-                <VForm #default="{ isSubmitting }" :validation-schema="formSchema" @submit="submit">
+                <VForm #default="{ isSubmitting }" :validation-schema="formSchema" @submit="submit" @invalid-submit="submitError">
                     <div class="modal-body">
                         <TextInput ref="labelTextInput" :label="$t('CardsManagerModal.label')" :is-required="true" name="label"
                                    :is-disabled="isSubmitting" :success-message="labelInputSuccessMessage"
@@ -111,6 +111,7 @@ import useBootstrapModal from "@/composables/Bootstrap/useBootstrapModal";
 import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import { getCardCategories } from "@/helpers/functions/Card";
 import Card from "@/classes/Card";
+import Swal from "sweetalert2";
 
 export default {
     name: "CardsManagerModal",
@@ -264,8 +265,25 @@ export default {
             this.$emit("card-updated", new Card(updatedCard));
             this.$toast.success(this.$t("CardsManagerModal.cardUpdated"));
         },
+        confirmSubmit() {
+            const titleText = `CardsManagerModal.${this.mode}EvenIfCardLooksAlike`;
+            return Swal.fire({
+                title: this.$t(titleText),
+                text: this.$t("SweetAlert.youCanChangeThatAfterwards"),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: this.$t("SweetAlert.confirm"),
+                cancelButtonText: this.$t("SweetAlert.cancel"),
+            });
+        },
         async submit(formValues) {
             formValues = this.formSchema.cast(formValues);
+            if (this.doesCardLabelLookAlikeAnotherOne) {
+                const { isConfirmed } = await this.confirmSubmit();
+                if (!isConfirmed) {
+                    return;
+                }
+            }
             try {
                 this.lockModal();
                 if (this.mode === "create") {
@@ -279,6 +297,9 @@ export default {
             } finally {
                 this.unlockModal();
             }
+        },
+        submitError() {
+            this.setCategoriesTouched(true);
         },
         resetForm() {
             if (this.mode === "create") {

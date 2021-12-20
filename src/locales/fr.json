@@ -74,7 +74,9 @@
         "reset": "Réinitialiser",
         "oneCategoryRequired": "Au moins une catégorie est requise",
         "thisCardIsUnique": "Ce label ne semble pas être déjà pris par une autre carte",
-        "someCardsLookAlike": "Ce label ressemble à celui d'une autre carte ({label})"
+        "someCardsLookAlike": "Ce label ressemble à celui d'une autre carte ({label})",
+        "createEvenIfCardLooksAlike": "Êtes-vous sûr de vouloir créer cette carte ? Son label ressemble à celui d'une autre.",
+        "updateEvenIfCardLooksAlike": "Êtes-vous sûr de vouloir modifier cette carte ? Son label ressemble à celui d'une autre."
     },
     "CardImageFinder": {
         "searchForImageByTypingRequest": "Faites une recherche d'images provenant des articles Wikipédia et galeries Flickr en renseignant des mots-clefs ci-dessus.",
@@ -204,7 +206,8 @@
     "SweetAlert": {
         "actionIsIrreversible": "Cette action est irréversible",
         "confirm": "Confirmer",
-        "cancel": "Annuler"
+        "cancel": "Annuler",
+        "youCanChangeThatAfterwards": "Vous pourrez modifier cela par la suite"
     },
     "VueGoodTable": {
         "prev": "Précédent",
