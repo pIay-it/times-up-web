@@ -5,8 +5,6 @@
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "test:unit": "vue-cli-service test:unit",
-        "test:e2e": "vue-cli-service test:e2e",
         "lint": "vue-cli-service lint",
         "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\"",
         "start": "npm run serve"
@@ -58,7 +56,6 @@
         "@vue/eslint-config-airbnb": "^6.0.0",
         "@vue/test-utils": "^2.0.0-rc.17",
         "chai": "^4.2.0",
-        "cypress": "^9.1.1",
         "eslint": "^8.5.0",
         "eslint-plugin-import": "^2.25.3",
         "eslint-plugin-vue": "^8.2.0",
