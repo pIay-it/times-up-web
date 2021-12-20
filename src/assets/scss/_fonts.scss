@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "Moms Dinner";
+    src: url("../fonts/MomsDiner.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "NuevoLithoPro";
+    src: url("../fonts/NuevoLithoPro Regular.otf");
+}
+
+.moms-dinner-font {
+    font-family: "Moms Dinner", serif;
+}
+
+.nuevo-litho-font {
+    font-family: "NuevoLithoPro", serif;
+}

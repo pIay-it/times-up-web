@@ -5,7 +5,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" v-html="modalTitleText"/>
                 </div>
-                <VForm #default="{ isSubmitting }" :validation-schema="formSchema" @submit="submit">
+                <VForm #default="{ isSubmitting }" :validation-schema="formSchema" @submit="submit" @invalid-submit="submitError">
                     <div class="modal-body">
                         <TextInput ref="labelTextInput" :label="$t('CardsManagerModal.label')" :is-required="true" name="label"
                                    :is-disabled="isSubmitting" :success-message="labelInputSuccessMessage"
@@ -36,7 +36,7 @@
                                 </template>
                             </VSelect>
                             <InputMessage :is-shown="!!categoriesErrorMessage" :error-message="categoriesErrorMessage"
-                                          :is-valid="!categoriesErrorMessage"/>
+                                          :is-input-valid="!categoriesErrorMessage"/>
                         </div>
                         <div class="mb-2">
                             <label class="form-label" for="card-easy-difficulty" v-html="$t('CardsManagerModal.difficulty')"/>
@@ -106,11 +106,12 @@ import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessa
 import CardsManagerModalResetButton from "@/components/CardsManagerPage/CardsManagerModal/CardsManagerModalResetButton";
 import CardImage from "@/components/shared/Card/Image/CardImage";
 import CardImageFinder from "@/components/CardsManagerPage/CardsManagerModal/CardImageFinder";
-import useErrorManager from "@/composables/Error/useErrorManager";
-import useBootstrapModal from "@/composables/useBootstrapModal";
+import useError from "@/composables/Error/useError";
+import useBootstrapModal from "@/composables/Bootstrap/useBootstrapModal";
 import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import { getCardCategories } from "@/helpers/functions/Card";
 import Card from "@/classes/Card";
+import Swal from "sweetalert2";
 
 export default {
     name: "CardsManagerModal",
@@ -138,7 +139,7 @@ export default {
     },
     setup() {
         const cardsManagerModal = ref(null);
-        const { displayError } = useErrorManager();
+        const { displayError } = useError();
         const { showModal, hideModal, lockModal, unlockModal } = useBootstrapModal(cardsManagerModal);
         const { value: categories, setTouched: setCategoriesTouched, meta: metaCategories } = useField("categories", undefined, { initialValue: [] });
         const { value: difficulty } = useField("difficulty", undefined, { initialValue: 1 });
@@ -264,8 +265,25 @@ export default {
             this.$emit("card-updated", new Card(updatedCard));
             this.$toast.success(this.$t("CardsManagerModal.cardUpdated"));
         },
+        confirmSubmit() {
+            const titleText = `CardsManagerModal.${this.mode}EvenIfCardLooksAlike`;
+            return Swal.fire({
+                title: this.$t(titleText),
+                text: this.$t("SweetAlert.youCanChangeThatAfterwards"),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: this.$t("SweetAlert.confirm"),
+                cancelButtonText: this.$t("SweetAlert.cancel"),
+            });
+        },
         async submit(formValues) {
             formValues = this.formSchema.cast(formValues);
+            if (this.doesCardLabelLookAlikeAnotherOne) {
+                const { isConfirmed } = await this.confirmSubmit();
+                if (!isConfirmed) {
+                    return;
+                }
+            }
             try {
                 this.lockModal();
                 if (this.mode === "create") {
@@ -279,6 +297,9 @@ export default {
             } finally {
                 this.unlockModal();
             }
+        },
+        submitError() {
+            this.setCategoriesTouched(true);
         },
         resetForm() {
             if (this.mode === "create") {

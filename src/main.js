@@ -6,4 +6,6 @@ import "./assets/scss/styles.scss";
 
 const timesUpApp = createApp(App);
 usePlugins(timesUpApp);
-timesUpApp.use(store).mount("#app");
+store.$app = timesUpApp;
+timesUpApp.use(store);
+timesUpApp.mount("#app");

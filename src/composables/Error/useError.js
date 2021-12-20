@@ -1,7 +1,7 @@
 import { useToast } from "vue-toastification";
 import { useI18n } from "vue-i18n";
 
-export default function useErrorManager() {
+export default function useError() {
     const toast = useToast();
     const { t } = useI18n();
 
