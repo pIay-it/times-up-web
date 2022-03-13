@@ -1,8 +1,8 @@
 <template>
     <div id="input-message" class="input-message d-flex align-items-center">
         <transition name="translate-down-fade" mode="out-in">
-            <InputErrorMessage v-if="isShown && errorMessage" key="error-message" :text="errorMessage"/>
-            <InputSuccessMessage v-else-if="isShown && isValid && successMessage" key="success-message" :text="successMessage"
+            <InputErrorMessage v-if="isShown && !isInputValid && errorMessage" key="error-message" :text="errorMessage"/>
+            <InputSuccessMessage v-else-if="isShown && isInputValid && successMessage" key="success-message" :text="successMessage"
                                  :type="successMessageType"/>
         </transition>
     </div>
@@ -20,7 +20,7 @@ export default {
             type: Boolean,
             required: true,
         },
-        isValid: {
+        isInputValid: {
             type: Boolean,
             required: true,
         },

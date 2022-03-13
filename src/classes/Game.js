@@ -32,16 +32,24 @@ class Game {
         return this.players.reduce((acc, { team }) => !acc.includes(team) ? [...acc, team] : acc, []);
     }
 
-    get currentToGuessCard() {
-        return this.cards?.length ? this.cards[0] : undefined;
+    get isMaxPlayerReached() {
+        return this.players.length >= 20;
     }
 
-    get nextToGuessCard() {
+    get canStart() {
+        return this.players.length >= 4;
+    }
+
+    get currentToGuessCard() {
         return this.cards?.find(({ isToGuess }) => isToGuess);
     }
 
+    get roundsTurnsTimeLimit() {
+        return this.options.roundsTurnsTimeLimit;
+    }
+
     get isTurnOver() {
-        return !this.nextToGuessCard;
+        return !this.currentToGuessCard;
     }
 
     get isPreparing() {
@@ -66,6 +74,10 @@ class Game {
 
     get isStarting() {
         return this.isPlaying && this.round === 1 && this.turn === 1;
+    }
+
+    get canSkipCard() {
+        return this.round !== 1;
     }
 
     get lastPlay() {
@@ -105,6 +117,10 @@ class Game {
         return !!this.getPlayerWithName(playerName);
     }
 
+    canAddPlayerWithName(playerName) {
+        return !this.isMaxPlayerReached && !this.isPlayerNameTaken(playerName);
+    }
+
     addPlayer(player) {
         if (player.name) {
             player.name = filterOutHTMLTags(player.name).trim();
@@ -119,8 +135,16 @@ class Game {
         }
     }
 
-    getCardWithId(id) {
+    getCardById(id) {
         return this.cards?.find(({ _id }) => id === _id);
+    }
+
+    updateCardById(cardId, dataToUpdate) {
+        const idx = this.cards.findIndex(({ _id }) => _id === cardId);
+        if (idx !== -1) {
+            const cardToUpdate = this.cards[idx];
+            this.cards.splice(idx, 1, new Card({ ...cardToUpdate, ...dataToUpdate }));
+        }
     }
 
     getRoundTeamScore(roundNumber, team) {

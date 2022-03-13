@@ -1,4 +1,32 @@
 {
+    "HomePage": {
+        "timesUp": "Time's Up !",
+        "cardTitle": "Titre de carte",
+        "playIT": "Play-IT",
+        "about": "À quoi ça sert ?"
+    },
+    "AboutPage": {
+        "about": "À quoi ça sert ?"
+    },
+    "GameLobby": {
+        "add": "Ajouter",
+        "playerName": "Nom du joueur",
+        "maxPlayerReached": "Limite de joueurs atteinte",
+        "playerNameAlreadyTaken": "Ce nom de joueur est déjà pris",
+        "startGame": "Commencer la partie",
+        "gameCreated": "Partie créée"
+    },
+    "GamePage": {
+        "fetchingGame": "Récupération de la partie"
+    },
+    "TurnSummary": {
+        "areYouSureYouWantToResetTurn": "Êtes-vous sûr de vouloir rejouer ce tour ?"
+    },
+    "TurnSummaryPlayedCard": {
+        "skipped": "Passée",
+        "guessed": "Trouvée",
+        "discarded": "Défaussée"
+    },
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",
         "cardsManager": "Gestionnaire de cartes"
@@ -49,13 +77,16 @@
         "reset": "Réinitialiser",
         "oneCategoryRequired": "Au moins une catégorie est requise",
         "thisCardIsUnique": "Ce label ne semble pas être déjà pris par une autre carte",
-        "someCardsLookAlike": "Ce label ressemble à celui d'une autre carte ({label})"
+        "someCardsLookAlike": "Ce label ressemble à celui d'une autre carte ({label})",
+        "createEvenIfCardLooksAlike": "Êtes-vous sûr de vouloir créer cette carte ? Son label ressemble à celui d'une autre.",
+        "updateEvenIfCardLooksAlike": "Êtes-vous sûr de vouloir modifier cette carte ? Son label ressemble à celui d'une autre."
     },
     "CardImageFinder": {
-        "searchForImageByTypingRequest": "Faites une recherche d'images provenant des articles Wikipédia en renseignant des mots-clefs ci-dessus.",
+        "searchForImageByTypingRequest": "Faites une recherche d'images provenant des articles Wikipédia et galeries Flickr en renseignant des mots-clefs ci-dessus.",
         "noResultFound": "Aucun résultat pour cette recherche",
         "searchForCardImage": "Rechercher une image pour la carte",
-        "loadingImages": "Chargement des images"
+        "loadingImages": "Chargement des images",
+        "foundOn": "Trouvée sur"
     },
     "CardsManagerModalResetButton": {
         "clearFormValues": "Vider les champs",
@@ -178,7 +209,8 @@
     "SweetAlert": {
         "actionIsIrreversible": "Cette action est irréversible",
         "confirm": "Confirmer",
-        "cancel": "Annuler"
+        "cancel": "Annuler",
+        "youCanChangeThatAfterwards": "Vous pourrez modifier cela par la suite"
     },
     "VueGoodTable": {
         "prev": "Précédent",
@@ -199,9 +231,12 @@
             "CARD_ALREADY_GUESSED": "Impossible de faire avancer le jeu: une carte devinée sur ce tour l'était déjà",
             "CANT_SKIP_CARD": "Impossible de faire avancer le jeu: il est interdit de passer une carte durant la première manche",
             "CANT_PLAY_CARD_TWICE": "Impossible de faire avancer le jeu: une carte est jouée 2 fois",
-            "MISSING_TIME_TO_GUESS": "Impossible de faire avancer le jeu: une carte devinée ne possède pas son `timeToGuess`",
-            "FORBIDDEN_TIME_TO_GUESS": "Impossible de faire avancer le jeu: une carte non devinée possède un `timeToGuess`"
+            "GAME_DOESNT_BELONG_TO_USER": "Cette partie ne vous appartient pas.",
+            "USER_HAS_ON_GOING_GAMES": "Vous avez déjà une partie en cours. Veuillez la continuer ou l'annuler.",
+            "GAME_NOT_UPDATABLE": "Cette partie n'est pas modifiable dans son état actuel.",
+            "FORBIDDEN_NEW_GAME_STATUS": "Ce nouveau statut est interdit selon vos droits."
         },
+        "unauthorized": "Vous n'êtes pas autorisé à accéder à cette page",
         "unknown": "Erreur inconnue"
     }
 }
