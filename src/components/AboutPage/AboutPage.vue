@@ -1,6 +1,6 @@
 <template>
     <div id="about-page">
-        <i class="fa fa-question-circle"/>
+        <h1 class="times-up-title" v-html="$t('AboutPage.about')"/>
     </div>
 </template>
 

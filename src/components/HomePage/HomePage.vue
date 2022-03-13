@@ -1,21 +1,15 @@
 <template>
     <div id="home-page" class="d-flex flex-column align-items-center justify-content-center">
-        <div>
-            <h1 class="text-center moms-dinner-font" v-html="$t('HomePage.timesUp')"/>
-            <h1 class="text-center nuevo-litho-font" v-html="$t('HomePage.cardTitle')"/>
+        <div class="d-flex justify-content-center h-50">
+            <h1 id="home-page-title" class="text-center moms-dinner-font text-uppercase" v-html="$t('HomePage.timesUp')"/>
         </div>
-        <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-            <RouterLink class="btn btn-primary mb-2 btn-lg" to="/game-lobby">
-                <i class="fa fa-gamepad me-2"/>
-                <span v-html="$t('HomePage.play')"/>
+        <div class="d-flex h-50 flex-column justify-content-around align-items-center">
+            <RouterLink class="btn-times-up" to="/game-lobby">
+                <span v-html="$t('HomePage.playIT')"/>
             </RouterLink>
-            <RouterLink class="btn btn-secondary btn-lg" to="/about">
-                <i class="fa fa-question me-2"/>
+            <RouterLink id="about-link" class="mt-2" to="/about">
                 <span v-html="$t('HomePage.about')"/>
             </RouterLink>
-        </div>
-        <div>
-            HOME FOOTER
         </div>
     </div>
 </template>
@@ -23,3 +17,15 @@
 <script>
 export default { name: "HomePage" };
 </script>
+
+<style lang="scss">
+    #home-page-title {
+        font-size: 5rem;
+    }
+
+    #about-link {
+        color: white;
+        font-weight: bolder;
+        font-size: 1.5rem;
+    }
+</style>
