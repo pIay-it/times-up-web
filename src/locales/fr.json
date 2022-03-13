@@ -2,8 +2,11 @@
     "HomePage": {
         "timesUp": "Time's Up !",
         "cardTitle": "Titre de carte",
-        "play": "Jouer",
-        "about": "À propos"
+        "playIT": "Play-IT",
+        "about": "À quoi ça sert ?"
+    },
+    "AboutPage": {
+        "about": "À quoi ça sert ?"
     },
     "GameLobby": {
         "add": "Ajouter",
