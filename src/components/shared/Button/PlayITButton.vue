@@ -1,6 +1,6 @@
 <template>
     <a href="#" type="button" class="d-flex align-items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="94.5" height="106.435" viewBox="0 0 90 98">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="94.5" height="85" viewBox="0 0 90 98">
             <defs>
                 <filter id="solid_play" x="0" y="0" width="94.5" height="106.435" filterUnits="userSpaceOnUse">
                     <feOffset dy="10" input="SourceAlpha"/>

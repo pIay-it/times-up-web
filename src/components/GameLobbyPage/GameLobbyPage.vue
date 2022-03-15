@@ -17,7 +17,6 @@ import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage"
 import useUserAuth from "@/composables/User/useUserAuth";
 import useError from "@/composables/Error/useError";
 import GameCurrentlyPlaying from "@/components/GameLobbyPage/GameCurrentlyPlaying";
-import Game from "@/classes/Game";
 
 export default {
     name: "GameLobbyPage",
@@ -33,7 +32,7 @@ export default {
                 if (gameIdLocalStorage.value) {
                     await getAndSetGameFromLocalStorage();
                 } else {
-                    await store.dispatch("game/setGame", new Game());
+                    await store.dispatch("game/resetGame");
                 }
             } catch (err) {
                 displayError(err);

@@ -1,5 +1,5 @@
 <template>
-    <RouterLink id="back-button" v-tooltip="$t('BackButton.back')" :to="to" type="button">
+    <RouterLink id="back-button" ref="backButton" v-tooltip="$t('BackButton.back')" :to="to" type="button">
         <i class="fa-solid fa-chevron-left fa-3x"/>
     </RouterLink>
 </template>
@@ -11,6 +11,11 @@ export default {
         to: {
             type: String,
             required: true,
+        },
+    },
+    methods: {
+        blur() {
+            this.$refs.backButton.$el.blur();
         },
     },
 };

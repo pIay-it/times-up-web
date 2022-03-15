@@ -27,6 +27,9 @@ export default {
         setGame(state, game) {
             state.game = new Game(game);
         },
+        resetGame(state) {
+            state.game = new Game();
+        },
         updateGameCardById(state, { _id, data }) {
             state.game.updateCardById(_id, data);
         },
@@ -35,6 +38,9 @@ export default {
         },
         removeGamePlayerByName(state, playerName) {
             state.game.removePlayerByName(playerName);
+        },
+        removeAllGamePlayers(state) {
+            state.game.removeAllPlayers();
         },
         setIsFetchingGame(state, isFetchingGame) {
             state.isFetching = isFetchingGame;
@@ -50,6 +56,9 @@ export default {
         setGame({ commit }, game) {
             commit("setGame", game);
         },
+        resetGame({ commit }) {
+            commit("resetGame");
+        },
         updateGameCardById({ commit }, payload) {
             commit("updateGameCardById", payload);
         },
@@ -58,6 +67,9 @@ export default {
         },
         removeGamePlayerByName({ commit }, name) {
             commit("removeGamePlayerByName", name);
+        },
+        removeAllGamePlayers({ commit }) {
+            commit("removeAllGamePlayers", name);
         },
         setIsFetchingGame({ commit }, isFetchingGame) {
             commit("setIsFetchingGame", isFetchingGame);

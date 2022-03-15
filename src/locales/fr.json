@@ -27,7 +27,13 @@
         "playerNameAlreadyTaken": "Ce nom de joueur est déjà pris",
         "startGame": "Commencer la partie",
         "gameCreated": "Partie créée",
-        "resetGameComposition": "Recommencer la composition du début"
+        "areYouSureYouWantToLeaveGameLobby": "Êtes-vous sûr de quitter la composition de la partie ?",
+        "gameCompositionWillBeLost": "La composition actuelle sera perdue."
+    },
+    "GameLobbyResetPlayersButton": {
+        "resetGameComposition": "Recommencer la composition du début",
+        "areYouSureYouWantToResetGameComposition": "Êtes-vous sûr de réinitialiser la composition de la partie ?",
+        "gameCompositionWillBeLost": "La composition actuelle sera perdue."
     },
     "GamePage": {
         "fetchingGame": "Récupération de la partie"

@@ -1,0 +1,54 @@
+<template>
+    <transition mode="out-in" name="fade">
+        <a v-if="isShown" id="game-lobby-reset-players-button" v-tooltip="$t('GameLobbyResetPlayersButton.resetGameComposition')"
+           href="#" type="button" @click.prevent="removeAllGamePlayers">
+            <i class="fa-solid fa-arrow-rotate-right fa-flip-horizontal fa-3x"/>
+        </a>
+    </transition>
+</template>
+
+<script>
+import { computed } from "vue";
+import { useStore } from "vuex";
+import Swal from "sweetalert2";
+
+export default {
+    name: "GameLobbyResetPlayersButton",
+    setup() {
+        const store = useStore();
+        return { game: computed(() => store.state.game.game) };
+    },
+    computed: {
+        isShown() {
+            return this.game.hasPlayers;
+        },
+    },
+    methods: {
+        confirmResetGameComposition() {
+            return Swal.fire({
+                title: this.$t("GameLobbyResetPlayersButton.areYouSureYouWantToResetGameComposition"),
+                text: this.$t("GameLobbyResetPlayersButton.gameCompositionWillBeLost"),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: this.$t("SweetAlert.confirm"),
+                cancelButtonText: this.$t("SweetAlert.cancel"),
+                heightAuto: false,
+                returnFocus: false,
+            });
+        },
+        async removeAllGamePlayers() {
+            const { isConfirmed } = await this.confirmResetGameComposition();
+            if (isConfirmed) {
+                await this.$store.dispatch("game/removeAllGamePlayers");
+            }
+        },
+    },
+};
+</script>
+
+<style lang="scss" scoped>
+    #game-lobby-reset-players-button {
+        text-decoration: none;
+        color: white;
+    }
+</style>
