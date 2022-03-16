@@ -30,6 +30,10 @@
         "areYouSureYouWantToLeaveGameLobby": "Êtes-vous sûr de quitter la composition de la partie ?",
         "gameCompositionWillBeLost": "La composition actuelle sera perdue."
     },
+    "GameLobbyPlayerDeleteButton": {
+        "deletePlayer": "Supprimer le joueur",
+        "areYouSureYouWantToDeletePlayer": "Êtes-vous sûr de vouloir supprimer {playerName} de la partie ?"
+    },
     "GameLobbyResetPlayersButton": {
         "resetGameComposition": "Recommencer la composition du début",
         "areYouSureYouWantToResetGameComposition": "Êtes-vous sûr de réinitialiser la composition de la partie ?",

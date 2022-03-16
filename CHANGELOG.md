@@ -30,7 +30,7 @@
 
 * Set of required packages installed for Vue, lint and tests.
 * `@chenfengyuan/vue-countdown` installed with version `2.0.0`.
-* `@fortawesome/fontawesome-free` installed with version `6.0.0`.
+* `@fortawesome/fontawesome-free` installed with version `6.1.0`.
 * `@popperjs/core` installed with version `2.11.4`.
 * `@sentry/tracing` installed with version `6.18.2`.
 * `@sentry/vue` installed with version `6.18.2`.

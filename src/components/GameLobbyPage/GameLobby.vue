@@ -46,7 +46,7 @@ import useError from "@/composables/Error/useError";
 import { filterOutHTMLTags } from "@/helpers/functions/String";
 import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage";
 import GameLobbyResetPlayersButton from "@/components/GameLobbyPage/GameLobby/GameLobbyResetPlayersButton";
-import GameLobbyPlayer from "@/components/GameLobbyPage/GameLobby/GameLobbyPlayer";
+import GameLobbyPlayer from "@/components/GameLobbyPage/GameLobby/GameLobbyPlayer/GameLobbyPlayer";
 
 export default {
     name: "GameLobby",

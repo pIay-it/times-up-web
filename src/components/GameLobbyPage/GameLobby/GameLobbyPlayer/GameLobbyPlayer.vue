@@ -5,16 +5,18 @@
                 <i class="fa-solid fa-user-check me-2"/>
                 <div class="text-truncate" v-html="player.name"/>
             </div>
-            <i class="fa-solid fa-square-xmark"/>
+            <GameLobbyPlayerDeleteButton :player="player"/>
         </div>
     </div>
 </template>
 
 <script>
 import Player from "@/classes/Player";
+import GameLobbyPlayerDeleteButton from "@/components/GameLobbyPage/GameLobby/GameLobbyPlayer/GameLobbyPlayerDeleteButton";
 
 export default {
     name: "GameLobbyPlayer",
+    components: { GameLobbyPlayerDeleteButton },
     props: {
         player: {
             type: Player,
@@ -39,10 +41,6 @@ export default {
 
             &.fa-user-check {
                 color: #00b500;
-            }
-
-            &.fa-square-xmark {
-                color: #f8f8f8;
             }
         }
 
