@@ -69,6 +69,7 @@ export default {
                 showCancelButton: true,
                 confirmButtonText: this.$t("SweetAlert.confirm"),
                 cancelButtonText: this.$t("SweetAlert.cancel"),
+                heightAuto: false,
             });
         },
         async resetTurn() {

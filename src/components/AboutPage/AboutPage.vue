@@ -1,9 +1,39 @@
 <template>
     <div id="about-page">
-        <h1 class="times-up-title" v-html="$t('AboutPage.about')"/>
+        <h1 class="times-up-title mb-5" v-html="$t('AboutPage.about')"/>
+        <h2 class="about-section-title" v-html="$t('AboutPage.gameMasterRole.title')"/>
+        <p class="about-section-content" v-html="$t('AboutPage.gameMasterRole.content')"/>
+        <h2 class="about-section-title" v-html="$t('AboutPage.timesUpRules.title')"/>
+        <h5 class="about-section-subtitle" v-html="$t('AboutPage.timesUpRules.teamComposition.title')"/>
+        <p class="about-section-content" v-html="$t('AboutPage.timesUpRules.teamComposition.content')"/>
+        <div class="text-center pb-4">
+            <BackButton to="/"/>
+        </div>
     </div>
 </template>
 
 <script>
-export default { name: "AboutPage" };
+import BackButton from "@/components/shared/Button/BackButton";
+
+export default {
+    name: "AboutPage",
+    components: { BackButton },
+};
 </script>
+
+<style lang="scss">
+    .about-section-title {
+        font-size: 1.75rem;
+        margin-bottom: 2rem;
+    }
+
+    .about-section-subtitle {
+        font-size: 1.30rem;
+        margin-bottom: 1rem;
+    }
+
+    .about-section-content {
+        margin-bottom: 2rem;
+        font-size: 1rem;
+    }
+</style>

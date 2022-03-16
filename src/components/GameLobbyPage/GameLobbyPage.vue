@@ -31,6 +31,8 @@ export default {
                 await checkUserAuthentication();
                 if (gameIdLocalStorage.value) {
                     await getAndSetGameFromLocalStorage();
+                } else {
+                    await store.dispatch("game/resetGame");
                 }
             } catch (err) {
                 displayError(err);

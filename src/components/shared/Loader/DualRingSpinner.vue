@@ -14,7 +14,7 @@ export default {
         },
         color: {
             type: String,
-            default: "#0e792a",
+            default: "white",
         },
         duration: {
             type: String,

@@ -25,6 +25,10 @@ class Game {
         this.updatedAt = getProp(game, "updatedAt", new Date(), updatedAt => new Date(updatedAt));
     }
 
+    get hasPlayers() {
+        return !!this.players?.length;
+    }
+
     get playerTeams() {
         if (!this.players || !this.players.length) {
             return undefined;
@@ -133,6 +137,10 @@ class Game {
         if (idx !== -1) {
             this.players.splice(idx, 1);
         }
+    }
+
+    removeAllPlayers() {
+        this.players = [];
     }
 
     getCardById(id) {

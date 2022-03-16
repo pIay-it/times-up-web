@@ -6,10 +6,12 @@
 
 @import "fonts";
 @import "all";
+@import "anchors";
 @import "animations";
 @import "buttons";
 @import "colors";
 @import "cursors";
+@import "modals";
 @import "shadows";
 @import "titles";
 @import "transitions";
@@ -17,3 +19,4 @@
 @import "vue-lazyload";
 @import "vue-select";
 @import "vue-toastification";
+@import "sweetalert";
