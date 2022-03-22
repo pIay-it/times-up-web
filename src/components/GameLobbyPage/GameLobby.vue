@@ -37,7 +37,6 @@
 <script>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
-import Swal from "sweetalert2";
 import { useI18n } from "vue-i18n";
 import { onBeforeRouteLeave } from "vue-router";
 import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessage";
@@ -48,7 +47,8 @@ import GameLobbyPlayer from "@/components/GameLobbyPage/GameLobby/GameLobbyPlaye
 import useError from "@/composables/Error/useError";
 import { filterOutHTMLTags } from "@/helpers/functions/String";
 import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage";
-import useTransition from "@/composables/Transitions/useTransition";
+import useTransition from "@/composables/Transition/useTransition";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 
 export default {
     name: "GameLobby",
@@ -57,23 +57,16 @@ export default {
         const store = useStore();
         const { displayError } = useError();
         const { t } = useI18n();
+        const { DefaultConfirmSwal } = useSweetAlert();
         const { setGameIdInLocalStorage } = useGameFromLocalStorage();
         const { beforeLeaveList } = useTransition();
-        function confirmLeaveGameLobby() {
-            return Swal.fire({
-                title: t("GameLobby.areYouSureYouWantToLeaveGameLobby"),
-                text: t("GameLobby.gameCompositionWillBeLost"),
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: t("SweetAlert.confirm"),
-                cancelButtonText: t("SweetAlert.cancel"),
-                heightAuto: false,
-                returnFocus: false,
-            });
-        }
         onBeforeRouteLeave(async() => {
             if (store.state.game.game.hasPlayers) {
-                const { isConfirmed } = await confirmLeaveGameLobby();
+                const { isConfirmed } = await DefaultConfirmSwal.fire({
+                    title: t("GameLobby.areYouSureYouWantToLeaveGameLobby"),
+                    text: t("GameLobby.gameCompositionWillBeLost"),
+                    icon: "warning",
+                });
                 return isConfirmed;
             }
             return true;

@@ -10,13 +10,14 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
-import Swal from "sweetalert2";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 
 export default {
     name: "GameLobbyResetPlayersButton",
     setup() {
         const store = useStore();
-        return { game: computed(() => store.state.game.game) };
+        const { DefaultConfirmSwal } = useSweetAlert();
+        return { game: computed(() => store.state.game.game), DefaultConfirmSwal };
     },
     computed: {
         isShown() {
@@ -25,15 +26,10 @@ export default {
     },
     methods: {
         confirmResetGameComposition() {
-            return Swal.fire({
+            return this.DefaultConfirmSwal.fire({
                 title: this.$t("GameLobbyResetPlayersButton.areYouSureYouWantToResetGameComposition"),
                 text: this.$t("GameLobbyResetPlayersButton.gameCompositionWillBeLost"),
                 icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: this.$t("SweetAlert.confirm"),
-                cancelButtonText: this.$t("SweetAlert.cancel"),
-                heightAuto: false,
-                returnFocus: false,
             });
         },
         async removeAllGamePlayers() {
