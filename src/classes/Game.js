@@ -11,6 +11,10 @@ class Game {
     constructor(game = null) {
         this._id = getProp(game, "_id");
         this.players = getProp(game, "players", [], players => players.map(player => new Player(player)));
+        this.teams = getProp(game, "teams", [], teams => teams.map(team => ({
+            name: getProp(team, "name"),
+            color: getProp(team, "color"),
+        })));
         this.cards = getProp(game, "cards", [], cards => cards.map(card => new Card(card)));
         this.status = getProp(game, "status");
         this.round = getProp(game, "round");
@@ -27,13 +31,6 @@ class Game {
 
     get hasPlayers() {
         return !!this.players?.length;
-    }
-
-    get playerTeams() {
-        if (!this.players || !this.players.length) {
-            return undefined;
-        }
-        return this.players.reduce((acc, { team }) => !acc.includes(team) ? [...acc, team] : acc, []);
     }
 
     get isMaxPlayerReached() {

@@ -1,5 +1,5 @@
 <template>
-    <transition mode="out-in" name="fade">
+    <transition mode="out-in" name="translate-from-top">
         <a v-if="isShown" id="game-lobby-reset-players-button" v-tooltip="$t('GameLobbyResetPlayersButton.resetGameComposition')"
            href="#" type="button" @click.prevent="removeAllGamePlayers">
             <i class="fa-solid fa-arrow-rotate-right fa-flip-horizontal fa-3x"/>

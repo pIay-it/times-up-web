@@ -43,6 +43,8 @@ export default {
     .game-lobby-player-delete-button {
         .fa-square-xmark {
             color: #f8f8f8;
+            font-size: 25px;
+            padding-top: 3px;
         }
     }
 </style>

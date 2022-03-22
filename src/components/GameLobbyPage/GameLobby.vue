@@ -1,6 +1,6 @@
 <template>
     <div id="game-lobby" class="d-flex flex-column h-100">
-        <h1 class="times-up-title mb-5" v-html="$t('GameLobby.addPlayers')"/>
+        <h1 class="times-up-title mb-3" v-html="$t('GameLobby.addPlayers')"/>
         <div id="player-form" class="row justify-content-center">
             <form @submit.prevent="addPlayer">
                 <div class="input-group">
@@ -16,10 +16,11 @@
                               :error-message="$t('GameLobby.playerNameAlreadyTaken')" :is-message-white="true"/>
             </form>
         </div>
-        <div id="game-composition" class="d-flex flex-column flex-grow-1 container-fluid">
-            <GameLobbyPlayer v-for="player of game.players" :key="player.name" :player="player"/>
-        </div>
-        <div class="d-flex justify-content-center align-items-center pb-2">
+        <TransitionGroup id="game-composition" name="slide-from-left" tag="div" class="d-flex flex-column flex-grow-1 container-fluid"
+                         @before-leave="beforeLeaveList">
+            <GameLobbyPlayer v-for="player of reversedGamePlayers" :key="player.name" :player="player"/>
+        </TransitionGroup>
+        <div class="d-flex justify-content-center align-items-center mt-3">
             <div class="game-lobby-footer-button-container">
                 <BackButton to="/"/>
             </div>
@@ -27,7 +28,7 @@
                 <GameLobbyResetPlayersButton/>
             </div>
             <div class="game-lobby-footer-button-container pt-2">
-                <PlayITButton/>
+                <PlayITButton :class="{ 'cant-start-game-button': !game.canStart }"/>
             </div>
         </div>
     </div>
@@ -42,11 +43,12 @@ import { onBeforeRouteLeave } from "vue-router";
 import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessage";
 import BackButton from "@/components/shared/Button/BackButton";
 import PlayITButton from "@/components/shared/Button/PlayITButton";
+import GameLobbyResetPlayersButton from "@/components/GameLobbyPage/GameLobby/GameLobbyResetPlayersButton";
+import GameLobbyPlayer from "@/components/GameLobbyPage/GameLobby/GameLobbyPlayer/GameLobbyPlayer";
 import useError from "@/composables/Error/useError";
 import { filterOutHTMLTags } from "@/helpers/functions/String";
 import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage";
-import GameLobbyResetPlayersButton from "@/components/GameLobbyPage/GameLobby/GameLobbyResetPlayersButton";
-import GameLobbyPlayer from "@/components/GameLobbyPage/GameLobby/GameLobbyPlayer/GameLobbyPlayer";
+import useTransition from "@/composables/Transitions/useTransition";
 
 export default {
     name: "GameLobby",
@@ -56,6 +58,7 @@ export default {
         const { displayError } = useError();
         const { t } = useI18n();
         const { setGameIdInLocalStorage } = useGameFromLocalStorage();
+        const { beforeLeaveList } = useTransition();
         function confirmLeaveGameLobby() {
             return Swal.fire({
                 title: t("GameLobby.areYouSureYouWantToLeaveGameLobby"),
@@ -76,9 +79,8 @@ export default {
             return true;
         });
         return {
-            playerName: ref(""), displayError, setGameIdInLocalStorage,
-            game: computed(() => store.state.game.game),
-            isCreatingGame: computed(() => store.state.game.isCreating),
+            playerName: ref(""), displayError, setGameIdInLocalStorage, beforeLeaveList,
+            game: computed(() => store.state.game.game), isCreatingGame: computed(() => store.state.game.isCreating),
         };
     },
     computed: {
@@ -91,6 +93,9 @@ export default {
         },
         playerInputClasses() {
             return { "is-invalid": this.game.isPlayerNameTaken(this.sanitizedPlayerName) };
+        },
+        reversedGamePlayers() {
+            return this.game.players.slice().reverse();
         },
     },
     methods: {
@@ -146,13 +151,18 @@ export default {
 
     #game-composition {
         overflow-y: scroll;
+        position: relative;
     }
 
     .game-lobby-footer-button-container {
         width: 100px;
-        height: 90px;
+        height: 65px;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .cant-start-game-button {
+        filter: grayscale(1);
     }
 </style>
