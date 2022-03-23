@@ -28,9 +28,11 @@
         "startGame": "Commencer la partie",
         "gameCreated": "Partie créée",
         "areYouSureYouWantToLeaveGameLobby": "Êtes-vous sûr de quitter la composition de la partie ?",
-        "gameCompositionWillBeLost": "La composition actuelle sera perdue."
+        "gameCompositionWillBeLost": "La composition actuelle sera perdue.",
+        "gameMustContainPlayers": "La partie doit comporter 4 joueurs au minimum pour commencer",
+        "creatingGame": "Création de la partie"
     },
-    "GameLobbyPlayerDeleteButton": {
+    "GamePlayerDeleteButton": {
         "deletePlayer": "Supprimer le joueur",
         "areYouSureYouWantToDeletePlayer": "Êtes-vous sûr de vouloir supprimer {playerName} de la partie ?"
     },
@@ -41,6 +43,10 @@
     },
     "GamePage": {
         "fetchingGame": "Récupération de la partie"
+    },
+    "GamePreparing": {
+        "makeTeams": "Former les équipes",
+        "teams": "Équipes"
     },
     "TurnSummary": {
         "areYouSureYouWantToResetTurn": "Êtes-vous sûr de vouloir rejouer ce tour ?"

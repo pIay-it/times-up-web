@@ -6,7 +6,7 @@
             </span>
             <input v-model="search" type="text" class="form-control" :placeholder="$t('CardImageFinder.searchForCardImage')"/>
         </div>
-        <transition id="card-image-finder-results-container" tag="div" mode="out-in" name="translate-from-top">
+        <Transition id="card-image-finder-results-container" tag="div" mode="out-in" name="translate-from-top">
             <div v-if="!cleanSearch" key="waiting-for-input" class="text-muted fst-italic small d-flex align-items-center">
                 <i class="fa fa-chevron-up me-3"/>
                 <span v-html="$t('CardImageFinder.searchForImageByTypingRequest')"/>
@@ -37,7 +37,7 @@
                 <i class="fa fa-question fa-2x me-2"/>
                 <span v-html="$t('CardImageFinder.noResultFound')"/>
             </div>
-        </transition>
+        </Transition>
     </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
     <div id="game-lobby" class="d-flex flex-column h-100">
-        <h1 class="times-up-title mb-3" v-html="$t('GameLobby.addPlayers')"/>
+        <PageTitle v-html="$t('GameLobby.addPlayers')"/>
         <div id="player-form" class="row justify-content-center">
             <form @submit.prevent="addPlayer">
                 <div class="input-group">
@@ -18,19 +18,24 @@
         </div>
         <TransitionGroup id="game-composition" name="slide-from-left" tag="div" class="d-flex flex-column flex-grow-1 container-fluid"
                          @before-leave="beforeLeaveList">
-            <GameLobbyPlayer v-for="player of reversedGamePlayers" :key="player.name" :player="player"/>
+            <GamePlayer v-for="player of reversedGamePlayers" :key="player.name" :player="player"/>
         </TransitionGroup>
-        <div class="d-flex justify-content-center align-items-center mt-3">
-            <div class="game-lobby-footer-button-container">
-                <BackButton to="/"/>
+        <Transition class="mt-3" mode="out-in" name="translate-from-top">
+            <div v-if="!isCreatingGame" key="" class="d-flex justify-content-center align-items-center">
+                <div class="game-lobby-footer-button-container">
+                    <BackButton to="/"/>
+                </div>
+                <div class="game-lobby-footer-button-container">
+                    <GameLobbyResetPlayersButton/>
+                </div>
+                <div class="game-lobby-footer-button-container pt-2">
+                    <PlayITButton :class="{ 'cant-start-game-button': !game.canStart }" @click="createGame"/>
+                </div>
             </div>
-            <div class="game-lobby-footer-button-container">
-                <GameLobbyResetPlayersButton/>
+            <div v-else>
+                <DefaultLoader :text="$t('GameLobby.creatingGame')"/>
             </div>
-            <div class="game-lobby-footer-button-container pt-2">
-                <PlayITButton :class="{ 'cant-start-game-button': !game.canStart }"/>
-            </div>
-        </div>
+        </Transition>
     </div>
 </template>
 
@@ -43,16 +48,18 @@ import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessa
 import BackButton from "@/components/shared/Button/BackButton";
 import PlayITButton from "@/components/shared/Button/PlayITButton";
 import GameLobbyResetPlayersButton from "@/components/GameLobbyPage/GameLobby/GameLobbyResetPlayersButton";
-import GameLobbyPlayer from "@/components/GameLobbyPage/GameLobby/GameLobbyPlayer/GameLobbyPlayer";
+import GamePlayer from "@/components/shared/Game/GamePlayer/GamePlayer";
 import useError from "@/composables/Error/useError";
 import { filterOutHTMLTags } from "@/helpers/functions/String";
 import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage";
 import useTransition from "@/composables/Transition/useTransition";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
+import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
+import PageTitle from "@/components/shared/Title/PageTitle";
 
 export default {
     name: "GameLobby",
-    components: { GameLobbyPlayer, GameLobbyResetPlayersButton, PlayITButton, BackButton, InputMessage },
+    components: { PageTitle, DefaultLoader, GamePlayer, GameLobbyResetPlayersButton, PlayITButton, BackButton, InputMessage },
     setup() {
         const store = useStore();
         const { displayError } = useError();
@@ -60,8 +67,8 @@ export default {
         const { DefaultConfirmSwal } = useSweetAlert();
         const { setGameIdInLocalStorage } = useGameFromLocalStorage();
         const { beforeLeaveList } = useTransition();
-        onBeforeRouteLeave(async() => {
-            if (store.state.game.game.hasPlayers) {
+        onBeforeRouteLeave(async to => {
+            if (to.name !== "Game" && store.state.game.game.hasPlayers) {
                 const { isConfirmed } = await DefaultConfirmSwal.fire({
                     title: t("GameLobby.areYouSureYouWantToLeaveGameLobby"),
                     text: t("GameLobby.gameCompositionWillBeLost"),
@@ -73,7 +80,8 @@ export default {
         });
         return {
             playerName: ref(""), displayError, setGameIdInLocalStorage, beforeLeaveList,
-            game: computed(() => store.state.game.game), isCreatingGame: computed(() => store.state.game.isCreating),
+            game: computed(() => store.state.game.game),
+            isCreatingGame: computed(() => store.state.game.isCreating),
         };
     },
     computed: {
@@ -101,9 +109,12 @@ export default {
             }
         },
         async createGame() {
+            if (!this.game.canStart) {
+                return this.$toast.warning(this.$t("GameLobby.gameMustContainPlayers"));
+            }
             try {
                 await this.$store.dispatch("game/setIsCreatingGame", true);
-                const { data: game } = await this.$timesUpAPI.createGame({ ...this.game, status: "playing" });
+                const { data: game } = await this.$timesUpAPI.createGame(this.game);
                 this.setGameIdInLocalStorage(game._id);
                 await this.$store.dispatch("game/setGame", game);
                 this.$toast.success(this.$t("GameLobby.gameCreated"));

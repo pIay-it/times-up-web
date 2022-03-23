@@ -1,4 +1,5 @@
 @import "~@fortawesome/fontawesome-free/css/all.min.css";
+@import "~@vueform/toggle/themes/default.scss";
 @import "~bootstrap/scss/bootstrap.scss";
 @import '~v-tooltip/dist/v-tooltip.css';
 @import '~vue-good-table-next/dist/vue-good-table-next.css';
@@ -9,6 +10,7 @@
 @import "anchors";
 @import "animations";
 @import "buttons";
+@import "cards";
 @import "colors";
 @import "cursors";
 @import "modals";

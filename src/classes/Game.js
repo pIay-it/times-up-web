@@ -53,6 +53,10 @@ class Game {
         return !this.currentToGuessCard;
     }
 
+    get isCreated() {
+        return !!this._id;
+    }
+
     get isPreparing() {
         return this.status === "preparing";
     }
@@ -103,6 +107,10 @@ class Game {
 
     get isTieBetweenTeams() {
         return this.isOver && this.summary.isTieBetweenTeams;
+    }
+
+    getTeamWithName(teamName) {
+        return this.teams.find(({ name }) => name === teamName);
     }
 
     getPlayerWithId(id) {

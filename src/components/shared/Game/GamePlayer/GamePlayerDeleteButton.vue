@@ -1,5 +1,5 @@
 <template>
-    <a v-tooltip="$t('GameLobbyPlayerDeleteButton.deletePlayer')" class="game-lobby-player-delete-button" href="#" type="button"
+    <a v-tooltip="$t('GamePlayerDeleteButton.deletePlayer')" class="game-lobby-player-delete-button" href="#" type="button"
        @click="deletePlayer">
         <i class="fa-solid fa-square-xmark"/>
     </a>
@@ -10,7 +10,7 @@ import Player from "@/classes/Player";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 
 export default {
-    name: "GameLobbyPlayerDeleteButton",
+    name: "GamePlayerDeleteButton",
     props: {
         player: {
             type: Player,
@@ -24,7 +24,7 @@ export default {
     methods: {
         confirmDeletePlayer() {
             return this.DefaultConfirmSwal.fire({
-                title: this.$t("GameLobbyPlayerDeleteButton.areYouSureYouWantToDeletePlayer", { playerName: this.player.name }),
+                title: this.$t("GamePlayerDeleteButton.areYouSureYouWantToDeletePlayer", { playerName: this.player.name }),
                 icon: "warning",
             });
         },
