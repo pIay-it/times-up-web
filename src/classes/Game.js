@@ -109,6 +109,14 @@ class Game {
         return this.isOver && this.summary.isTieBetweenTeams;
     }
 
+    get firstTeam() {
+        return this.teams.length ? this.teams[0] : null;
+    }
+
+    get secondTeam() {
+        return this.teams.length ? this.teams[1] : null;
+    }
+
     getTeamWithName(teamName) {
         return this.teams.find(({ name }) => name === teamName);
     }
@@ -135,6 +143,14 @@ class Game {
             player.name = filterOutHTMLTags(player.name).trim();
         }
         this.players.push(new Player(player));
+    }
+
+    updatePlayerById(playerId, dataToUpdate) {
+        const idx = this.players.findIndex(({ _id }) => _id === playerId);
+        if (idx !== -1) {
+            const playerToUpdate = this.players[idx];
+            this.players.splice(idx, 1, new Player({ ...playerToUpdate, ...dataToUpdate }));
+        }
     }
 
     removePlayerByName(playerName) {

@@ -5,7 +5,7 @@
                 <i class="game-player-icon fa-solid fa-user-check me-2" :style="{ color: playerColor }"/>
                 <div class="text-truncate" v-html="player.name"/>
             </div>
-            <GamePlayerTeamSwitcher v-if="game.isPreparing"/>
+            <GamePlayerTeamSwitcher v-if="game.isPreparing" :player="player"/>
             <GamePlayerDeleteButton v-else-if="!game.isCreated" :player="player"/>
         </div>
     </div>
@@ -49,6 +49,7 @@ export default {
 
         .game-player-icon {
             color: #8e8d8d;
+            transition: all 0.35s ease;
         }
 
         div {
