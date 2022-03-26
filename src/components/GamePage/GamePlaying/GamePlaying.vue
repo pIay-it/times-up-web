@@ -2,13 +2,13 @@
     <div id="game-playing" class="text-center">
         ROUND: {{ game.round }} / TURN: {{ game.turn }}
         <hr/>
-        <transition name="fade" mode="out-in">
+        <Transition name="fade" mode="out-in">
             <TurnStarting v-if="gameState === 'turn-starting'" @player-is-ready="setGameState('turn-playing')"/>
             <TurnPlaying v-else-if="gameState === 'turn-playing'" @card-played="cardPlayed" @turn-is-over="setGameState('turn-summary')"/>
             <TurnSummary v-else-if="gameState === 'turn-summary'" :play="play" @update-played-card-status="updatePlayedCardStatus"
                          @validated-turn="validatedTurn" @reset-turn="resetTurn"/>
             <RoundSummary v-else-if="gameState === 'round-summary'"/>
-        </transition>
+        </Transition>
     </div>
 </template>
 

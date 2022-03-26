@@ -27,9 +27,9 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
-import Swal from "sweetalert2";
 import TurnSummaryPlayedCard from "@/components/GamePage/GamePlaying/Turn/TurnSummary/TurnSummaryPlayedCard";
 import SubmitButton from "@/components/shared/Form/SubmitButton";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 
 export default {
     name: "TurnSummary",
@@ -47,7 +47,9 @@ export default {
     },
     setup() {
         const store = useStore();
+        const { DefaultConfirmSwal } = useSweetAlert();
         return {
+            DefaultConfirmSwal,
             game: computed(() => store.state.game.game),
             isGameUpdating: computed(() => store.state.game.isUpdating),
         };
@@ -62,14 +64,9 @@ export default {
             this.$emit("update-played-card-status", payload);
         },
         confirmResetTurn() {
-            return Swal.fire({
+            return this.DefaultConfirmSwal.fire({
                 title: this.$t("TurnSummary.areYouSureYouWantToResetTurn"),
-                text: this.$t("SweetAlert.actionIsIrreversible"),
                 icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: this.$t("SweetAlert.confirm"),
-                cancelButtonText: this.$t("SweetAlert.cancel"),
-                heightAuto: false,
             });
         },
         async resetTurn() {

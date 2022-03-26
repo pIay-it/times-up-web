@@ -22,12 +22,27 @@
     opacity: 0;
 }
 
-// TRANSLATE DOWN FADE
-.translate-down-fade-enter-active, .translate-down-fade-leave-active {
+.translate-from-top-enter-active, .translate-from-top-leave-active {
     transition: all .20s ease-out;
 }
 
-.translate-down-fade-enter-from, .translate-down-fade-leave-to {
+.translate-from-top-enter-from, .translate-from-top-leave-to {
     opacity: 0;
     transform: translateY(-5px);
+}
+
+.slide-from-left-move,
+.slide-from-left-enter-active,
+.slide-from-left-leave-active {
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.slide-from-left-enter-from,
+.slide-from-left-leave-to {
+    opacity: 0;
+    transform: scaleY(0.01) translate(-30px, 0);
+}
+
+.slide-from-left-leave-active {
+    position: absolute;
 }

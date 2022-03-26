@@ -1,12 +1,10 @@
 <template>
-    <div id="game-page">
-        <transition mode="out-in" name="fade">
-            <DefaultLoader v-if="isGameFetching" key="fetching-game" class="h-100" :text="$t('GamePage.fetchingGame')"/>
-            <GamePreparing v-else-if="game.isPreparing" key="game-preparing" class="h-100"/>
-            <GamePlaying v-else-if="game.isPlaying" key="game-playing" class="h-100"/>
-            <GameOver v-else-if="game.isOver" key="game-over" class="h-100"/>
-        </transition>
-    </div>
+    <Transition id="game-page" mode="out-in" name="fade">
+        <DefaultLoader v-if="isGameFetching" key="fetching-game" class="h-100" :text="$t('GamePage.fetchingGame')"/>
+        <GamePreparing v-else-if="game.isPreparing" key="game-preparing" class="h-100"/>
+        <GamePlaying v-else-if="game.isPlaying" key="game-playing" class="h-100"/>
+        <GameOver v-else-if="game.isOver" key="game-over" class="h-100"/>
+    </Transition>
 </template>
 
 <script>
@@ -34,7 +32,9 @@ export default {
         onBeforeMount(async() => {
             try {
                 await checkUserAuthentication();
-                await getAndSetGameFromId(params.id);
+                if (!store.state.game.game._id) {
+                    await getAndSetGameFromId(params.id);
+                }
             } catch (err) {
                 displayError(err);
                 if (isAPIErrorType(err, "GAME_NOT_FOUND") || isAPIErrorType(err, "GAME_DOESNT_BELONG_TO_USER")) {

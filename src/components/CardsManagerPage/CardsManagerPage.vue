@@ -1,6 +1,6 @@
 <template>
     <div id="cards-manager-page">
-        <transition mode="out-in" name="fade">
+        <Transition mode="out-in" name="fade">
             <DefaultLoader v-if="isFetchingCards" key="fetching-cards" class="h-100" :text="$t('CardsManagerPage.fetchingCards')"/>
             <div v-else-if="cards" id="cards-manager" key="cards-manager">
                 <h2 class="d-flex align-items-center justify-content-center nuevo-litho-font">
@@ -12,7 +12,7 @@
                 <CardsManagerModal ref="cardsManagerPage" :cards="cards" @card-created="addCard" @card-updated="updateCard"/>
             </div>
             <APIError v-else key="cards" class="h-100" @retry="fetchCards"/>
-        </transition>
+        </Transition>
         <div class="text-center py-3">
             <BackButton to="/"/>
         </div>

@@ -36,6 +36,9 @@ export default {
         addGamePlayer(state, player) {
             state.game.addPlayer(new Player(player));
         },
+        updateGamePlayerById(state, { _id, data }) {
+            state.game.updatePlayerById(_id, data);
+        },
         removeGamePlayerByName(state, playerName) {
             state.game.removePlayerByName(playerName);
         },
@@ -64,6 +67,9 @@ export default {
         },
         addGamePlayer({ commit }, player) {
             commit("addGamePlayer", player);
+        },
+        updateGamePlayerById({ commit }, payload) {
+            commit("updateGamePlayerById", payload);
         },
         removeGamePlayerByName({ commit }, name) {
             commit("removeGamePlayerByName", name);

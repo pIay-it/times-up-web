@@ -11,6 +11,10 @@ class Game {
     constructor(game = null) {
         this._id = getProp(game, "_id");
         this.players = getProp(game, "players", [], players => players.map(player => new Player(player)));
+        this.teams = getProp(game, "teams", [], teams => teams.map(team => ({
+            name: getProp(team, "name"),
+            color: getProp(team, "color"),
+        })));
         this.cards = getProp(game, "cards", [], cards => cards.map(card => new Card(card)));
         this.status = getProp(game, "status");
         this.round = getProp(game, "round");
@@ -27,13 +31,6 @@ class Game {
 
     get hasPlayers() {
         return !!this.players?.length;
-    }
-
-    get playerTeams() {
-        if (!this.players || !this.players.length) {
-            return undefined;
-        }
-        return this.players.reduce((acc, { team }) => !acc.includes(team) ? [...acc, team] : acc, []);
     }
 
     get isMaxPlayerReached() {
@@ -54,6 +51,10 @@ class Game {
 
     get isTurnOver() {
         return !this.currentToGuessCard;
+    }
+
+    get isCreated() {
+        return !!this._id;
     }
 
     get isPreparing() {
@@ -108,12 +109,40 @@ class Game {
         return this.isOver && this.summary.isTieBetweenTeams;
     }
 
+    get firstTeam() {
+        return this.teams.length ? this.teams[0] : null;
+    }
+
+    get secondTeam() {
+        return this.teams.length ? this.teams[1] : null;
+    }
+
+    doesTeamHaveEnoughPlayers(team) {
+        return this.getPlayersInTeam(team).length >= 2;
+    }
+
+    doesAllTeamsHaveEnoughPlayers() {
+        return this.teams.every(({ name }) => this.doesTeamHaveEnoughPlayers(name));
+    }
+
+    getMissingPlayerCountInTeam(team) {
+        return 2 - this.getPlayersInTeam(team).length;
+    }
+
+    getTeamWithName(teamName) {
+        return this.teams.find(({ name }) => name === teamName);
+    }
+
     getPlayerWithId(id) {
         return this.players?.find(({ _id }) => _id === id);
     }
 
     getPlayerWithName(playerName) {
         return this.players?.find(({ name }) => name === playerName);
+    }
+
+    getPlayersInTeam(teamName) {
+        return this.players.filter(({ team }) => team === teamName);
     }
 
     isPlayerNameTaken(playerName) {
@@ -130,6 +159,14 @@ class Game {
             player.name = filterOutHTMLTags(player.name).trim();
         }
         this.players.push(new Player(player));
+    }
+
+    updatePlayerById(playerId, dataToUpdate) {
+        const idx = this.players.findIndex(({ _id }) => _id === playerId);
+        if (idx !== -1) {
+            const playerToUpdate = this.players[idx];
+            this.players.splice(idx, 1, new Player({ ...playerToUpdate, ...dataToUpdate }));
+        }
     }
 
     removePlayerByName(playerName) {

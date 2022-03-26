@@ -1,5 +1,5 @@
 <template>
-    <a v-tooltip="$t('GameLobbyPlayerDeleteButton.deletePlayer')" class="game-lobby-player-delete-button" href="#" type="button"
+    <a v-tooltip="$t('GamePlayerDeleteButton.deletePlayer')" class="game-lobby-player-delete-button" href="#" type="button"
        @click="deletePlayer">
         <i class="fa-solid fa-square-xmark"/>
     </a>
@@ -7,26 +7,25 @@
 
 <script>
 import Player from "@/classes/Player";
-import Swal from "sweetalert2";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 
 export default {
-    name: "GameLobbyPlayerDeleteButton",
+    name: "GamePlayerDeleteButton",
     props: {
         player: {
             type: Player,
             required: true,
         },
     },
+    setup() {
+        const { DefaultConfirmSwal } = useSweetAlert();
+        return { DefaultConfirmSwal };
+    },
     methods: {
         confirmDeletePlayer() {
-            return Swal.fire({
-                title: this.$t("GameLobbyPlayerDeleteButton.areYouSureYouWantToDeletePlayer", { playerName: this.player.name }),
+            return this.DefaultConfirmSwal.fire({
+                title: this.$t("GamePlayerDeleteButton.areYouSureYouWantToDeletePlayer", { playerName: this.player.name }),
                 icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: this.$t("SweetAlert.confirm"),
-                cancelButtonText: this.$t("SweetAlert.cancel"),
-                heightAuto: false,
-                returnFocus: false,
             });
         },
         async deletePlayer() {
@@ -43,6 +42,8 @@ export default {
     .game-lobby-player-delete-button {
         .fa-square-xmark {
             color: #f8f8f8;
+            font-size: 25px;
+            padding-top: 3px;
         }
     }
 </style>
