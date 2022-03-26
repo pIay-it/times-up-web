@@ -1,11 +1,9 @@
 <template>
-    <div id="game-lobby-page">
-        <transition mode="out-in" name="fade">
-            <DefaultLoader v-if="isFetchingGame" key="fetching-existing-game-from-local-storage" class="h-100"/>
-            <GameCurrentlyPlaying v-else-if="game?.isPlaying"/>
-            <GameLobby v-else key="game-lobby" class="h-100"/>
-        </transition>
-    </div>
+    <Transition id="game-lobby-page" mode="out-in" name="fade">
+        <DefaultLoader v-if="isFetchingGame" key="fetching-existing-game-from-local-storage" class="h-100"/>
+        <GameCurrentlyPlaying v-else-if="game?.isPreparing || game?.isPlaying"/>
+        <GameLobby v-else key="game-lobby" class="h-100"/>
+    </Transition>
 </template>
 
 <script>
@@ -28,12 +26,19 @@ export default {
         const { gameIdLocalStorage, getAndSetGameFromLocalStorage } = useGameFromLocalStorage();
         onBeforeMount(async() => {
             try {
+                if (gameIdLocalStorage.value) {
+                    await store.dispatch("game/setIsFetchingGame", true);
+                }
                 await checkUserAuthentication();
                 if (gameIdLocalStorage.value) {
                     await getAndSetGameFromLocalStorage();
+                } else {
+                    await store.dispatch("game/resetGame");
                 }
             } catch (err) {
                 displayError(err);
+            } finally {
+                await store.dispatch("game/setIsFetchingGame", false);
             }
         });
         return {

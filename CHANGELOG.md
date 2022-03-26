@@ -30,10 +30,11 @@
 
 * Set of required packages installed for Vue, lint and tests.
 * `@chenfengyuan/vue-countdown` installed with version `2.0.0`.
-* `@fortawesome/fontawesome-free` installed with version `6.0.0`.
-* `@popperjs/core` installed with version `2.11.3`.
-* `@sentry/tracing` installed with version `6.18.2`.
-* `@sentry/vue` installed with version `6.18.2`.
+* `@vueform/toggle` installed with version `2.0.1`.
+* `@fortawesome/fontawesome-free` installed with version `6.1.1`.
+* `@popperjs/core` installed with version `2.11.4`.
+* `@sentry/tracing` installed with version `6.19.2`.
+* `@sentry/vue` installed with version `6.19.2`.
 * `axios` installed with version `0.24.0`.
 * `bootstrap` installed with version `5.1.3`.
 * `fuse.js` installed with version `6.5.3`.
@@ -41,13 +42,12 @@
 * `qs` installed with version `6.10.3`.
 * `sass` installed with version `1.49.9`.
 * `sass-loader` installed with version `12.6.0`.
-* `sweetalert2` installed with version `11.4.4`.
+* `sweetalert2` installed with version `11.4.7`.
 * `uniqid` installed with version `5.4.0`.
 * `v-tooltip` installed with version `4.0.0-beta.17`.
 * `vee-validate` installed with version `4.5.10`.
 * `vue-good-table-next` installed with version `0.1.0`.
 * `vue-i18n` installed with version `8.26.7`.
-* `vue-js-toggle-button` installed with version `1.3.3`.
 * `vue3-lazyload` installed with version `0.2.2-beta`.
 * `vue-meta` installed with version `3.0.0-alpha.10`.
 * `vue-select` installed with version `4.0.0-beta.3`.

@@ -1,10 +1,10 @@
 <template>
     <div id="cards-manager-page">
-        <transition mode="out-in" name="fade">
+        <Transition mode="out-in" name="fade">
             <DefaultLoader v-if="isFetchingCards" key="fetching-cards" class="h-100" :text="$t('CardsManagerPage.fetchingCards')"/>
-            <div v-else-if="cards" key="cards-manager" class="h-100">
-                <h2 class="d-flex align-items-center justify-content-center">
-                    <i class="fa fa-address-card text-primary me-2"/>
+            <div v-else-if="cards" id="cards-manager" key="cards-manager">
+                <h2 class="d-flex align-items-center justify-content-center nuevo-litho-font">
+                    <i class="fa fa-address-card me-2"/>
                     <span v-html="$t('CardsManagerPage.cardsManager')"/>
                 </h2>
                 <hr/>
@@ -12,7 +12,10 @@
                 <CardsManagerModal ref="cardsManagerPage" :cards="cards" @card-created="addCard" @card-updated="updateCard"/>
             </div>
             <APIError v-else key="cards" class="h-100" @retry="fetchCards"/>
-        </transition>
+        </Transition>
+        <div class="text-center py-3">
+            <BackButton to="/"/>
+        </div>
     </div>
 </template>
 
@@ -23,10 +26,11 @@ import CardsManagerModal from "@/components/CardsManagerPage/CardsManagerModal/C
 import CardsManagerTable from "@/components/CardsManagerPage/CardsManagerTable/CardsManagerTable";
 import useError from "@/composables/Error/useError";
 import Card from "@/classes/Card";
+import BackButton from "@/components/shared/Button/BackButton";
 
 export default {
     name: "CardsManagerPage",
-    components: { CardsManagerTable, CardsManagerModal, APIError, DefaultLoader },
+    components: { BackButton, CardsManagerTable, CardsManagerModal, APIError, DefaultLoader },
     setup() {
         const { displayError } = useError();
         return { displayError };
@@ -73,3 +77,10 @@ export default {
     },
 };
 </script>
+
+<style>
+    #cards-manager {
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        text-shadow: none;
+    }
+</style>

@@ -1,50 +1,85 @@
 <template>
-    <div id="game-lobby">
+    <div id="game-lobby" class="d-flex flex-column h-100">
+        <PageTitle v-html="$t('GameLobby.addPlayers')"/>
         <div id="player-form" class="row justify-content-center">
             <form @submit.prevent="addPlayer">
                 <div class="input-group">
+                    <button id="game-lobby-player-input-button" type="submit" class="btn btn-primary"
+                            :disabled="!game.canAddPlayerWithName(sanitizedPlayerName)">
+                        <i class="fa-solid fa-user-plus"/>
+                    </button>
                     <input id="game-lobby-player-input" v-model="playerName" class="form-control"
                            :placeholder="playerNameInputPlaceholder" :disabled="game.isMaxPlayerReached"
                            :class="playerInputClasses" maxlength="30"/>
-                    <button type="submit" class="btn btn-primary" :disabled="!game.canAddPlayerWithName(sanitizedPlayerName)">
-                        <i class="fa fa-plus me-1"/>
-                        <span v-html="$t('GameLobby.add')"/>
-                    </button>
                 </div>
                 <InputMessage :is-shown="!!sanitizedPlayerName" :is-input-valid="game.canAddPlayerWithName(sanitizedPlayerName)"
-                              :error-message="$t('GameLobby.playerNameAlreadyTaken')"/>
+                              :error-message="$t('GameLobby.playerNameAlreadyTaken')" :is-message-white="true"/>
             </form>
         </div>
-        <div class="row">
-            <div v-for="player of game.players" :key="player.name" v-html="player.name"/>
-        </div>
-        <div class="row d-flex justify-content-center">
-            <SubmitButton classes="btn btn-primary btn-lg" :is-loading="isCreatingGame" :disabled="!game.canStart" @click="createGame">
-                <i class="fa fa-gamepad me-2"/>
-                <span v-html="$t('GameLobby.startGame')"/>
-            </SubmitButton>
-        </div>
+        <TransitionGroup id="game-composition" name="slide-from-left" tag="div" class="d-flex flex-column flex-grow-1 container-fluid"
+                         @before-leave="beforeLeaveList">
+            <GamePlayer v-for="player of reversedGamePlayers" :key="player.name" :player="player"/>
+        </TransitionGroup>
+        <Transition class="mt-3" mode="out-in" name="translate-from-top">
+            <div v-if="!isCreatingGame" key="" class="d-flex justify-content-center align-items-center">
+                <div class="game-lobby-footer-button-container">
+                    <BackButton to="/"/>
+                </div>
+                <div class="game-lobby-footer-button-container">
+                    <GameLobbyResetPlayersButton/>
+                </div>
+                <div class="game-lobby-footer-button-container pt-2">
+                    <PlayITButton :class="{ 'cant-start-game-button': !game.canStart }" @click="createGame"/>
+                </div>
+            </div>
+            <div v-else>
+                <DefaultLoader :text="$t('GameLobby.creatingGame')"/>
+            </div>
+        </Transition>
     </div>
 </template>
 
 <script>
-import { useStore } from "vuex";
 import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
+import { onBeforeRouteLeave } from "vue-router";
 import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessage";
-import SubmitButton from "@/components/shared/Form/SubmitButton";
+import BackButton from "@/components/shared/Button/BackButton";
+import PlayITButton from "@/components/shared/Button/PlayITButton";
+import GameLobbyResetPlayersButton from "@/components/GameLobbyPage/GameLobby/GameLobbyResetPlayersButton";
+import GamePlayer from "@/components/shared/Game/GamePlayer/GamePlayer";
 import useError from "@/composables/Error/useError";
 import { filterOutHTMLTags } from "@/helpers/functions/String";
 import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage";
+import useTransition from "@/composables/Transition/useTransition";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
+import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
+import PageTitle from "@/components/shared/Title/PageTitle";
 
 export default {
     name: "GameLobby",
-    components: { SubmitButton, InputMessage },
+    components: { PageTitle, DefaultLoader, GamePlayer, GameLobbyResetPlayersButton, PlayITButton, BackButton, InputMessage },
     setup() {
         const store = useStore();
         const { displayError } = useError();
+        const { t } = useI18n();
+        const { DefaultConfirmSwal } = useSweetAlert();
         const { setGameIdInLocalStorage } = useGameFromLocalStorage();
+        const { beforeLeaveList } = useTransition();
+        onBeforeRouteLeave(async to => {
+            if (to.name !== "Game" && store.state.game.game.hasPlayers) {
+                const { isConfirmed } = await DefaultConfirmSwal.fire({
+                    title: t("GameLobby.areYouSureYouWantToLeaveGameLobby"),
+                    text: t("GameLobby.gameCompositionWillBeLost"),
+                    icon: "warning",
+                });
+                return isConfirmed;
+            }
+            return true;
+        });
         return {
-            playerName: ref(""), displayError, setGameIdInLocalStorage,
+            playerName: ref(""), displayError, setGameIdInLocalStorage, beforeLeaveList,
             game: computed(() => store.state.game.game),
             isCreatingGame: computed(() => store.state.game.isCreating),
         };
@@ -54,10 +89,14 @@ export default {
             return filterOutHTMLTags(this.playerName.trim());
         },
         playerNameInputPlaceholder() {
-            return this.game.isMaxPlayerReached ? this.$t("GameLobby.maxPlayerReached") : this.$t("GameLobby.playerName");
+            const defaultPlaceholder = `${this.$t("GameLobby.playerName")} ${this.game.players.length + 1}`;
+            return this.game.isMaxPlayerReached ? this.$t("GameLobby.maxPlayerReached") : defaultPlaceholder;
         },
         playerInputClasses() {
             return { "is-invalid": this.game.isPlayerNameTaken(this.sanitizedPlayerName) };
+        },
+        reversedGamePlayers() {
+            return this.game.players.slice().reverse();
         },
     },
     methods: {
@@ -70,9 +109,12 @@ export default {
             }
         },
         async createGame() {
+            if (!this.game.canStart) {
+                return this.$toast.warning(this.$t("GameLobby.gameMustContainPlayers"));
+            }
             try {
                 await this.$store.dispatch("game/setIsCreatingGame", true);
-                const { data: game } = await this.$timesUpAPI.createGame({ ...this.game, status: "playing" });
+                const { data: game } = await this.$timesUpAPI.createGame(this.game);
                 this.setGameIdInLocalStorage(game._id);
                 await this.$store.dispatch("game/setGame", game);
                 this.$toast.success(this.$t("GameLobby.gameCreated"));
@@ -86,3 +128,41 @@ export default {
     },
 };
 </script>
+
+<style lang="scss">
+    #game-lobby-player-input-button {
+        border-color: white;
+    }
+
+    #game-lobby-player-input {
+        background-color: rgba(0, 0, 0, 0);
+        border-top-color: white;
+        border-bottom-color: white;
+        border-right-color: white;
+        border-left-color: white;
+        color: white;
+        text-shadow: 1px 1px 3px #000000;
+
+        &::placeholder {
+            color: white;
+        }
+
+        &:focus {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+    }
+
+    #game-composition {
+        overflow-y: scroll;
+        position: relative;
+    }
+
+    .game-lobby-footer-button-container {
+        width: 100px;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>

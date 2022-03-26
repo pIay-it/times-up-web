@@ -1,23 +1,64 @@
 {
     "HomePage": {
-        "timesUp": "Time's Up !",
+        "timesUp": "Time's Up!",
         "cardTitle": "Titre de carte",
         "playIT": "Play-IT",
         "about": "À quoi ça sert ?"
     },
     "AboutPage": {
-        "about": "À quoi ça sert ?"
+        "about": "À quoi ça sert ?",
+        "gameMasterRole": {
+            "title": "Rôle du Game Master Play-IT",
+            "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        },
+        "timesUpRules": {
+            "title": "Règles du jeu Time's Up!",
+            "teamComposition": {
+                "title": "1. Sélection des équipes",
+                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+            }
+        }
     },
     "GameLobby": {
+        "addPlayers": "Ajouter des joueurs",
         "add": "Ajouter",
         "playerName": "Nom du joueur",
         "maxPlayerReached": "Limite de joueurs atteinte",
         "playerNameAlreadyTaken": "Ce nom de joueur est déjà pris",
         "startGame": "Commencer la partie",
-        "gameCreated": "Partie créée"
+        "gameCreated": "Partie créée",
+        "areYouSureYouWantToLeaveGameLobby": "Êtes-vous sûr de quitter la composition de la partie ?",
+        "gameCompositionWillBeLost": "La composition actuelle sera perdue.",
+        "gameMustContainPlayers": "La partie doit comporter 4 joueurs au minimum pour commencer",
+        "creatingGame": "Création de la partie"
+    },
+    "GameCurrentlyPlaying": {
+        "gameCurrentlyPlaying": "Une partie est en cours",
+        "continueOrCancelGame": "Voulez-vous la continuer ou faire une toute nouvelle partie ?",
+        "goToGame": "Rejoindre la partie en cours",
+        "cancelGame": "Créer une nouvelle partie"
+    },
+    "GamePlayerDeleteButton": {
+        "deletePlayer": "Supprimer le joueur",
+        "areYouSureYouWantToDeletePlayer": "Êtes-vous sûr de vouloir supprimer {playerName} de la partie ?"
+    },
+    "GameLobbyResetPlayersButton": {
+        "resetGameComposition": "Recommencer la composition du début",
+        "areYouSureYouWantToResetGameComposition": "Êtes-vous sûr de réinitialiser la composition de la partie ?",
+        "gameCompositionWillBeLost": "La composition actuelle sera perdue."
     },
     "GamePage": {
         "fetchingGame": "Récupération de la partie"
+    },
+    "GamePreparing": {
+        "makeTeams": "Former les équipes",
+        "teams": "Équipes",
+        "allTeamsDontHaveEnoughPlayers": "Toutes les équipes n'ont pas un minimum de 2 joueurs",
+        "areYouSureYouWantToLeaveGamePreparing": "Êtes-vous sûr de vouloir quitter la partie ?",
+        "gameWillBeRestored": "La partie sera récupérée lorsque vous reviendrez"
+    },
+    "GameTeamLabel": {
+        "itMissesPlayers": "Il manque un joueur dans cette équipe | Il manque {missingPlayerCount} joueurs dans cette équipe"
     },
     "TurnSummary": {
         "areYouSureYouWantToResetTurn": "Êtes-vous sûr de vouloir rejouer ce tour ?"
@@ -198,6 +239,9 @@
     "APIError": {
         "anErrorOccurred": "Une erreur est survenue, l'équipe a été prévenue qu'un bug s'est faufilé par ici...",
         "retry": "Réessayer"
+    },
+    "BackButton": {
+        "back": "Retour"
     },
     "Form": {
         "required": "Requis",

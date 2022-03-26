@@ -2,7 +2,7 @@ import { useToast } from "vue-toastification";
 import { useI18n } from "vue-i18n";
 
 export default function useError() {
-    const toast = useToast();
+    const Toast = useToast();
     const { t } = useI18n();
 
     function isAPIError(error) {
@@ -16,9 +16,9 @@ export default function useError() {
     function displayError(error) {
         if (isAPIError(error)) {
             const { response } = error;
-            toast.error(t(`Error.API.${response.data.type}`));
+            Toast.error(t(`Error.API.${response.data.type}`));
         } else {
-            toast.error(t("Error.unknown"));
+            Toast.error(t("Error.unknown"));
             throw error;
         }
     }

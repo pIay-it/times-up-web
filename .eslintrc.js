@@ -495,6 +495,7 @@ module.exports = {
                     "RouterView",
                     "RouterLink",
                     "VueGoodTable",
+                    "VueFormToggleButton",
                     "VSelect",
                     "VForm",
                     "VField",

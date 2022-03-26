@@ -15,6 +15,10 @@ export default function useGameFromLocalStorage() {
         localStorage.setItem(localStorageGameIdKey, gameId);
     }
 
+    function removeGameIdInLocalStorage() {
+        localStorage.removeItem(localStorageGameIdKey);
+    }
+
     async function getAndSetGameFromId(gameId) {
         try {
             await store.dispatch("game/setIsFetchingGame", true);
@@ -23,7 +27,7 @@ export default function useGameFromLocalStorage() {
         } catch (err) {
             if ((isAPIErrorType(err, "GAME_NOT_FOUND") || isAPIErrorType(err, "GAME_DOESNT_BELONG_TO_USER")) &&
                 gameIdLocalStorage.value === gameId) {
-                localStorage.removeItem(localStorageGameIdKey);
+                removeGameIdInLocalStorage();
             }
             throw err;
         } finally {
@@ -35,5 +39,5 @@ export default function useGameFromLocalStorage() {
         await getAndSetGameFromId(gameIdLocalStorage.value);
     }
 
-    return { gameIdLocalStorage, getAndSetGameFromId, getAndSetGameFromLocalStorage, setGameIdInLocalStorage };
+    return { gameIdLocalStorage, getAndSetGameFromId, getAndSetGameFromLocalStorage, setGameIdInLocalStorage, removeGameIdInLocalStorage };
 }

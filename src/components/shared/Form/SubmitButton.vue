@@ -3,12 +3,12 @@
         <button :class="[classes, { disabled: isLoading || disabled }]"
                 :disabled="isLoading || disabled" class="d-flex justify-content-center align-items-center"
                 type="submit" @click="click">
-            <transition mode="out-in" name="fade">
+            <Transition mode="out-in" name="fade">
                 <div v-if="!isLoading" key="text">
                     <slot/>
                 </div>
                 <DualRingSpinner v-else key="isLoading" :size="loaderSize" color="white"/>
-            </transition>
+            </Transition>
         </button>
     </div>
 </template>

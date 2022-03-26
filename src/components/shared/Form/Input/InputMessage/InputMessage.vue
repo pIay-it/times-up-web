@@ -1,10 +1,11 @@
 <template>
     <div id="input-message" class="input-message d-flex align-items-center">
-        <transition name="translate-down-fade" mode="out-in">
-            <InputErrorMessage v-if="isShown && !isInputValid && errorMessage" key="error-message" :text="errorMessage"/>
+        <Transition name="translate-from-top" mode="out-in">
+            <InputErrorMessage v-if="isShown && !isInputValid && errorMessage" key="error-message" :text="errorMessage"
+                               :class="{ 'text-white': isMessageWhite }"/>
             <InputSuccessMessage v-else-if="isShown && isInputValid && successMessage" key="success-message" :text="successMessage"
-                                 :type="successMessageType"/>
-        </transition>
+                                 :type="successMessageType" :class="{ 'text-white': isMessageWhite }"/>
+        </Transition>
     </div>
 </template>
 
@@ -35,6 +36,10 @@ export default {
         successMessageType: {
             type: String,
             default: "success",
+        },
+        isMessageWhite: {
+            type: Boolean,
+            default: false,
         },
     },
 };

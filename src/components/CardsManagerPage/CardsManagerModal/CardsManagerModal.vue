@@ -111,7 +111,7 @@ import useBootstrapModal from "@/composables/Bootstrap/useBootstrapModal";
 import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import { getCardCategories } from "@/helpers/functions/Card";
 import Card from "@/classes/Card";
-import Swal from "sweetalert2";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 
 export default {
     name: "CardsManagerModal",
@@ -140,11 +140,12 @@ export default {
     setup() {
         const cardsManagerModal = ref(null);
         const { displayError } = useError();
+        const { DefaultConfirmSwal } = useSweetAlert();
         const { showModal, hideModal, lockModal, unlockModal } = useBootstrapModal(cardsManagerModal);
         const { value: categories, setTouched: setCategoriesTouched, meta: metaCategories } = useField("categories", undefined, { initialValue: [] });
         const { value: difficulty } = useField("difficulty", undefined, { initialValue: 1 });
         return {
-            displayError,
+            displayError, DefaultConfirmSwal,
             categories, setCategoriesTouched, metaCategories,
             difficulty,
             cardsManagerModal, showModal, hideModal, lockModal, unlockModal,
@@ -267,13 +268,10 @@ export default {
         },
         confirmSubmit() {
             const titleText = `CardsManagerModal.${this.mode}EvenIfCardLooksAlike`;
-            return Swal.fire({
+            return this.DefaultConfirmSwal.fire({
                 title: this.$t(titleText),
                 text: this.$t("SweetAlert.youCanChangeThatAfterwards"),
                 icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: this.$t("SweetAlert.confirm"),
-                cancelButtonText: this.$t("SweetAlert.cancel"),
             });
         },
         async submit(formValues) {

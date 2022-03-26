@@ -6,10 +6,9 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
-import { useToast } from "vue-toastification";
 import SubmitButton from "@/components/shared/Form/SubmitButton";
 import useError from "@/composables/Error/useError";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 import Card from "@/classes/Card";
 
 export default {
@@ -23,22 +22,18 @@ export default {
     },
     emits: { "card-deleted": card => card instanceof Card },
     setup() {
-        const toast = useToast();
         const { displayError } = useError();
-        return { displayError, toast };
+        const { DefaultConfirmSwal } = useSweetAlert();
+        return { displayError, DefaultConfirmSwal };
     },
     data() {
         return { isDeleting: false };
     },
     methods: {
         confirmDeleteCard() {
-            return Swal.fire({
+            return this.DefaultConfirmSwal.fire({
                 title: this.$t("DeleteCardButton.areYouSure"),
-                text: this.$t("SweetAlert.actionIsIrreversible"),
                 icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: this.$t("SweetAlert.confirm"),
-                cancelButtonText: this.$t("SweetAlert.cancel"),
             });
         },
         async deleteCard() {
@@ -47,7 +42,7 @@ export default {
                 const { isConfirmed } = await this.confirmDeleteCard();
                 if (isConfirmed) {
                     await this.$timesUpAPI.deleteCard(this.card._id);
-                    this.toast.success(this.$t("DeleteCardButton.cardDeleted"));
+                    this.$toast.success(this.$t("DeleteCardButton.cardDeleted"));
                     this.$emit("card-deleted", new Card(this.card));
                 }
             } catch (e) {
