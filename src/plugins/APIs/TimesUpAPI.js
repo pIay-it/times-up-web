@@ -41,6 +41,8 @@ export default {
 
         app.config.globalProperties.$timesUpAPI.updateGame = (gameId, data) => axios.patch(`/games/${gameId}`, data);
 
+        app.config.globalProperties.$timesUpAPI.updateGamePlayers = (gameId, data) => axios.patch(`/games/${gameId}/players`, data);
+
         app.config.globalProperties.$timesUpAPI.deleteGame = gameId => axios.delete(`/games/${gameId}`, { auth });
 
         app.config.globalProperties.$timesUpAPI.makeGamePlay = (gameId, play) => axios.post(`/games/${gameId}/play`, play);

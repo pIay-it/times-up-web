@@ -32,6 +32,12 @@
         "gameMustContainPlayers": "La partie doit comporter 4 joueurs au minimum pour commencer",
         "creatingGame": "Création de la partie"
     },
+    "GameCurrentlyPlaying": {
+        "gameCurrentlyPlaying": "Une partie est en cours",
+        "continueOrCancelGame": "Voulez-vous la continuer ou faire une toute nouvelle partie ?",
+        "goToGame": "Rejoindre la partie en cours",
+        "cancelGame": "Créer une nouvelle partie"
+    },
     "GamePlayerDeleteButton": {
         "deletePlayer": "Supprimer le joueur",
         "areYouSureYouWantToDeletePlayer": "Êtes-vous sûr de vouloir supprimer {playerName} de la partie ?"
@@ -46,7 +52,13 @@
     },
     "GamePreparing": {
         "makeTeams": "Former les équipes",
-        "teams": "Équipes"
+        "teams": "Équipes",
+        "allTeamsDontHaveEnoughPlayers": "Toutes les équipes n'ont pas un minimum de 2 joueurs",
+        "areYouSureYouWantToLeaveGamePreparing": "Êtes-vous sûr de vouloir quitter la partie ?",
+        "gameWillBeRestored": "La partie sera récupérée lorsque vous reviendrez"
+    },
+    "GameTeamLabel": {
+        "itMissesPlayers": "Il manque un joueur dans cette équipe | Il manque {missingPlayerCount} joueurs dans cette équipe"
     },
     "TurnSummary": {
         "areYouSureYouWantToResetTurn": "Êtes-vous sûr de vouloir rejouer ce tour ?"

@@ -117,6 +117,18 @@ class Game {
         return this.teams.length ? this.teams[1] : null;
     }
 
+    doesTeamHaveEnoughPlayers(team) {
+        return this.getPlayersInTeam(team).length >= 2;
+    }
+
+    doesAllTeamsHaveEnoughPlayers() {
+        return this.teams.every(({ name }) => this.doesTeamHaveEnoughPlayers(name));
+    }
+
+    getMissingPlayerCountInTeam(team) {
+        return 2 - this.getPlayersInTeam(team).length;
+    }
+
     getTeamWithName(teamName) {
         return this.teams.find(({ name }) => name === teamName);
     }
@@ -127,6 +139,10 @@ class Game {
 
     getPlayerWithName(playerName) {
         return this.players?.find(({ name }) => name === playerName);
+    }
+
+    getPlayersInTeam(teamName) {
+        return this.players.filter(({ team }) => team === teamName);
     }
 
     isPlayerNameTaken(playerName) {

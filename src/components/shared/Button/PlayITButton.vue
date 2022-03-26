@@ -35,4 +35,8 @@ export default { name: "PlayITButton" };
     #play-it-button {
         transition: all 0.5s ease;
     }
+
+    .cant-start-game-button {
+        filter: grayscale(1);
+    }
 </style>

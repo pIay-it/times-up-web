@@ -3,7 +3,7 @@
         <div class="game-player times-up-card col-12 d-flex flex-grow-1 align-items-center">
             <div class="d-flex flex-grow-1 align-items-center">
                 <i class="game-player-icon fa-solid fa-user-check me-2" :style="{ color: playerColor }"/>
-                <div class="text-truncate" v-html="player.name"/>
+                <div class="text-truncate flex-grow-1" v-html="player.name"/>
             </div>
             <GamePlayerTeamSwitcher v-if="game.isPreparing" :player="player"/>
             <GamePlayerDeleteButton v-else-if="!game.isCreated" :player="player"/>

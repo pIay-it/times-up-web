@@ -165,8 +165,4 @@ export default {
         align-items: center;
         justify-content: center;
     }
-
-    .cant-start-game-button {
-        filter: grayscale(1);
-    }
 </style>
