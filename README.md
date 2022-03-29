@@ -66,7 +66,7 @@ Complete list of all enabled rules is available in the **[.eslintrc.js file](htt
     * **VUE_APP_BASE_URL**: Base URL of Time's Up by Play-IT Web app. Set to `localhost:8080` if in development mode.
         - _**⚠️️ Required**_
     * **VUE_APP_TIMES_UP_API_BASE_URL**: Base URL of Time's Up by Play-IT API.
-        - _**⚠️️ Required**_
+        - _**⚠️️ Required**_ 
     * **VUE_APP_TIMES_UP_API_BASIC_AUTH_USERNAME**: Basic authentication username of Time's Up by Play-IT API.
         - _**⚠️️ Required**_
     * **VUE_APP_TIMES_UP_API_BASIC_AUTH_PASSWORD**: Basic authentication password of Time's Up by Play-IT API.
