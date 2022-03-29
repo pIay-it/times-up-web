@@ -55,7 +55,9 @@
         "teams": "Équipes",
         "allTeamsDontHaveEnoughPlayers": "Toutes les équipes n'ont pas un minimum de 2 joueurs",
         "areYouSureYouWantToLeaveGamePreparing": "Êtes-vous sûr de vouloir quitter la partie ?",
-        "gameWillBeRestored": "La partie sera récupérée lorsque vous reviendrez"
+        "gameWillBeRestored": "La partie sera récupérée lorsque vous reviendrez",
+        "startingGame": "Lancement de la partie",
+        "gameStarts": "La partie commence"
     },
     "GameTeamLabel": {
         "itMissesPlayers": "Il manque un joueur dans cette équipe | Il manque {missingPlayerCount} joueurs dans cette équipe"

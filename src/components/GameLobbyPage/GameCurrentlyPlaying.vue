@@ -32,7 +32,7 @@ export default {
         if (isConfirmed) {
             return this.$router.push(`/game/${this.game._id}`);
         }
-        await this.$timesUpAPI.updateGame(this.game._id, { status: "canceled" });
+        this.$timesUpAPI.updateGame(this.game._id, { status: "canceled" });
         this.removeGameIdInLocalStorage();
         await this.$store.dispatch("game/resetGame");
     },
