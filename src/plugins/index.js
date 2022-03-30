@@ -4,6 +4,7 @@ import VueRouter from "./vue-router";
 import "./bootstrap";
 import { setupSentry } from "./sentry";
 import VueGoodTablePlugin from "vue-good-table-next";
+import VueEllipseProgress from "vue-ellipse-progress";
 import Vuei18n from "./vue-i18n";
 import VSelect from "vue-select";
 import { setupVeeValidate } from "./vee-validate";
@@ -22,6 +23,7 @@ export function usePlugins(app) {
 
     app.use(VueRouter);
     app.use(VueGoodTablePlugin);
+    app.use(VueEllipseProgress);
     app.use(Vuei18n);
     setupVeeValidate(app);
     setupVTooltip(app);

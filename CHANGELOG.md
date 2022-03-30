@@ -47,6 +47,7 @@
 * `v-tooltip` installed with version `4.0.0-beta.17`.
 * `vee-validate` installed with version `4.5.10`.
 * `vue-good-table-next` installed with version `0.1.0`.
+* `vue-ellipse-progress` installed with version `2.1.0`.
 * `vue-i18n` installed with version `8.26.7`.
 * `vue3-lazyload` installed with version `0.2.2-beta`.
 * `vue-meta` installed with version `3.0.0-alpha.10`.
