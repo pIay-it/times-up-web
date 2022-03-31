@@ -81,6 +81,11 @@
         "turnOf": "Au tour de ",
         "areYouReady": "Es-tu prêt ?"
     },
+    "TurnPlaying": {
+        "guessed": "Trouver",
+        "skipped": "Passer",
+        "toGuess": "À faire deviner :"
+    },
     "TurnSummary": {
         "areYouSureYouWantToResetTurn": "Êtes-vous sûr de vouloir rejouer ce tour ?"
     },

@@ -2,7 +2,8 @@
     <div id="game-playing" class="text-center">
         <Transition name="fade" mode="out-in">
             <RoundStarting v-if="gameState === 'round-starting'" key="round-starting" @start-turn="setGameState('turn-starting')"/>
-            <TurnStarting v-else-if="gameState === 'turn-starting'" key="turn-starting" @player-is-ready="setGameState('turn-playing')"/>
+            <TurnStarting v-else-if="gameState === 'turn-starting'" key="turn-starting"
+                          @player-is-ready="setGameState('turn-playing')" @show-round-rules="setGameState('round-starting')"/>
             <TurnPlaying v-else-if="gameState === 'turn-playing'" key="turn-playing" @card-played="cardPlayed"
                          @turn-is-over="setGameState('turn-summary')"/>
             <TurnSummary v-else-if="gameState === 'turn-summary'" key="turn-summary" :play="play" @update-played-card-status="updatePlayedCardStatus"
