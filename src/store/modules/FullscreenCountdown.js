@@ -29,16 +29,19 @@ export default {
     },
     actions: {
         launchCountdown({ getters, commit }, { countdown }) {
-            commit("setLastCountdown", countdown);
-            commit("setCountdown", countdown);
-            commit("setIsRunning", true);
-            const interval = setInterval(() => {
-                commit("setCountdown", getters.countdown - 1);
-                if (getters.countdown <= 0) {
-                    commit("setIsRunning", false);
-                    clearInterval(interval);
-                }
-            }, 1000);
+            return new Promise(resolve => {
+                commit("setLastCountdown", countdown);
+                commit("setCountdown", countdown);
+                commit("setIsRunning", true);
+                const interval = setInterval(() => {
+                    commit("setCountdown", getters.countdown - 1);
+                    if (getters.countdown <= 0) {
+                        commit("setIsRunning", false);
+                        clearInterval(interval);
+                        return resolve();
+                    }
+                }, 1000);
+            });
         },
     },
 };

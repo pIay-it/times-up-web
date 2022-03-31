@@ -36,8 +36,8 @@ export default {
         async playerIsReady() {
             const { isConfirmed } = await this.confirmPlayerIsReady();
             if (isConfirmed) {
-                this.$store.dispatch("fullscreenCountdown/launchCountdown", { countdown: 5 });
-                // This.$emit("player-is-ready");
+                await this.$store.dispatch("fullscreenCountdown/launchCountdown", { countdown: 5 });
+                this.$emit("player-is-ready");
             }
         },
     },

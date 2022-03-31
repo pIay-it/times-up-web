@@ -1,7 +1,13 @@
 <template>
     <Transition name="fade" mode="out-in">
         <div v-show="isCountdownRunning" id="fullscreen-countdown-container">
-            <ve-progress :progress="countdownProgress" animation="default 200 0"/>
+            <ve-progress :progress="countdownProgress" animation="default 400 0">
+                <template #default>
+                    <Transition mode="out-in" name="translate-from-top" class="countdown-value-container">
+                        <span :key="countdown" class="countdown-value" v-html="countdown"/>
+                    </Transition>
+                </template>
+            </ve-progress>
         </div>
     </Transition>
 </template>
@@ -22,7 +28,7 @@ export default {
     },
     computed: {
         countdownProgress() {
-            return 100 - this.countdown * 100 / this.lastCountdown;
+            return this.lastCountdown ? 100 - this.countdown * 100 / this.lastCountdown : 0;
         },
     },
 };
@@ -38,6 +44,15 @@ export default {
         align-items: center;
         height: 100vh;
         width: 100vw;
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.75);
+
+        .countdown-value-container {
+            height: unset !important;
+        }
+
+        .countdown-value {
+            margin-top: -350px;
+            font-size: 3rem;
+        }
     }
 </style>
