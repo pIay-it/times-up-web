@@ -5,7 +5,7 @@
                 <template #default>
                     <VueCountdown #default="{ seconds }" :time="turnTimeLimitMs" @progress="syncCountdown" @end="endTurn">
                         <Transition mode="out-in" name="translate-from-top">
-                            <span :key="seconds" class="countdown-seconds" v-html="seconds"/>
+                            <span :key="seconds" class="countdown-seconds" v-html="`${seconds}s`"/>
                         </Transition>
                     </VueCountdown>
                 </template>
@@ -75,7 +75,7 @@ export default {
     watch: {
         isTurnOver(isTurnOver) {
             if (isTurnOver) {
-                // This.$emit("turn-is-over");
+                this.endTurn();
             }
         },
     },
@@ -92,7 +92,7 @@ export default {
         },
         endTurn() {
             this.countdown = 0;
-            // This.$emit("turn-is-overs");
+            this.$emit("turn-is-over");
         },
     },
 };
