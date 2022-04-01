@@ -1,5 +1,5 @@
 <template>
-    <div id="game-playing" class="text-center">
+    <div id="game-playing">
         <Transition name="fade" mode="out-in">
             <RoundStarting v-if="gameState === 'round-starting'" key="round-starting" @start-turn="setGameState('turn-starting')"/>
             <TurnStarting v-else-if="gameState === 'turn-starting'" key="turn-starting"

@@ -16,7 +16,7 @@
             </div>
         </div>
         <div id="turn-summary-cards-container" class="flex-grow-1">
-            <div v-if="play.cards.length" id="turn-summary-cards" class="h-100">
+            <div v-if="play.cards.length" id="turn-summary-cards" class="h-100 container-fluid">
                 <TurnSummaryPlayedCard v-for="card of play.cards" :key="card._id" :card="card" @update-played-card-status="updatePlayedCardStatus"/>
             </div>
             <h3 v-else id="no-card-text" class="d-flex justify-content-center align-items-center">
