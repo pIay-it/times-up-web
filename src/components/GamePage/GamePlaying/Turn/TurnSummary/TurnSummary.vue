@@ -1,25 +1,43 @@
 <template>
-    <div id="turn-summary" class="text-center">
-        <div>
-            TURN SUMMARY
+    <div id="turn-summary" class="d-flex flex-column h-100">
+        <PageTitle v-html="$t('TurnSummary.turnSummary', { turn: game.turn })"/>
+        <div id="turn-summary-score" class="times-up-card py-2 mb-4">
+            <h4 class="text-center" v-html="$t('TurnSummary.playerHasGuessed', { player: game.speaker.name })"/>
+            <h4 class="text-center" v-html="$t('TurnSummary.cards', { score }, score)"/>
+            <div class="d-flex justify-content-around">
+                <div class="card-status-label">
+                    <div id="guessed-card-circle" class="card-status-circle me-2"/>
+                    <span v-html="$t('TurnSummary.guessed')"/>
+                </div>
+                <div class="card-status-label">
+                    <div id="skipped-card-circle" class="card-status-circle me-2"/>
+                    <span v-html="$t('TurnSummary.skipped')"/>
+                </div>
+            </div>
         </div>
-        <div>
-            The player scored {{ score }} points
-            <hr/>
+        <div id="turn-summary-cards-container" class="flex-grow-1">
+            <div v-if="play.cards.length" id="turn-summary-cards" class="h-100 container-fluid">
+                <TurnSummaryPlayedCard v-for="card of play.cards" :key="card._id" :card="card" @update-played-card-status="updatePlayedCardStatus"/>
+            </div>
+            <h3 v-else id="no-card-text" class="d-flex justify-content-center align-items-center">
+                <i class="fa-solid fa-ban me-2"/>
+                <span v-html="$t('TurnSummary.noCardPlayed')"/>
+            </h3>
         </div>
-        <div v-if="play.cards.length">
-            <TurnSummaryPlayedCard v-for="card of play.cards" :key="card._id" :card="card" @update-played-card-status="updatePlayedCardStatus"/>
-        </div>
-        <div v-else>
-            NO CARDS PLAYED
-        </div>
-        <button type="button" class="btn btn-secondary mb-1" @click.prevent="resetTurn">
-            RESET TURN
-        </button>
-        <div class="d-flex justify-content-center">
-            <SubmitButton classes="btn btn-primary" :is-loading="isGameUpdating" @click.prevent="$emit('validated-turn')">
-                VALIDATE TURN
-            </SubmitButton>
+        <div id="turn-summary-footer" class="d-flex">
+            <Transition class="mt-3" mode="out-in" name="translate-from-top">
+                <div v-if="!isGameUpdating" key="turn-summary-footer" class="d-flex justify-content-center align-items-center">
+                    <div class="turn-summary-footer-button-container">
+                        <button type="button" class="btn btn-secondary mb-1" @click.prevent="resetTurn">
+                            RESET TURN
+                        </button>
+                    </div>
+                    <div class="turn-summary-footer-button-container pt-2">
+                        <PlayITButton @click="startPlayingGame"/>
+                    </div>
+                </div>
+                <DefaultLoader v-else key="turn-summary-footer-loader" :text="$t('TurnSummary.validatingTurn')"/>
+            </Transition>
         </div>
     </div>
 </template>
@@ -28,12 +46,15 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import TurnSummaryPlayedCard from "@/components/GamePage/GamePlaying/Turn/TurnSummary/TurnSummaryPlayedCard";
-import SubmitButton from "@/components/shared/Form/SubmitButton";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
+import PageTitle from "@/components/shared/Title/PageTitle";
+import useError from "@/composables/Error/useError";
+import PlayITButton from "@/components/shared/Button/PlayITButton";
+import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 
 export default {
     name: "TurnSummary",
-    components: { SubmitButton, TurnSummaryPlayedCard },
+    components: { DefaultLoader, PlayITButton, PageTitle, TurnSummaryPlayedCard },
     props: {
         play: {
             type: Object,
@@ -48,8 +69,9 @@ export default {
     setup() {
         const store = useStore();
         const { DefaultConfirmSwal } = useSweetAlert();
+        const { displayError } = useError();
         return {
-            DefaultConfirmSwal,
+            DefaultConfirmSwal, displayError,
             game: computed(() => store.state.game.game),
             isGameUpdating: computed(() => store.state.game.isUpdating),
         };
@@ -75,6 +97,48 @@ export default {
                 this.$emit("reset-turn");
             }
         },
+        async startPlayingGame() {
+            try {
+                await this.$store.dispatch("game/setIsUpdatingGame", true);
+            } catch (err) {
+                this.displayError(err);
+            } finally {
+                await this.$store.dispatch("game/setIsUpdatingGame", false);
+            }
+        },
     },
 };
 </script>
+
+<style lang="scss">
+    .card-status-label {
+        display: flex;
+        align-items: center;
+
+        .card-status-circle {
+            border-radius: 50px;
+            height: 15px;
+            width: 15px;
+            box-shadow: 1px 1px 3px #000000;
+
+            &#guessed-card-circle {
+                background-color: #8CB32D;
+            }
+
+            &#skipped-card-circle {
+                background-color: #C82333;
+            }
+        }
+    }
+
+    #turn-summary-cards-container {
+        overflow-y: scroll;
+    }
+
+    #no-card-text {
+        height: 100%;
+        margin-bottom: 0;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.9);
+    }
+</style>

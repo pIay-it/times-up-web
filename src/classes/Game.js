@@ -90,7 +90,7 @@ class Game {
     }
 
     get isNewRound() {
-        return this.lastPlay?.round !== this.round;
+        return this.round === 1 && this.turn === 1 || this.lastPlay?.round !== this.round;
     }
 
     get winningPlayers() {
