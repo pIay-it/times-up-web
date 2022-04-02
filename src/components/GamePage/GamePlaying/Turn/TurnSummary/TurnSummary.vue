@@ -24,16 +24,16 @@
                 <span v-html="$t('TurnSummary.noCardPlayed')"/>
             </h3>
         </div>
-        <div id="turn-summary-footer" class="d-flex">
+        <div id="turn-summary-footer">
             <Transition class="mt-3" mode="out-in" name="translate-from-top">
                 <div v-if="!isGameUpdating" key="turn-summary-footer" class="d-flex justify-content-center align-items-center">
                     <div class="turn-summary-footer-button-container">
-                        <button type="button" class="btn btn-secondary mb-1" @click.prevent="resetTurn">
-                            RESET TURN
-                        </button>
+                        <a href="#" type="button" class="text-white me-2" @click.prevent="resetTurn">
+                            <i class="fa-solid fa-arrow-rotate-right fa-flip-horizontal fa-3x"/>
+                        </a>
                     </div>
                     <div class="turn-summary-footer-button-container pt-2">
-                        <PlayITButton @click="startPlayingGame"/>
+                        <PlayITButton @click="validateTurn"/>
                     </div>
                 </div>
                 <DefaultLoader v-else key="turn-summary-footer-loader" :text="$t('TurnSummary.validatingTurn')"/>
@@ -97,9 +97,12 @@ export default {
                 this.$emit("reset-turn");
             }
         },
-        async startPlayingGame() {
+        async validateTurn() {
             try {
                 await this.$store.dispatch("game/setIsUpdatingGame", true);
+                const { data: game } = this.$timesUpAPI.makeGamePlay(this.game._id, this.play);
+                await this.$store.dispatch("game/setGame", game);
+                this.$emit("validated-turn");
             } catch (err) {
                 this.displayError(err);
             } finally {
@@ -139,6 +142,13 @@ export default {
         height: 100%;
         margin-bottom: 0;
         font-style: italic;
-        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .turn-summary-footer-button-container {
+        width: 100px;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>

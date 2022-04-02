@@ -79,7 +79,8 @@
     },
     "TurnStarting": {
         "turnOf": "Au tour de ",
-        "areYouReady": "Es-tu prêt ?"
+        "areYouReady": "Es-tu prêt ?",
+        "showRoundRules": "Voir les règles de la manche"
     },
     "TurnPlaying": {
         "guessed": "Trouver",
@@ -93,7 +94,8 @@
         "cards": "Aucune carte | 1 carte | {score} cartes",
         "guessed": "Trouvée",
         "skipped": "Passée",
-        "noCardPlayed": "Aucune carte jouée"
+        "noCardPlayed": "Aucune carte jouée",
+        "validatingTurn": "Validation du tour"
     },
     "TurnSummaryPlayedCard": {
         "skipped": "Passée",

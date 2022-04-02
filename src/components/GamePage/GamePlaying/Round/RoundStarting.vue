@@ -1,7 +1,7 @@
 <template>
     <div id="round-starting" class="d-flex flex-column h-100 align-items-center">
         <PageTitle v-html="$t('RoundStarting.roundNumber', { number: game.round })"/>
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 text-center">
             <i :class="roundIconClasses" class="mt-1 fa-3x"/>
             <h4 class="mt-4" v-html="roundTitle"/>
             <p class="mt-4" v-html="roundDescription"/>
