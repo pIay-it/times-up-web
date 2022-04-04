@@ -1,13 +1,14 @@
 <template>
-    <div id="game-playing" class="text-center">
-        ROUND: {{ game.round }} / TURN: {{ game.turn }}
-        <hr/>
+    <div id="game-playing">
         <Transition name="fade" mode="out-in">
-            <TurnStarting v-if="gameState === 'turn-starting'" @player-is-ready="setGameState('turn-playing')"/>
-            <TurnPlaying v-else-if="gameState === 'turn-playing'" @card-played="cardPlayed" @turn-is-over="setGameState('turn-summary')"/>
-            <TurnSummary v-else-if="gameState === 'turn-summary'" :play="play" @update-played-card-status="updatePlayedCardStatus"
+            <RoundStarting v-if="gameState === 'round-starting'" key="round-starting" @start-turn="setGameState('turn-starting')"/>
+            <TurnStarting v-else-if="gameState === 'turn-starting'" key="turn-starting"
+                          @player-is-ready="setGameState('turn-playing')" @show-round-rules="setGameState('round-starting')"/>
+            <TurnPlaying v-else-if="gameState === 'turn-playing'" key="turn-playing" @card-played="cardPlayed"
+                         @turn-is-over="setGameState('turn-summary')"/>
+            <TurnSummary v-else-if="gameState === 'turn-summary'" key="turn-summary" :play="play" @update-played-card-status="updatePlayedCardStatus"
                          @validated-turn="validatedTurn" @reset-turn="resetTurn"/>
-            <RoundSummary v-else-if="gameState === 'round-summary'"/>
+            <RoundSummary v-else-if="gameState === 'round-summary'" key="round-summary"/>
         </Transition>
     </div>
 </template>
@@ -15,16 +16,17 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
-import TurnStarting from "@/components/GamePage/GamePlaying/Turn/TurnStarting";
+import TurnStarting from "@/components/GamePage/GamePlaying/Turn/TurnStarting/TurnStarting";
 import TurnPlaying from "@/components/GamePage/GamePlaying/Turn/TurnPlaying";
 import TurnSummary from "@/components/GamePage/GamePlaying/Turn/TurnSummary/TurnSummary";
 import RoundSummary from "@/components/GamePage/GamePlaying/Round/RoundSummary";
 import useError from "@/composables/Error/useError";
 import Card from "@/classes/Card";
+import RoundStarting from "@/components/GamePage/GamePlaying/Round/RoundStarting";
 
 export default {
     name: "GamePlaying",
-    components: { RoundSummary, TurnSummary, TurnPlaying, TurnStarting },
+    components: { RoundStarting, RoundSummary, TurnSummary, TurnPlaying, TurnStarting },
     setup() {
         const store = useStore();
         const { displayError } = useError();
@@ -35,9 +37,15 @@ export default {
     },
     data() {
         return {
+            // Values are : "round-starting", "turn-starting", "turn-playing", "turn-summary", "round-summary"
             gameState: "turn-starting",
             play: { cards: [] },
         };
+    },
+    created() {
+        if (this.game.isNewRound) {
+            this.gameState = "round-starting";
+        }
     },
     methods: {
         setGameState(gameState) {
@@ -77,7 +85,8 @@ export default {
                 if (this.game.isNewRound) {
                     this.setGameState("round-summary");
                 } else {
-                    this.setGameState("turn-starting");
+                    const gameState = this.game.isNewRound ? "round-starting" : "turn-starting";
+                    this.setGameState(gameState);
                 }
             } catch (err) {
                 this.displayError(err);

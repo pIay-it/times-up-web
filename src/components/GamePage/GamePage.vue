@@ -1,10 +1,12 @@
 <template>
-    <Transition id="game-page" mode="out-in" name="fade">
-        <DefaultLoader v-if="isGameFetching" key="fetching-game" class="h-100" :text="$t('GamePage.fetchingGame')"/>
-        <GamePreparing v-else-if="game.isPreparing" key="game-preparing" class="h-100"/>
-        <GamePlaying v-else-if="game.isPlaying" key="game-playing" class="h-100"/>
-        <GameOver v-else-if="game.isOver" key="game-over" class="h-100"/>
-    </Transition>
+    <div id="game-page">
+        <Transition mode="out-in" name="fade">
+            <DefaultLoader v-if="isGameFetching" key="fetching-game" class="h-100" :text="$t('GamePage.fetchingGame')"/>
+            <GamePreparing v-else-if="game.isPreparing" key="game-preparing" class="h-100"/>
+            <GamePlaying v-else-if="game.isPlaying" key="game-playing" class="h-100"/>
+            <GameOver v-else-if="game.isOver" key="game-over" class="h-100"/>
+        </Transition>
+    </div>
 </template>
 
 <script>
