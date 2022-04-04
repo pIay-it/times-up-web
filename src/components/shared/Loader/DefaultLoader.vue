@@ -1,6 +1,6 @@
 <template>
     <div id="loading" class="d-flex justify-content-center align-items-center text-center">
-        <DualRingSpinner :size="iconSize"/>
+        <DualRingSpinner :size="iconSize" :color="color"/>
         <div id="loading-text" :style="loadingTextStyle" v-html="text"/>
     </div>
 </template>
@@ -15,6 +15,10 @@ export default {
         text: {
             type: String,
             default: "",
+        },
+        color: {
+            type: String,
+            default: "white",
         },
         iconSize: {
             type: Number,

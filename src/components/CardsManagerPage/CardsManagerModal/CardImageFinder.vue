@@ -12,7 +12,7 @@
                 <span v-html="$t('CardImageFinder.searchForImageByTypingRequest')"/>
             </div>
             <div v-else-if="isFetchingImages" key="loading" class="d-flex justify-content-center align-items-center">
-                <DefaultLoader :text="$t('CardImageFinder.loadingImages')" :icon-size="32" :text-size="20"/>
+                <DefaultLoader :text="$t('CardImageFinder.loadingImages')" :icon-size="32" :text-size="20" color="grey"/>
             </div>
             <div v-else-if="images.length" id="card-image-finder-results" key="results" class="d-flex align-items-center">
                 <div v-for="image of images" :key="image.URL">
@@ -105,6 +105,9 @@ export default {
         },
         reset() {
             this.search = "";
+        },
+        setSearch(search) {
+            this.search = search;
         },
     },
 };

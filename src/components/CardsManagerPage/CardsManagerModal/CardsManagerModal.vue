@@ -324,6 +324,7 @@ export default {
         },
         setLabel(label) {
             this.label = label;
+            this.$refs.cardImageFinder.setSearch(label);
         },
         setImageURL(imageURL) {
             this.imageURL = imageURL;
