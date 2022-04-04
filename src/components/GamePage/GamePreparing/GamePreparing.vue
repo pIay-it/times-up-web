@@ -11,7 +11,7 @@
             <GamePlayer v-for="player of game.players" :key="player._id" :player="player"/>
         </div>
         <Transition class="mt-3" mode="out-in" name="translate-from-top">
-            <div v-if="!isUpdatingGame" key="" class="d-flex justify-content-center align-items-center">
+            <div v-if="!isUpdatingGame" key="game-preparing-footer" class="d-flex justify-content-center align-items-center">
                 <div class="game-preparing-footer-button-container">
                     <BackButton to="/"/>
                 </div>
@@ -20,9 +20,7 @@
                                   @click="startPlayingGame"/>
                 </div>
             </div>
-            <div v-else>
-                <DefaultLoader :text="$t('GameLobby.creatingGame')"/>
-            </div>
+            <DefaultLoader v-else key="game-preparing-footer-loader" :text="$t('GamePreparing.startingGame')"/>
         </Transition>
     </div>
 </template>
@@ -72,8 +70,10 @@ export default {
             }
             try {
                 await this.$store.dispatch("game/setIsUpdatingGame", true);
-                const { data: game } = await this.$timesUpAPI.updateGamePlayers(this.game._id, { players: this.game.players });
+                await this.$timesUpAPI.updateGamePlayers(this.game._id, { players: this.game.players });
+                const { data: game } = await this.$timesUpAPI.updateGame(this.game._id, { status: "playing" });
                 await this.$store.dispatch("game/setGame", game);
+                this.$toast.success(this.$t("GamePreparing.gameStarts"));
             } catch (err) {
                 this.displayError(err);
             } finally {

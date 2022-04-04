@@ -1,21 +1,18 @@
 <template>
-    <div id="turn-summary-played-card">
-        <div class="mb-2" v-html="card.label"/>
-        <div class="btn-group" role="group">
-            <input :id="`guessed-card-${card._id}`" v-model="status" type="radio" class="btn-check" value="guessed"/>
-            <label class="btn btn-outline-success" :for="`guessed-card-${card._id}`">
-                <span v-html="$t('TurnSummaryPlayedCard.guessed')"/>
-            </label>
-            <input v-if="game.canSkipCard" :id="`skipped-card-${card._id}`" v-model="status" type="radio" class="btn-check" value="skipped"/>
-            <label v-if="game.canSkipCard" class="btn btn-outline-warning" :for="`skipped-card-${card._id}`">
-                <span v-html="$t('TurnSummaryPlayedCard.skipped')"/>
-            </label>
-            <input :id="`discarded-card-${card._id}`" v-model="status" type="radio" class="btn-check" value="discarded"/>
-            <label class="btn btn-outline-danger" :for="`discarded-card-${card._id}`">
-                <span v-html="$t('TurnSummaryPlayedCard.discarded')"/>
-            </label>
+    <div class="turn-summary-played-card row mb-2">
+        <div class="game-player times-up-card col-12 d-flex flex-grow-1 align-items-center">
+            <div class="d-flex flex-grow-1 align-items-center">
+                <div class="card-image-container my-1 me-2">
+                    <CardImage :image-url="card.imageURL" :max-height="50" :max-width="50"/>
+                </div>
+                <div class="text-truncate flex-grow-1" v-html="card.label"/>
+            </div>
+            <VueFormToggleButton v-model="cardStatus" false-value="skipped" true-value="guessed" class="toggle-card-status">
+                <template #label="{ checked }">
+                    <span class="card-status-switcher-label text-white px-2" v-html="getCardStatusSwitcherLabel(checked)"/>
+                </template>
+            </VueFormToggleButton>
         </div>
-        <hr/>
     </div>
 </template>
 
@@ -23,9 +20,11 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import Card from "@/classes/Card";
+import CardImage from "@/components/shared/Card/Image/CardImage";
 
 export default {
     name: "TurnSummaryPlayedCard",
+    components: { CardImage },
     props: {
         card: {
             type: Card,
@@ -38,7 +37,7 @@ export default {
         return { game: computed(() => store.state.game.game) };
     },
     computed: {
-        status: {
+        cardStatus: {
             get() {
                 return this.card.status;
             },
@@ -47,5 +46,32 @@ export default {
             },
         },
     },
+    methods: {
+        getCardStatusSwitcherLabel(isChecked) {
+            const icon = isChecked ? "fa-check" : "fa-times";
+            return `<i class="fa-solid ${icon}"></i>`;
+        },
+    },
 };
 </script>
+
+<style lang="scss">
+    .card-image-container {
+        height: 50px;
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .toggle-card-status {
+        --toggle-bg-on: #8CB32D;
+        --toggle-border-on: #67861f;
+        --toggle-bg-off: #C82333;
+        --toggle-border-off: #991823;
+    }
+
+    .card-status-switcher-label {
+        font-size: 1.2rem;
+    }
+</style>

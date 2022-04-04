@@ -21,7 +21,7 @@
             <GamePlayer v-for="player of reversedGamePlayers" :key="player.name" :player="player"/>
         </TransitionGroup>
         <Transition class="mt-3" mode="out-in" name="translate-from-top">
-            <div v-if="!isCreatingGame" key="" class="d-flex justify-content-center align-items-center">
+            <div v-if="!isCreatingGame" key="game-lobby-footer" class="d-flex justify-content-center align-items-center">
                 <div class="game-lobby-footer-button-container">
                     <BackButton to="/"/>
                 </div>
@@ -32,9 +32,7 @@
                     <PlayITButton :class="{ 'cant-start-game-button': !game.canStart }" @click="createGame"/>
                 </div>
             </div>
-            <div v-else>
-                <DefaultLoader :text="$t('GameLobby.creatingGame')"/>
-            </div>
+            <DefaultLoader v-else key="game-lobby-footer-loader" :text="$t('GameLobby.creatingGame')"/>
         </Transition>
     </div>
 </template>
