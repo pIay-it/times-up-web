@@ -1,0 +1,9 @@
+.v-popper--theme-card-helper-tooltip {
+    padding: 0 5px 0 5px !important;
+    width: 100%;
+    inset: -15px auto auto 0px !important;
+
+    .v-popper__arrow-container {
+        display: none;
+    }
+}
