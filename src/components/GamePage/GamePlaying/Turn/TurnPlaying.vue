@@ -1,5 +1,15 @@
 <template>
     <div id="turn-playing" class="h-100">
+        <VTooltip :triggers="[]" :hide-triggers="[]" :distance="300" :skidding="300" container="#turn-playing" theme="card-helper-tooltip"
+                  :shown="isCardTooltipShown" :auto-hide="false" :hide-on-target-click="false">
+            <i id="card-helper-icon" class="fa-solid fa-lightbulb fa-3x" @click.prevent="showCardTooltip"/>
+            <template #popper>
+                <div v-if="isCardTooltipShown" class="d-flex">
+                    <CardImage :image-url="currentToGuessCard.imageURL" class="me-2"/>
+                    <p v-html="currentToGuessCardDescription"/>
+                </div>
+            </template>
+        </VTooltip>
         <div id="turn-playing-timer-section" class="turn-playing-section d-flex justify-content-center align-items-center">
             <ve-progress :progress="countdownProgress" :size="175" animation="default 400 0" color="white" empty-color="rgba(255, 255, 255, 0.1)">
                 <template #default>
@@ -13,7 +23,8 @@
         </div>
         <div id="turn-playing-card-section" class="flex-grow-1 d-flex flex-column turn-playing-section">
             <Transition mode="out-in" name="card-transition" @before-leave="beforeLeaveList">
-                <h1 id="card-to-guess-label" :key="currentToGuessCard._id" class="d-flex flex-grow-1 justify-content-center align-items-center"
+                <h1 id="card-to-guess-label" :key="currentToGuessCard._id"
+                    class="d-flex flex-grow-1 justify-content-center align-items-center text-center"
                     v-html="currentToGuessCard.label"/>
             </Transition>
         </div>
@@ -43,20 +54,27 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import Card from "@/classes/Card";
 import useTransition from "@/composables/Transition/useTransition";
+import CardImage from "@/components/shared/Card/Image/CardImage";
 
 export default {
     name: "TurnPlaying",
+    components: { CardImage },
     emits: { "card-played": card => card instanceof Card, "turn-is-over": () => true },
     setup() {
         const store = useStore();
         const game = computed(() => store.state.game.game);
         const turnTimeLimitMs = ref(game.value.roundsTurnsTimeLimit * 1000);
         const turnTimeLimit = ref(game.value.roundsTurnsTimeLimit);
+        const isCardTooltipShown = ref(false);
         const { beforeLeaveList } = useTransition();
         const countdown = ref(turnTimeLimit.value);
         return {
-            game: computed(() => store.state.game.game),
-            turnTimeLimit, turnTimeLimitMs, currentCardStartedAt: new Date(), countdown,
+            game,
+            turnTimeLimit,
+            turnTimeLimitMs,
+            currentCardStartedAt: new Date(),
+            countdown,
+            isCardTooltipShown,
             beforeLeaveList,
         };
     },
@@ -71,6 +89,10 @@ export default {
         isTurnOver() {
             return !this.game.currentToGuessCard;
         },
+        currentToGuessCardDescription() {
+            const { description } = this.currentToGuessCard;
+            return description ? description : this.$t("TurnPlaying.noCardDescription");
+        },
     },
     watch: {
         isTurnOver(isTurnOver) {
@@ -82,6 +104,7 @@ export default {
     methods: {
         playCurrentCard(status) {
             const { currentToGuessCard } = this.game;
+            this.isCardTooltipShown = false;
             const now = new Date();
             const playingTime = (now - this.currentCardStartedAt) / 1000;
             this.currentCardStartedAt = new Date();
@@ -89,6 +112,12 @@ export default {
         },
         syncCountdown({ seconds }) {
             this.countdown = seconds;
+        },
+        async showCardTooltip() {
+            if (!this.isCardTooltipShown) {
+                await this.$store.dispatch("fullscreenCountdown/launchCountdown", { countdown: 3 });
+            }
+            this.isCardTooltipShown = true;
         },
         endTurn() {
             this.countdown = 0;
@@ -98,7 +127,14 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+#card-helper-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
 .turn-playing-section {
     height: 33%;
 
