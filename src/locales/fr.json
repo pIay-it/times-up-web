@@ -85,7 +85,8 @@
     "TurnPlaying": {
         "guessed": "Trouver",
         "skipped": "Passer",
-        "toGuess": "À faire deviner :"
+        "toGuess": "À faire deviner :",
+        "noCardDescription": "Aucune description pour cette carte…"
     },
     "TurnSummary": {
         "areYouSureYouWantToResetTurn": "Êtes-vous sûr de vouloir rejouer ce tour ?",
