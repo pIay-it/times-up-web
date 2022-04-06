@@ -97,17 +97,8 @@ export default {
                 this.$emit("reset-turn");
             }
         },
-        async validateTurn() {
-            try {
-                await this.$store.dispatch("game/setIsUpdatingGame", true);
-                const { data: game } = this.$timesUpAPI.makeGamePlay(this.game._id, this.play);
-                await this.$store.dispatch("game/setGame", game);
-                this.$emit("validated-turn");
-            } catch (err) {
-                this.displayError(err);
-            } finally {
-                await this.$store.dispatch("game/setIsUpdatingGame", false);
-            }
+        validateTurn() {
+            this.$emit("validated-turn");
         },
     },
 };

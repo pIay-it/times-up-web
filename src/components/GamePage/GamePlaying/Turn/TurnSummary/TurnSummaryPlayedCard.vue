@@ -5,9 +5,12 @@
                 <div class="card-image-container my-1 me-2">
                     <CardImage :image-url="card.imageURL" :max-height="50" :max-width="50"/>
                 </div>
-                <div class="text-truncate flex-grow-1" v-html="card.label"/>
+                <div class="text-truncate flex-grow-1">
+                    <div v-html="card.label"/>
+                    <div class="playing-time-text" v-html="playingTimeText"/>
+                </div>
             </div>
-            <VueFormToggleButton v-model="cardStatus" false-value="skipped" true-value="guessed" class="toggle-card-status">
+            <VueFormToggleButton v-model="cardStatus" :false-value="playedCardFalseValue" true-value="guessed" class="toggle-card-status">
                 <template #label="{ checked }">
                     <span class="card-status-switcher-label text-white px-2" v-html="getCardStatusSwitcherLabel(checked)"/>
                 </template>
@@ -45,6 +48,12 @@ export default {
                 this.$emit("update-played-card-status", { _id: this.card._id, status });
             },
         },
+        playedCardFalseValue() {
+            return this.game.round === 1 ? "discarded" : "skipped";
+        },
+        playingTimeText() {
+            return this.$t("TurnSummaryPlayedCard.cardPlayedInSeconds", { playingTime: this.card.playingTime });
+        },
     },
     methods: {
         getCardStatusSwitcherLabel(isChecked) {
@@ -73,5 +82,11 @@ export default {
 
     .card-status-switcher-label {
         font-size: 1.2rem;
+    }
+
+    .playing-time-text {
+        font-style: italic;
+        font-size: 0.8rem;
+        color: lightgray;
     }
 </style>

@@ -86,12 +86,13 @@
         "guessed": "Trouver",
         "skipped": "Passer",
         "toGuess": "À faire deviner :",
-        "noCardDescription": "Aucune description pour cette carte…"
+        "noCardDescription": "Aucune description pour cette carte…",
+        "youCantSkipOnFirstRound": "Vous ne pouvez pas passer une carte durant la première manche"
     },
     "TurnSummary": {
         "areYouSureYouWantToResetTurn": "Êtes-vous sûr de vouloir rejouer ce tour ?",
         "turnSummary": "Résultats du tour {turn}",
-        "playerHasGuessed": "{player} a trouvé :",
+        "playerHasGuessed": "{player} a fait deviner :",
         "cards": "Aucune carte | 1 carte | {score} cartes",
         "guessed": "Trouvée",
         "skipped": "Passée",
@@ -101,7 +102,8 @@
     "TurnSummaryPlayedCard": {
         "skipped": "Passée",
         "guessed": "Trouvée",
-        "discarded": "Défaussée"
+        "discarded": "Défaussée",
+        "cardPlayedInSeconds": "Jouée en { playingTime } secondes"
     },
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",

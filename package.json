@@ -12,9 +12,9 @@
     "dependencies": {
         "@chenfengyuan/vue-countdown": "^2.0.0",
         "@fortawesome/fontawesome-free": "^6.1.1",
-        "@popperjs/core": "^2.11.4",
-        "@sentry/tracing": "^6.19.3",
-        "@sentry/vue": "^6.19.3",
+        "@popperjs/core": "^2.11.5",
+        "@sentry/tracing": "^6.19.4",
+        "@sentry/vue": "^6.19.4",
         "@vee-validate/i18n": "^4.5.10",
         "@vueform/toggle": "^2.0.1",
         "axios": "^0.26.1",
@@ -41,12 +41,12 @@
         "vuex": "^4.0.0",
         "xss": "^1.0.11",
         "yup": "^0.32.11",
-        "yup-locales": "^1.2.2"
+        "yup-locales": "^1.2.3"
     },
     "devDependencies": {
         "@babel/core": "^7.17.8",
         "@babel/eslint-parser": "^7.17.0",
-        "@intlify/vue-i18n-loader": "^4.1.0",
+        "@intlify/vue-i18n-loader": "^4.2.0",
         "@vue/cli-plugin-babel": "^5.0.4",
         "@vue/cli-plugin-e2e-cypress": "^5.0.4",
         "@vue/cli-plugin-eslint": "^5.0.4",
@@ -55,11 +55,11 @@
         "@vue/cli-plugin-vuex": "^5.0.4",
         "@vue/cli-service": "^5.0.4",
         "@vue/eslint-config-airbnb": "^6.0.0",
-        "@vue/test-utils": "^2.0.0-rc.17",
+        "@vue/test-utils": "^2.0.0-rc.19",
         "chai": "^4.3.6",
         "eslint": "^8.12.0",
-        "eslint-plugin-import": "^2.25.4",
-        "eslint-plugin-vue": "^8.5.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-vue": "^8.6.0",
         "eslint-plugin-vuejs-accessibility": "^1.1.1",
         "vue-cli-plugin-i18n": "~2.3.1"
     }

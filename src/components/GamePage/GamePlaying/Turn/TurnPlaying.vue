@@ -32,6 +32,7 @@
             <div class="turn-action-button-container">
                 <button id="skipped-card-button" type="button"
                         class="turn-action-button d-flex flex-column align-items-center justify-content-center"
+                        :class="{ disabled: isSkippedButtonDisabled }"
                         @click="playCurrentCard('skipped')">
                     <i class="fa-solid fa-times"/>
                     <span class="text-center" v-html="$t('TurnPlaying.skipped')"/>
@@ -52,6 +53,7 @@
 <script>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import { POSITION } from "vue-toastification";
 import Card from "@/classes/Card";
 import useTransition from "@/composables/Transition/useTransition";
 import CardImage from "@/components/shared/Card/Image/CardImage";
@@ -93,6 +95,9 @@ export default {
             const { description } = this.currentToGuessCard;
             return description ? description : this.$t("TurnPlaying.noCardDescription");
         },
+        isSkippedButtonDisabled() {
+            return this.game.round === 1;
+        },
     },
     watch: {
         isTurnOver(isTurnOver) {
@@ -104,6 +109,10 @@ export default {
     methods: {
         playCurrentCard(status) {
             const { currentToGuessCard } = this.game;
+            if (status === "skipped" && this.isSkippedButtonDisabled) {
+                this.$toast.dismiss("forbidden-skip");
+                return this.$toast.warning(this.$t("TurnPlaying.youCantSkipOnFirstRound"), { id: "forbidden-skip", position: POSITION.TOP_CENTER });
+            }
             this.isCardTooltipShown = false;
             const now = new Date();
             const playingTime = (now - this.currentCardStartedAt) / 1000;
@@ -157,10 +166,6 @@ export default {
             opacity: 0.85;
             box-shadow: 1px 1px 3px #000000;
 
-            .fa-solid {
-                font-size: 6rem;
-            }
-
             &#guessed-card-button {
                 background-color: #8CB32D;
                 border-color: #8CB32D;
@@ -169,6 +174,15 @@ export default {
             &#skipped-card-button {
                 background-color: #C82333;
                 border-color: #C82333;
+            }
+
+            &.disabled {
+                background-color: #6a6868 !important;
+                border-color: #4a4a4a !important;
+            }
+
+            .fa-solid {
+                font-size: 6rem;
             }
         }
     }

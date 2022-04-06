@@ -33,8 +33,8 @@
 * `@vueform/toggle` installed with version `2.0.1`.
 * `@fortawesome/fontawesome-free` installed with version `6.1.1`.
 * `@popperjs/core` installed with version `2.11.4`.
-* `@sentry/tracing` installed with version `6.19.3`.
-* `@sentry/vue` installed with version `6.19.3`.
+* `@sentry/tracing` installed with version `6.19.4`.
+* `@sentry/vue` installed with version `6.19.4`.
 * `axios` installed with version `0.24.0`.
 * `bootstrap` installed with version `5.1.3`.
 * `fuse.js` installed with version `6.5.3`.
@@ -55,4 +55,4 @@
 * `vue-toastification` installed with version `2.0.0-rc.5`.
 * `xss` installed with version `1.0.11`.
 * `yup` installed with version `0.32.11`.
-* `yup-locales` installed with version `1.2.2`.
+* `yup-locales` installed with version `1.2.3`.
