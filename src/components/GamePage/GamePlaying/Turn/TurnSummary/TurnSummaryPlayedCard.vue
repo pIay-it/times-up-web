@@ -1,6 +1,6 @@
 <template>
     <div class="turn-summary-played-card row mb-2">
-        <div class="game-player times-up-card col-12 d-flex flex-grow-1 align-items-center">
+        <div class="played-card times-up-card col-12 d-flex flex-grow-1 align-items-center">
             <div class="d-flex flex-grow-1 align-items-center">
                 <div class="card-image-container my-1 me-2">
                     <CardImage :image-url="card.imageURL" :max-height="50" :max-width="50"/>

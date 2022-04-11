@@ -6,11 +6,11 @@
             <h4 class="text-center" v-html="$t('TurnSummary.cards', { score }, score)"/>
             <div class="d-flex justify-content-around">
                 <div class="card-status-label">
-                    <div id="guessed-card-circle" class="card-status-circle me-2"/>
+                    <ColoredCircle color="#8CB32D" class="me-2"/>
                     <span v-html="$t('TurnSummary.guessed')"/>
                 </div>
                 <div class="card-status-label">
-                    <div id="skipped-card-circle" class="card-status-circle me-2"/>
+                    <ColoredCircle color="#C82333" class="me-2"/>
                     <span v-html="$t('TurnSummary.skipped')"/>
                 </div>
             </div>
@@ -51,10 +51,11 @@ import PageTitle from "@/components/shared/Title/PageTitle";
 import useError from "@/composables/Error/useError";
 import PlayITButton from "@/components/shared/Button/PlayITButton";
 import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
+import ColoredCircle from "@/components/shared/misc/ColoredCircle";
 
 export default {
     name: "TurnSummary",
-    components: { DefaultLoader, PlayITButton, PageTitle, TurnSummaryPlayedCard },
+    components: { ColoredCircle, DefaultLoader, PlayITButton, PageTitle, TurnSummaryPlayedCard },
     props: {
         play: {
             type: Object,
@@ -108,21 +109,6 @@ export default {
     .card-status-label {
         display: flex;
         align-items: center;
-
-        .card-status-circle {
-            border-radius: 50px;
-            height: 15px;
-            width: 15px;
-            box-shadow: 1px 1px 3px #000000;
-
-            &#guessed-card-circle {
-                background-color: #8CB32D;
-            }
-
-            &#skipped-card-circle {
-                background-color: #C82333;
-            }
-        }
     }
 
     #turn-summary-cards-container {

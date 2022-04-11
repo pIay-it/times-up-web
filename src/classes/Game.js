@@ -117,6 +117,10 @@ class Game {
         return this.teams.length ? this.teams[1] : null;
     }
 
+    get lastRoundNumber() {
+        return this.round - 1;
+    }
+
     doesTeamHaveEnoughPlayers(team) {
         return this.getPlayersInTeam(team).length >= 2;
     }
@@ -192,8 +196,20 @@ class Game {
         }
     }
 
+    getRoundTurns(roundNumber) {
+        return this.history.filter(({ round }) => roundNumber === round);
+    }
+
+    getRoundSummary(roundNumber) {
+        return this.summary.getRoundSummary(roundNumber);
+    }
+
     getRoundTeamScore(roundNumber, team) {
         return this.summary.getRoundTeamScore(roundNumber, team);
+    }
+
+    getRoundWinningTeams(roundNumber) {
+        return this.summary.getRoundWinningTeams(roundNumber);
     }
 
     getTeamFinalScore(team) {

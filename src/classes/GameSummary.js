@@ -4,7 +4,7 @@ import GameSummaryScore from "@/classes/GameSummaryScore";
 
 class GameSummary {
     constructor(gameSummary = null) {
-        this.rounds = getProp(gameSummary, "rounds");
+        this.rounds = getProp(gameSummary, "rounds", []);
         this.finalScores = getProp(gameSummary, "finalScores", [], finalScores => finalScores.map(finalScore => new GameSummaryScore(finalScore)));
         this.winners = {
             players: getProp(gameSummary, "winners.players", [], players => players.map(player => new Player(player))),
@@ -28,14 +28,24 @@ class GameSummary {
         return this.winningTeams?.length > 1;
     }
 
+    getRoundSummary(roundNumber) {
+        return this.rounds.find(({ number }) => number === roundNumber);
+    }
+
     getRoundTeamScore(roundNumber, team) {
-        const summaryRound = this.rounds.find(({ number }) => number === roundNumber);
-        return summaryRound ? summaryRound.getTeamScore(team) : undefined;
+        const summaryRound = this.getRoundSummary(roundNumber);
+        return summaryRound?.getTeamScore(team);
     }
 
     getTeamFinalScore(team) {
         const teamFinalScore = this.finalScores.find(finalScore => finalScore.team === team);
-        return teamFinalScore ? teamFinalScore.score : undefined;
+        return teamFinalScore?.score;
+    }
+
+    getRoundWinningTeams(roundNumber) {
+        const summaryRound = this.getRoundSummary(roundNumber);
+        const highestScore = Math.max(...summaryRound.scores.map(({ score }) => score));
+        return summaryRound.scores.reduce((acc, { score, team }) => score === highestScore ? [...acc, team] : acc, []);
     }
 }
 

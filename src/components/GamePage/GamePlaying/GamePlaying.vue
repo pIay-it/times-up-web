@@ -8,7 +8,7 @@
                          @turn-is-over="setGameState('turn-summary')"/>
             <TurnSummary v-else-if="gameState === 'turn-summary'" key="turn-summary" :play="play" @update-played-card-status="updatePlayedCardStatus"
                          @validated-turn="validatedTurn" @reset-turn="resetTurn"/>
-            <RoundSummary v-else-if="gameState === 'round-summary'" key="round-summary"/>
+            <RoundSummary v-else-if="gameState === 'round-summary'" key="round-summary" @validated-round="validatedRound"/>
         </Transition>
     </div>
 </template>
@@ -19,7 +19,7 @@ import { useStore } from "vuex";
 import TurnStarting from "@/components/GamePage/GamePlaying/Turn/TurnStarting/TurnStarting";
 import TurnPlaying from "@/components/GamePage/GamePlaying/Turn/TurnPlaying";
 import TurnSummary from "@/components/GamePage/GamePlaying/Turn/TurnSummary/TurnSummary";
-import RoundSummary from "@/components/GamePage/GamePlaying/Round/RoundSummary";
+import RoundSummary from "@/components/GamePage/GamePlaying/Round/RoundSummary/RoundSummary";
 import useError from "@/composables/Error/useError";
 import Card from "@/classes/Card";
 import RoundStarting from "@/components/GamePage/GamePlaying/Round/RoundStarting";
@@ -44,7 +44,7 @@ export default {
     },
     created() {
         if (this.game.isNewRound) {
-            this.gameState = "round-starting";
+            this.gameState = "round-summary";
         }
     },
     methods: {
@@ -82,17 +82,16 @@ export default {
                 await this.$store.dispatch("game/setIsUpdatingGame", true);
                 const { data } = await this.$timesUpAPI.makeGamePlay(this.game._id, this.play);
                 await this.$store.dispatch("game/setGame", data);
-                if (this.game.isNewRound) {
-                    this.setGameState("round-summary");
-                } else {
-                    const gameState = this.game.isNewRound ? "round-starting" : "turn-starting";
-                    this.setGameState(gameState);
-                }
+                const newGameState = this.game.isNewRound ? "round-summary" : "turn-starting";
+                this.setGameState(newGameState);
             } catch (err) {
                 this.displayError(err);
             } finally {
                 await this.$store.dispatch("game/setIsUpdatingGame", false);
             }
+        },
+        validatedRound() {
+            this.setGameState("round-starting");
         },
     },
 };

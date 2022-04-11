@@ -1,8 +1,8 @@
 <template>
-    <div class="game-team-label d-flex align-items-center">
-        <div class="team-color-circle me-2" :style="{ backgroundColor: team.color }"/>
+    <div class="game-team-label d-flex justify-content-center align-items-center">
+        <ColoredCircle :color="team.color" class="me-2"/>
         <span v-html="team.name"/>
-        <div v-tooltip="teamProblemTooltipText" class="text-center team-problem-container">
+        <div v-if="hasAppendIcon" v-tooltip="teamProblemTooltipText" class="text-center team-problem-container">
             <Transition mode="out-in" name="fade">
                 <i v-if="!game.doesTeamHaveEnoughPlayers(team.name)" class="fa-solid fa-exclamation-triangle"/>
             </Transition>
@@ -13,13 +13,19 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
+import ColoredCircle from "@/components/shared/misc/ColoredCircle";
 
 export default {
     name: "GameTeamLabel",
+    components: { ColoredCircle },
     props: {
         team: {
             type: Object,
             required: true,
+        },
+        hasAppendIcon: {
+            type: Boolean,
+            default: false,
         },
     },
     setup() {
@@ -36,13 +42,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .team-color-circle {
-        border-radius: 50px;
-        height: 15px;
-        width: 15px;
-        box-shadow: 1px 1px 3px #000000;
-    }
-
     .team-problem-container {
         min-width: 30px;
     }

@@ -4,7 +4,7 @@
         <div class="times-up-card py-2 mb-4">
             <h4 class="text-center" v-html="$t('GamePreparing.teams')"/>
             <div class="d-flex justify-content-around">
-                <GameTeamLabel v-for="team of game.teams" :key="`team-${team.color}`" :team="team"/>
+                <GameTeamLabel v-for="team of game.teams" :key="`team-${team.color}`" :team="team" :has-append-icon="true"/>
             </div>
         </div>
         <div class="d-flex flex-grow-1 flex-column container-fluid">

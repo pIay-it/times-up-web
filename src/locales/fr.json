@@ -105,6 +105,13 @@
         "discarded": "Défaussée",
         "cardPlayedInSeconds": "Jouée en { playingTime } secondes"
     },
+    "RoundSummary": {
+        "roundSummary": "Résultats de la manche {round}",
+        "teams": "Équipes"
+    },
+    "RoundSummaryTeamScore": {
+        "score": "0 pt | 1 pt | {score} pts"
+    },
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",
         "cardsManager": "Gestionnaire de cartes"
