@@ -34,7 +34,7 @@ export default {
         const store = useStore();
         const game = computed(() => store.state.game.game);
         const lastGameRoundSummary = computed(() => game.value.getRoundSummary(game.value.lastRoundNumber));
-        const roundTurns = computed(() => game.value.getRoundTurns(game.value.lastRoundNumber));
+        const roundTurns = game.value.getRoundTurns(game.value.lastRoundNumber).slice().reverse();
         return {
             game,
             lastGameRoundSummary,

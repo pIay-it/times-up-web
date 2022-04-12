@@ -112,6 +112,15 @@
     "RoundSummaryTeamScore": {
         "score": "0 pt | 1 pt | {score} pts"
     },
+    "RoundSummaryTurn": {
+        "turnSpeaker": "Tour {turn} ({speakerName})",
+        "score": "0 pt | 1 pt | {score} pts"
+    },
+    "GameOver": {
+        "gameResults": "Résultats de la partie",
+        "gameWonByTeam": "L'équipe {winningTeam} remporte la partie",
+        "score": "0 pt | 1 pt | {score} pts"
+    },
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",
         "cardsManager": "Gestionnaire de cartes"

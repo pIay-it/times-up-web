@@ -44,7 +44,7 @@ export default {
     },
     created() {
         if (this.game.isNewRound) {
-            this.gameState = "round-summary";
+            this.gameState = "round-starting";
         }
     },
     methods: {
@@ -80,7 +80,8 @@ export default {
         async validatedTurn() {
             try {
                 await this.$store.dispatch("game/setIsUpdatingGame", true);
-                const { data } = await this.$timesUpAPI.makeGamePlay(this.game._id, this.play);
+                const body = this.play.cards.length ? this.play : undefined;
+                const { data } = await this.$timesUpAPI.makeGamePlay(this.game._id, body);
                 await this.$store.dispatch("game/setGame", data);
                 const newGameState = this.game.isNewRound ? "round-summary" : "turn-starting";
                 this.setGameState(newGameState);

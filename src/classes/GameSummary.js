@@ -28,6 +28,12 @@ class GameSummary {
         return this.winningTeams?.length > 1;
     }
 
+    getRoundWinningTeams(roundNumber) {
+        const summaryRound = this.getRoundSummary(roundNumber);
+        const highestScore = Math.max(...summaryRound.scores.map(({ score }) => score));
+        return summaryRound.scores.reduce((acc, { score, team }) => score === highestScore ? [...acc, team] : acc, []);
+    }
+
     getRoundSummary(roundNumber) {
         return this.rounds.find(({ number }) => number === roundNumber);
     }
@@ -40,12 +46,6 @@ class GameSummary {
     getTeamFinalScore(team) {
         const teamFinalScore = this.finalScores.find(finalScore => finalScore.team === team);
         return teamFinalScore?.score;
-    }
-
-    getRoundWinningTeams(roundNumber) {
-        const summaryRound = this.getRoundSummary(roundNumber);
-        const highestScore = Math.max(...summaryRound.scores.map(({ score }) => score));
-        return summaryRound.scores.reduce((acc, { score, team }) => score === highestScore ? [...acc, team] : acc, []);
     }
 }
 

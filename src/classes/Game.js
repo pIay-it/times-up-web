@@ -90,7 +90,7 @@ class Game {
     }
 
     get isNewRound() {
-        return this.round === 1 && this.turn === 1 || this.lastPlay?.round !== this.round;
+        return (this.round === 1 || this.lastPlay?.round !== this.round) && this.turn === 1;
     }
 
     get winningPlayers() {
@@ -213,8 +213,8 @@ class Game {
     }
 
     getTeamFinalScore(team) {
-        const teamFinalScore = this.summary.getTeamFinalScore(team);
-        return this.isOver && teamFinalScore !== undefined ? teamFinalScore : undefined;
+        const teamFinalScore = this?.summary?.getTeamFinalScore(team);
+        return this?.isOver && teamFinalScore !== undefined ? teamFinalScore : undefined;
     }
 }
 
