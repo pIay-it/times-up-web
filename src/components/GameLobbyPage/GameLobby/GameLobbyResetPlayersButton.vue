@@ -1,7 +1,7 @@
 <template>
     <Transition mode="out-in" name="translate-from-top">
         <a v-if="isShown" id="game-lobby-reset-players-button" v-tooltip="$t('GameLobbyResetPlayersButton.resetGameComposition')"
-           href="#" type="button" @click.prevent="removeAllGamePlayers">
+           href="#" type="button" class="times-up-anchor" @click.prevent="removeAllGamePlayers">
             <i class="fa-solid fa-arrow-rotate-right fa-flip-horizontal fa-3x"/>
         </a>
     </Transition>
@@ -41,10 +41,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    #game-lobby-reset-players-button {
-        text-decoration: none;
-        color: white;
-    }
-</style>

@@ -119,7 +119,8 @@
     "GameOver": {
         "gameResults": "Résultats de la partie",
         "gameWonByTeam": "L'équipe {winningTeam} remporte la partie",
-        "score": "0 pt | 1 pt | {score} pts"
+        "score": "0 pt | 1 pt | {score} pts",
+        "newGame": "Nouvelle partie"
     },
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",

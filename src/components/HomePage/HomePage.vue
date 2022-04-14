@@ -7,7 +7,7 @@
             <RouterLink class="btn-times-up" to="/game-lobby">
                 <span v-html="$t('HomePage.playIT')"/>
             </RouterLink>
-            <RouterLink id="about-link" class="mt-2" to="/about">
+            <RouterLink id="about-link" class="times-up-anchor mt-2" to="/about">
                 <span v-html="$t('HomePage.about')"/>
             </RouterLink>
         </div>
@@ -24,7 +24,6 @@ export default { name: "HomePage" };
     }
 
     #about-link {
-        color: white;
         font-weight: bolder;
         font-size: 1.5rem;
     }

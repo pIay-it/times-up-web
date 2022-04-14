@@ -8,7 +8,9 @@
         </div>
         <div id="game-over-footer" class="d-flex justify-content-around align-items-center w-100">
             <div class="game-over-footer-button-container pt-2">
-                <i class="fa-solid fa-arrow-right-to-bracket fa-flip-horizontal fa-3x"/>
+                <RouterLink class="times-up-anchor" to="/game-lobby">
+                    <i v-tooltip="$t('GameOver.newGame')" class="fa-solid fa-arrow-right-to-bracket fa-flip-horizontal fa-3x"/>
+                </RouterLink>
             </div>
             <div class="game-over-footer-button-container pt-2">
                 <i class="fa-solid fa-clock-rotate-left fa-3x"/>

@@ -1,3 +1,13 @@
+.times-up-anchor {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #dadada;
+    }
+}
+
 .anchor-disabled {
     color: grey !important;
     cursor: text !important;
