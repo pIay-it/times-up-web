@@ -20,20 +20,13 @@
                          @before-leave="beforeLeaveList">
             <GamePlayer v-for="player of reversedGamePlayers" :key="player.name" :player="player"/>
         </TransitionGroup>
-        <Transition class="mt-3" mode="out-in" name="translate-from-top">
-            <div v-if="!isCreatingGame" key="game-lobby-footer" class="d-flex justify-content-center align-items-center">
-                <div class="game-lobby-footer-button-container">
-                    <BackButton to="/"/>
-                </div>
-                <div class="game-lobby-footer-button-container">
-                    <GameLobbyResetPlayersButton/>
-                </div>
-                <div class="game-lobby-footer-button-container pt-2">
-                    <PlayITButton :class="{ 'cant-start-game-button': !game.canStart }" @click="createGame"/>
-                </div>
+        <TimesUpFooter :is-loading="isCreatingGame" :loading-text="$t('GameLobby.creatingGame')">
+            <BackButton to="/"/>
+            <div>
+                <GameLobbyResetPlayersButton/>
             </div>
-            <DefaultLoader v-else key="game-lobby-footer-loader" :text="$t('GameLobby.creatingGame')"/>
-        </Transition>
+            <PlayITButton :class="{ 'cant-start-game-button': !game.canStart }" @click="createGame"/>
+        </TimesUpFooter>
     </div>
 </template>
 
@@ -52,12 +45,12 @@ import { filterOutHTMLTags } from "@/helpers/functions/String";
 import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage";
 import useTransition from "@/composables/Transition/useTransition";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
-import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 import PageTitle from "@/components/shared/Title/PageTitle";
+import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
 
 export default {
     name: "GameLobby",
-    components: { PageTitle, DefaultLoader, GamePlayer, GameLobbyResetPlayersButton, PlayITButton, BackButton, InputMessage },
+    components: { TimesUpFooter, PageTitle, GamePlayer, GameLobbyResetPlayersButton, PlayITButton, BackButton, InputMessage },
     setup() {
         const store = useStore();
         const { displayError } = useError();
@@ -154,13 +147,5 @@ export default {
     #game-composition {
         overflow-y: scroll;
         position: relative;
-    }
-
-    .game-lobby-footer-button-container {
-        width: 100px;
-        height: 65px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 </style>

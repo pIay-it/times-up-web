@@ -24,21 +24,16 @@
                 <span v-html="$t('TurnSummary.noCardPlayed')"/>
             </h3>
         </div>
-        <div id="turn-summary-footer">
-            <Transition class="mt-3" mode="out-in" name="translate-from-top">
-                <div v-if="!isGameUpdating" key="turn-summary-footer" class="d-flex justify-content-center align-items-center">
-                    <div class="turn-summary-footer-button-container">
-                        <a href="#" type="button" class="text-white me-2" @click.prevent="resetTurn">
-                            <i class="fa-solid fa-arrow-rotate-right fa-flip-horizontal fa-3x"/>
-                        </a>
-                    </div>
-                    <div class="turn-summary-footer-button-container pt-2">
-                        <PlayITButton @click="validateTurn"/>
-                    </div>
-                </div>
-                <DefaultLoader v-else key="turn-summary-footer-loader" :text="$t('TurnSummary.validatingTurn')"/>
-            </Transition>
-        </div>
+        <TimesUpFooter :is-loading="isGameUpdating" :loading-text="$t('TurnSummary.validatingTurn')">
+            <div class="turn-summary-footer-button-container">
+                <a href="#" type="button" class="text-white me-2" @click.prevent="resetTurn">
+                    <i class="fa-solid fa-arrow-rotate-right fa-flip-horizontal fa-3x"/>
+                </a>
+            </div>
+            <div class="turn-summary-footer-button-container pt-2">
+                <PlayITButton @click="validateTurn"/>
+            </div>
+        </TimesUpFooter>
     </div>
 </template>
 
@@ -50,12 +45,12 @@ import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 import PageTitle from "@/components/shared/Title/PageTitle";
 import useError from "@/composables/Error/useError";
 import PlayITButton from "@/components/shared/Button/PlayITButton";
-import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 import ColoredCircle from "@/components/shared/misc/ColoredCircle";
+import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
 
 export default {
     name: "TurnSummary",
-    components: { ColoredCircle, DefaultLoader, PlayITButton, PageTitle, TurnSummaryPlayedCard },
+    components: { TimesUpFooter, ColoredCircle, PlayITButton, PageTitle, TurnSummaryPlayedCard },
     props: {
         play: {
             type: Object,
@@ -73,7 +68,7 @@ export default {
         const { displayError } = useError();
         return {
             DefaultConfirmSwal, displayError,
-            game: computed(() => store.state.game.game),
+            game: store.state.game.game,
             isGameUpdating: computed(() => store.state.game.isUpdating),
         };
     },
@@ -119,13 +114,5 @@ export default {
         height: 100%;
         margin-bottom: 0;
         font-style: italic;
-    }
-
-    .turn-summary-footer-button-container {
-        width: 100px;
-        height: 65px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 </style>

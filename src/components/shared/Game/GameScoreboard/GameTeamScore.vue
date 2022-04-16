@@ -1,8 +1,8 @@
 <template>
-    <div class="round-summary-team-score">
+    <div class="game-team-score">
         <GameTeamLabel :team="scoreTeam"/>
         <div class="text-center">
-            <i v-if="didTeamWinRound" class="fa-solid fa-trophy text-warning me-2"/>
+            <i v-if="isWinner" class="fa-solid fa-trophy text-warning me-2"/>
             <span v-html="scoreLabel"/>
         </div>
     </div>
@@ -12,13 +12,18 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import GameTeamLabel from "@/components/shared/Game/GameTeamLabel";
+import GameSummaryScore from "@/classes/GameSummaryScore";
 
 export default {
-    name: "RoundSummaryTeam",
+    name: "GameTeamScore",
     components: { GameTeamLabel },
     props: {
         score: {
-            type: Object,
+            type: GameSummaryScore,
+            required: true,
+        },
+        isWinner: {
+            type: Boolean,
             required: true,
         },
     },
@@ -30,13 +35,10 @@ export default {
     computed: {
         scoreLabel() {
             const { score } = this.score;
-            return this.$t("RoundSummaryTeamScore.score", { score }, score);
+            return this.$t("GameTeamScore.score", { score }, score);
         },
         scoreTeam() {
             return this.game.getTeamWithName(this.score.team);
-        },
-        didTeamWinRound() {
-            return this.game.getRoundWinningTeams(this.game.lastRoundNumber).includes(this.score.team);
         },
     },
 };

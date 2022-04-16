@@ -10,18 +10,10 @@
         <div class="d-flex flex-grow-1 flex-column container-fluid">
             <GamePlayer v-for="player of game.players" :key="player._id" :player="player"/>
         </div>
-        <Transition class="mt-3" mode="out-in" name="translate-from-top">
-            <div v-if="!isUpdatingGame" key="game-preparing-footer" class="d-flex justify-content-center align-items-center">
-                <div class="game-preparing-footer-button-container">
-                    <BackButton to="/"/>
-                </div>
-                <div class="game-preparing-footer-button-container pt-2">
-                    <PlayITButton :class="{ 'cant-start-game-button': !game.doesAllTeamsHaveEnoughPlayers() }"
-                                  @click="startPlayingGame"/>
-                </div>
-            </div>
-            <DefaultLoader v-else key="game-preparing-footer-loader" :text="$t('GamePreparing.startingGame')"/>
-        </Transition>
+        <TimesUpFooter :is-loading="isUpdatingGame" :loading-text="$t('GamePreparing.startingGame')">
+            <BackButton to="/"/>
+            <PlayITButton :class="{ 'cant-start-game-button': !game.doesAllTeamsHaveEnoughPlayers() }" @click="startPlayingGame"/>
+        </TimesUpFooter>
     </div>
 </template>
 
@@ -35,13 +27,13 @@ import GameTeamLabel from "@/components/shared/Game/GameTeamLabel";
 import GamePlayer from "@/components/shared/Game/GamePlayer/GamePlayer";
 import BackButton from "@/components/shared/Button/BackButton";
 import PlayITButton from "@/components/shared/Button/PlayITButton";
-import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 import useError from "@/composables/Error/useError";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
+import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
 
 export default {
     name: "GamePreparing",
-    components: { DefaultLoader, PlayITButton, BackButton, GamePlayer, GameTeamLabel, PageTitle },
+    components: { TimesUpFooter, PlayITButton, BackButton, GamePlayer, GameTeamLabel, PageTitle },
     setup() {
         const store = useStore();
         const { displayError } = useError();
@@ -83,13 +75,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss">
-    .game-preparing-footer-button-container {
-        width: 100px;
-        height: 65px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-</style>

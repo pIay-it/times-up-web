@@ -118,7 +118,7 @@ class Game {
     }
 
     get lastRoundNumber() {
-        return this.round - 1;
+        return this.isPlaying ? this.round - 1 : this.round;
     }
 
     doesTeamHaveEnoughPlayers(team) {

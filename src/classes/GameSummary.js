@@ -1,10 +1,11 @@
 import Player from "@/classes/Player";
 import { getProp } from "@/helpers/functions/Class";
 import GameSummaryScore from "@/classes/GameSummaryScore";
+import GameSummaryRound from "@/classes/GameSummaryRound";
 
 class GameSummary {
     constructor(gameSummary = null) {
-        this.rounds = getProp(gameSummary, "rounds", []);
+        this.rounds = getProp(gameSummary, "rounds", [], rounds => rounds.map(round => new GameSummaryRound(round)));
         this.finalScores = getProp(gameSummary, "finalScores", [], finalScores => finalScores.map(finalScore => new GameSummaryScore(finalScore)));
         this.winners = {
             players: getProp(gameSummary, "winners.players", [], players => players.map(player => new Player(player))),

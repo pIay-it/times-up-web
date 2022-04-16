@@ -6,7 +6,9 @@
             <h4 class="mt-4" v-html="roundTitle"/>
             <p class="mt-4" v-html="roundDescription"/>
         </div>
-        <PlayITButton @click="$emit('start-turn')"/>
+        <TimesUpFooter>
+            <PlayITButton @click="$emit('start-turn')"/>
+        </TimesUpFooter>
     </div>
 </template>
 
@@ -18,10 +20,11 @@ import PlayITButton from "@/components/shared/Button/PlayITButton";
 import firstRoundIcon from "@/assets/svg/game/round-1-icon.svg";
 import secondRoundIcon from "@/assets/svg/game/round-2-icon.svg";
 import thirdRoundIcon from "@/assets/svg/game/round-3-icon.svg";
+import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
 
 export default {
     name: "RoundStarting",
-    components: { PlayITButton, PageTitle },
+    components: { TimesUpFooter, PlayITButton, PageTitle },
     emits: { "start-turn": () => true },
     setup() {
         const store = useStore();

@@ -2,16 +2,18 @@
     <div id="turn-starting" class="d-flex flex-column h-100 align-items-center">
         <PageTitle v-html="$t('TurnStarting.turnOf')"/>
         <h1 class="d-flex flex-grow-1 align-items-center justify-content-center player-name" v-html="game.speaker.name"/>
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-2">
-                    <i v-tooltip="$t('TurnStarting.showRoundRules')" class="fa-solid fa-circle-question fa-2x" @click="showRoundRules"/>
-                </div>
-                <div class="col-8 d-flex justify-content-center">
-                    <PlayITButton @click="playerIsReady"/>
+        <TimesUpFooter class="w-100">
+            <div class="container-fluid w-100">
+                <div class="row align-items-center">
+                    <div class="col-2">
+                        <i v-tooltip="$t('TurnStarting.showRoundRules')" class="fa-solid fa-circle-question fa-2x" @click="showRoundRules"/>
+                    </div>
+                    <div class="col-8 d-flex justify-content-center">
+                        <PlayITButton @click="playerIsReady"/>
+                    </div>
                 </div>
             </div>
-        </div>
+        </TimesUpFooter>
     </div>
 </template>
 
@@ -19,12 +21,13 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import PlayITButton from "@/components/shared/Button/PlayITButton";
-import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 import PageTitle from "@/components/shared/Title/PageTitle";
+import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 
 export default {
     name: "TurnStarting",
-    components: { PageTitle, PlayITButton },
+    components: { TimesUpFooter, PageTitle, PlayITButton },
     emits: { "player-is-ready": () => true, "show-round-rules": () => true },
     setup() {
         const store = useStore();

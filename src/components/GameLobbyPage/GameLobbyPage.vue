@@ -24,6 +24,7 @@ export default {
         const { checkUserAuthentication } = useUserAuth();
         const { displayError, isAPIErrorType } = useError();
         const { gameIdLocalStorage, getAndSetGameFromLocalStorage } = useGameFromLocalStorage();
+        const game = computed(() => store.state.game.game);
         onBeforeMount(async() => {
             try {
                 if (gameIdLocalStorage.value) {
@@ -32,18 +33,18 @@ export default {
                 await checkUserAuthentication();
                 if (gameIdLocalStorage.value) {
                     await getAndSetGameFromLocalStorage();
-                } else {
-                    await store.dispatch("game/resetGame");
                 }
             } catch (err) {
                 displayError(err);
             } finally {
+                if (!gameIdLocalStorage.value || !game.value.isPreparing && !game.value.isPlaying) {
+                    await store.dispatch("game/resetGame");
+                }
                 await store.dispatch("game/setIsFetchingGame", false);
             }
         });
         return {
-            gameIdLocalStorage, getAndSetGameFromLocalStorage, displayError, isAPIErrorType,
-            game: computed(() => store.state.game.game),
+            gameIdLocalStorage, getAndSetGameFromLocalStorage, displayError, isAPIErrorType, game,
             isFetchingGame: computed(() => store.state.game.isFetching),
         };
     },

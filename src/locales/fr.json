@@ -106,10 +106,12 @@
         "cardPlayedInSeconds": "Jouée en { playingTime } secondes"
     },
     "RoundSummary": {
-        "roundSummary": "Résultats de la manche {round}",
+        "roundSummary": "Résultats de la manche {round}"
+    },
+    "GameScoreboard": {
         "teams": "Équipes"
     },
-    "RoundSummaryTeamScore": {
+    "GameTeamScore": {
         "score": "0 pt | 1 pt | {score} pts"
     },
     "RoundSummaryTurn": {
@@ -120,7 +122,11 @@
         "gameResults": "Résultats de la partie",
         "gameWonByTeam": "L'équipe {winningTeam} remporte la partie",
         "score": "0 pt | 1 pt | {score} pts",
-        "newGame": "Nouvelle partie"
+        "newGame": "Nouvelle partie",
+        "tieBetweenTeams": "Égalité entre les équipes !"
+    },
+    "GameHistory": {
+        "gameHistory": "Historique de la partie"
     },
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",

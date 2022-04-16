@@ -1,14 +1,18 @@
 <template>
     <div id="game-playing">
         <Transition name="fade" mode="out-in">
-            <RoundStarting v-if="gameState === 'round-starting'" key="round-starting" @start-turn="setGameState('turn-starting')"/>
-            <TurnStarting v-else-if="gameState === 'turn-starting'" key="turn-starting"
-                          @player-is-ready="setGameState('turn-playing')" @show-round-rules="setGameState('round-starting')"/>
-            <TurnPlaying v-else-if="gameState === 'turn-playing'" key="turn-playing" @card-played="cardPlayed"
-                         @turn-is-over="setGameState('turn-summary')"/>
-            <TurnSummary v-else-if="gameState === 'turn-summary'" key="turn-summary" :play="play" @update-played-card-status="updatePlayedCardStatus"
+            <RoundStarting v-if="gameState === GAME_STATES.ROUND_STARTING" :key="GAME_STATES.ROUND_STARTING"
+                           @start-turn="setGameState(GAME_STATES.TURN_STARTING)"/>
+            <TurnStarting v-else-if="gameState === GAME_STATES.TURN_STARTING" :key="GAME_STATES.TURN_STARTING"
+                          @player-is-ready="setGameState(GAME_STATES.TURN_PLAYING)"
+                          @show-round-rules="setGameState(GAME_STATES.ROUND_STARTING)"/>
+            <TurnPlaying v-else-if="gameState === GAME_STATES.TURN_PLAYING" :key="GAME_STATES.TURN_PLAYING"
+                         @card-played="cardPlayed" @turn-is-over="setGameState(GAME_STATES.TURN_SUMMARY)"/>
+            <TurnSummary v-else-if="gameState === GAME_STATES.TURN_SUMMARY" :key="GAME_STATES.TURN_SUMMARY"
+                         :play="play" @update-played-card-status="updatePlayedCardStatus"
                          @validated-turn="validatedTurn" @reset-turn="resetTurn"/>
-            <RoundSummary v-else-if="gameState === 'round-summary'" key="round-summary" @validated-round="validatedRound"/>
+            <RoundSummary v-else-if="gameState === GAME_STATES.ROUND_SUMMARY" :key="GAME_STATES.ROUND_SUMMARY"
+                          @validated-round="validatedRound"/>
         </Transition>
     </div>
 </template>
@@ -19,10 +23,11 @@ import { useStore } from "vuex";
 import TurnStarting from "@/components/GamePage/GamePlaying/Turn/TurnStarting/TurnStarting";
 import TurnPlaying from "@/components/GamePage/GamePlaying/Turn/TurnPlaying";
 import TurnSummary from "@/components/GamePage/GamePlaying/Turn/TurnSummary/TurnSummary";
-import RoundSummary from "@/components/GamePage/GamePlaying/Round/RoundSummary/RoundSummary";
+import RoundSummary from "@/components/shared/Game/Round/RoundSummary/RoundSummary";
 import useError from "@/composables/Error/useError";
-import Card from "@/classes/Card";
 import RoundStarting from "@/components/GamePage/GamePlaying/Round/RoundStarting";
+import Card from "@/classes/Card";
+import { GAME_STATES } from "@/helpers/constants/Game";
 
 export default {
     name: "GamePlaying",
@@ -33,24 +38,24 @@ export default {
         return {
             displayError,
             game: computed(() => store.state.game.game),
+            GAME_STATES,
         };
     },
     data() {
         return {
-            // Values are : "round-starting", "turn-starting", "turn-playing", "turn-summary", "round-summary"
-            gameState: "turn-starting",
+            gameState: GAME_STATES.TURN_STARTING,
             play: { cards: [] },
         };
     },
     created() {
         if (this.game.isNewRound) {
-            this.gameState = "round-starting";
+            this.gameState = GAME_STATES.ROUND_STARTING;
         }
     },
     methods: {
         setGameState(gameState) {
             this.gameState = gameState;
-            if (gameState === "turn-starting") {
+            if (gameState === GAME_STATES.TURN_STARTING) {
                 this.resetPlay();
             }
         },
@@ -58,7 +63,7 @@ export default {
             this.play.cards = [];
         },
         async resetTurn() {
-            this.gameState = "turn-starting";
+            this.gameState = GAME_STATES.TURN_STARTING;
             for (const playedCard of this.play.cards) {
                 await this.$store.dispatch("game/updateGameCardById", { _id: playedCard._id, data: { status: "to-guess", playingTime: undefined } });
             }
@@ -83,7 +88,7 @@ export default {
                 const body = this.play.cards.length ? this.play : undefined;
                 const { data } = await this.$timesUpAPI.makeGamePlay(this.game._id, body);
                 await this.$store.dispatch("game/setGame", data);
-                const newGameState = this.game.isNewRound ? "round-summary" : "turn-starting";
+                const newGameState = this.game.isNewRound ? GAME_STATES.ROUND_SUMMARY : GAME_STATES.TURN_STARTING;
                 this.setGameState(newGameState);
             } catch (err) {
                 this.displayError(err);
@@ -92,7 +97,7 @@ export default {
             }
         },
         validatedRound() {
-            this.setGameState("round-starting");
+            this.setGameState(GAME_STATES.ROUND_STARTING);
         },
     },
 };
