@@ -11,36 +11,30 @@
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
-import Player from "@/classes/Player";
+<script setup>
+import { defineProps } from "vue";
 import GamePlayerDeleteButton from "@/components/shared/Game/GamePlayer/GamePlayerDeleteButton";
 import GamePlayerTeamSwitcher from "@/components/shared/Game/GamePlayer/GamePlayerTeamSwitcher";
 import GamePlayerIcon from "@/components/shared/Game/GamePlayer/GamePlayerIcon";
+import useGame from "@/composables/Game/useGame";
+import Player from "@/classes/Player";
 
-export default {
-    name: "GamePlayer",
-    components: { GamePlayerIcon, GamePlayerTeamSwitcher, GamePlayerDeleteButton },
-    props: {
-        player: {
-            type: Player,
-            required: true,
-        },
+defineProps({
+    player: {
+        type: Player,
+        required: true,
     },
-    setup() {
-        const store = useStore();
-        return { game: computed(() => store.state.game.game) };
-    },
-};
+});
+
+const { game } = useGame();
 </script>
 
 <style lang="scss" scoped>
-    .game-player {
-        height: 40px;
+.game-player {
+    height: 40px;
 
-        div {
-            min-width: 0;
-        }
+    div {
+        min-width: 0;
     }
+}
 </style>

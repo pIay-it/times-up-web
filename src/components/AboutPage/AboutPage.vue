@@ -17,16 +17,11 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import BackButton from "@/components/shared/Button/BackButton";
 import PlayITButton from "@/components/shared/Button/PlayITButton";
 import PageTitle from "@/components/shared/Title/PageTitle";
 import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
-
-export default {
-    name: "AboutPage",
-    components: { TimesUpFooter, PageTitle, PlayITButton, BackButton },
-};
 </script>
 
 <style lang="scss">

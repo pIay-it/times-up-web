@@ -2,33 +2,27 @@
     <i class="game-player-icon fa-solid fa-user-check" :style="{ color: playerColor }"/>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+<script setup>
+import { computed, defineProps } from "vue";
 import Player from "@/classes/Player";
+import useGame from "@/composables/Game/useGame";
 
-export default {
-    name: "GamePlayerIcon",
-    props: {
-        player: {
-            type: Player,
-            required: true,
-        },
+const props = defineProps({
+    player: {
+        type: Player,
+        required: true,
     },
-    setup() {
-        const store = useStore();
-        return { game: computed(() => store.state.game.game) };
-    },
-    computed: {
-        playerColor() {
-            if (!this.game.isCreated) {
-                return "#00b500";
-            }
-            const team = this.game.getTeamWithName(this.player.team);
-            return team?.color;
-        },
-    },
-};
+});
+
+const { game } = useGame();
+
+const playerColor = computed(() => {
+    if (!game.value.isCreated) {
+        return "#00b500";
+    }
+    const team = game.value.getTeamWithName(props.player.team);
+    return team?.color;
+});
 </script>
 
 <style lang="scss" scoped>

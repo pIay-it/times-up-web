@@ -4,7 +4,7 @@
         <div class="times-up-card py-2 mb-4">
             <h4 class="text-center" v-html="$t('GamePreparing.teams')"/>
             <div class="d-flex justify-content-around">
-                <GameTeamLabel v-for="team of game.teams" :key="`team-${team.color}`" :team="team" :has-append-icon="true"/>
+                <GameTeamLabel v-for="team of game.teams" :key="`team-${team.color}`" :team="team" has-append-icon/>
             </div>
         </div>
         <div class="d-flex flex-grow-1 flex-column container-fluid">
@@ -17,11 +17,11 @@
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
+<script setup>
 import { useStore } from "vuex";
 import { onBeforeRouteLeave } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useToast } from "vue-toastification";
 import PageTitle from "@/components/shared/Title/PageTitle";
 import GameTeamLabel from "@/components/shared/Game/GameTeamLabel";
 import GamePlayer from "@/components/shared/Game/GamePlayer/GamePlayer";
@@ -30,48 +30,43 @@ import PlayITButton from "@/components/shared/Button/PlayITButton";
 import useError from "@/composables/Error/useError";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
+import useGame from "@/composables/Game/useGame";
+import useTimesUpAPI from "@/composables/API/useTimesUpAPI";
 
-export default {
-    name: "GamePreparing",
-    components: { TimesUpFooter, PlayITButton, BackButton, GamePlayer, GameTeamLabel, PageTitle },
-    setup() {
-        const store = useStore();
-        const { displayError } = useError();
-        const { t } = useI18n();
-        const { DefaultConfirmSwal } = useSweetAlert();
-        onBeforeRouteLeave(async to => {
-            if (to.name !== "Game") {
-                const { isConfirmed } = await DefaultConfirmSwal.fire({
-                    title: t("GamePreparing.areYouSureYouWantToLeaveGamePreparing"),
-                    html: `<i class="text-success fa-solid fa-check-circle me-2"></i>${t("GamePreparing.gameWillBeRestored")}`,
-                    icon: "warning",
-                });
-                return isConfirmed;
-            }
-            return true;
+const store = useStore();
+const { displayError } = useError();
+const { t } = useI18n();
+const Toast = useToast();
+const { DefaultConfirmSwal } = useSweetAlert();
+const { game, isUpdatingGame } = useGame();
+const { timesUpAPI } = useTimesUpAPI();
+
+onBeforeRouteLeave(async to => {
+    if (to.name !== "Game") {
+        const { isConfirmed } = await DefaultConfirmSwal.fire({
+            title: t("GamePreparing.areYouSureYouWantToLeaveGamePreparing"),
+            html: `<i class="text-success fa-solid fa-check-circle me-2"></i>${t("GamePreparing.gameWillBeRestored")}`,
+            icon: "warning",
         });
-        return {
-            game: computed(() => store.state.game.game), displayError,
-            isUpdatingGame: computed(() => store.state.game.isUpdating),
-        };
-    },
-    methods: {
-        async startPlayingGame() {
-            if (!this.game.doesAllTeamsHaveEnoughPlayers()) {
-                return this.$toast.warning(this.$t("GamePreparing.allTeamsDontHaveEnoughPlayers"));
-            }
-            try {
-                await this.$store.dispatch("game/setIsUpdatingGame", true);
-                await this.$timesUpAPI.updateGamePlayers(this.game._id, { players: this.game.players });
-                const { data: game } = await this.$timesUpAPI.updateGame(this.game._id, { status: "playing" });
-                await this.$store.dispatch("game/setGame", game);
-                this.$toast.success(this.$t("GamePreparing.gameStarts"));
-            } catch (err) {
-                this.displayError(err);
-            } finally {
-                await this.$store.dispatch("game/setIsUpdatingGame", false);
-            }
-        },
-    },
+        return isConfirmed;
+    }
+    return true;
+});
+
+const startPlayingGame = async() => {
+    if (!game.value.doesAllTeamsHaveEnoughPlayers()) {
+        return Toast.warning(t("GamePreparing.allTeamsDontHaveEnoughPlayers"));
+    }
+    try {
+        await store.dispatch("game/setIsUpdatingGame", true);
+        await timesUpAPI.updateGamePlayers(game.value._id, { players: game.value.players });
+        const { data: updatedGame } = await timesUpAPI.updateGame(game.value._id, { status: "playing" });
+        await store.dispatch("game/setGame", updatedGame);
+        Toast.success(this.$t("GamePreparing.gameStarts"));
+    } catch (err) {
+        displayError(err);
+    } finally {
+        await store.dispatch("game/setIsUpdatingGame", false);
+    }
 };
 </script>

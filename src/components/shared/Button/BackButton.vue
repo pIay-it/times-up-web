@@ -1,22 +1,16 @@
 <template>
-    <RouterLink id="back-button" ref="backButton" v-tooltip="$t('BackButton.back')" :to="to" type="button" class="times-up-anchor">
+    <RouterLink id="back-button" v-tooltip="$t('BackButton.back')" :to="to" type="button" class="times-up-anchor">
         <i class="fa-solid fa-chevron-left fa-3x"/>
     </RouterLink>
 </template>
 
-<script>
-export default {
-    name: "BackButton",
-    props: {
-        to: {
-            type: String,
-            required: true,
-        },
+<script setup>
+import { defineProps } from "vue";
+
+defineProps({
+    to: {
+        type: String,
+        required: true,
     },
-    methods: {
-        blur() {
-            this.$refs.backButton.$el.blur();
-        },
-    },
-};
+});
 </script>

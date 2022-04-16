@@ -5,31 +5,25 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: "InputSuccessMessage",
-    props: {
-        text: {
-            type: String,
-            default: "",
-        },
-        type: {
-            type: String,
-            default: "success",
-        },
+<script setup>
+import { defineProps, computed } from "vue";
+
+const props = defineProps({
+    text: {
+        type: String,
+        default: "",
     },
-    computed: {
-        messageClasses() {
-            return { "info-feedback": this.type === "info" };
-        },
-        messageIconClasses() {
-            return {
-                "fa fa-check-circle": this.type === "success",
-                "fa fa-circle-info": this.type === "info",
-            };
-        },
+    type: {
+        type: String,
+        default: "success",
     },
-};
+});
+
+const messageClasses = computed(() => ({ "info-feedback": props.type === "info" }));
+const messageIconClasses = computed(() => ({
+    "fa fa-check-circle": props.type === "success",
+    "fa fa-circle-info": props.type === "info",
+}));
 </script>
 
 <style lang="scss" scoped>

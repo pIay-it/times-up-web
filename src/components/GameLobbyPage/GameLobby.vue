@@ -13,7 +13,7 @@
                            :class="playerInputClasses" maxlength="30"/>
                 </div>
                 <InputMessage :is-shown="!!sanitizedPlayerName" :is-input-valid="game.canAddPlayerWithName(sanitizedPlayerName)"
-                              :error-message="$t('GameLobby.playerNameAlreadyTaken')" :is-message-white="true"/>
+                              :error-message="$t('GameLobby.playerNameAlreadyTaken')" is-message-white/>
             </form>
         </div>
         <TransitionGroup id="game-composition" name="slide-from-left" tag="div" class="d-flex flex-column flex-grow-1 container-fluid"
@@ -30,11 +30,12 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
-import { onBeforeRouteLeave } from "vue-router";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessage";
 import BackButton from "@/components/shared/Button/BackButton";
 import PlayITButton from "@/components/shared/Button/PlayITButton";
@@ -47,76 +48,66 @@ import useTransition from "@/composables/Transition/useTransition";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 import PageTitle from "@/components/shared/Title/PageTitle";
 import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
+import useGame from "@/composables/Game/useGame";
+import useTimesUpAPI from "@/composables/API/useTimesUpAPI";
 
-export default {
-    name: "GameLobby",
-    components: { TimesUpFooter, PageTitle, GamePlayer, GameLobbyResetPlayersButton, PlayITButton, BackButton, InputMessage },
-    setup() {
-        const store = useStore();
-        const { displayError } = useError();
-        const { t } = useI18n();
-        const { DefaultConfirmSwal } = useSweetAlert();
-        const { setGameIdInLocalStorage } = useGameFromLocalStorage();
-        const { beforeLeaveList } = useTransition();
-        onBeforeRouteLeave(async to => {
-            if (to.name !== "Game" && store.state.game.game.hasPlayers) {
-                const { isConfirmed } = await DefaultConfirmSwal.fire({
-                    title: t("GameLobby.areYouSureYouWantToLeaveGameLobby"),
-                    text: t("GameLobby.gameCompositionWillBeLost"),
-                    icon: "warning",
-                });
-                return isConfirmed;
-            }
-            return true;
+const store = useStore();
+const { displayError } = useError();
+const { DefaultConfirmSwal } = useSweetAlert();
+const { setGameIdInLocalStorage } = useGameFromLocalStorage();
+const { beforeLeaveList } = useTransition();
+const { t } = useI18n();
+const Toast = useToast();
+const { push } = useRouter();
+const { game, isCreatingGame } = useGame();
+const { timesUpAPI } = useTimesUpAPI();
+
+const playerName = ref("");
+
+const sanitizedPlayerName = computed(() => filterOutHTMLTags(playerName.value.trim()));
+const playerNameInputPlaceholder = computed(() => {
+    const defaultPlaceholder = `${t("GameLobby.playerName")} ${game.value.players.length + 1}`;
+    return game.value.isMaxPlayerReached ? t("GameLobby.maxPlayerReached") : defaultPlaceholder;
+});
+const playerInputClasses = computed(() => ({ "is-invalid": game.value.isPlayerNameTaken(sanitizedPlayerName.value) }));
+const reversedGamePlayers = computed(() => game.value.players.slice().reverse());
+
+onBeforeRouteLeave(async to => {
+    if (to.name !== "Game" && store.state.game.game.hasPlayers) {
+        const { isConfirmed } = await DefaultConfirmSwal.fire({
+            title: t("GameLobby.areYouSureYouWantToLeaveGameLobby"),
+            text: t("GameLobby.gameCompositionWillBeLost"),
+            icon: "warning",
         });
-        return {
-            playerName: ref(""), displayError, setGameIdInLocalStorage, beforeLeaveList,
-            game: computed(() => store.state.game.game),
-            isCreatingGame: computed(() => store.state.game.isCreating),
-        };
-    },
-    computed: {
-        sanitizedPlayerName() {
-            return filterOutHTMLTags(this.playerName.trim());
-        },
-        playerNameInputPlaceholder() {
-            const defaultPlaceholder = `${this.$t("GameLobby.playerName")} ${this.game.players.length + 1}`;
-            return this.game.isMaxPlayerReached ? this.$t("GameLobby.maxPlayerReached") : defaultPlaceholder;
-        },
-        playerInputClasses() {
-            return { "is-invalid": this.game.isPlayerNameTaken(this.sanitizedPlayerName) };
-        },
-        reversedGamePlayers() {
-            return this.game.players.slice().reverse();
-        },
-    },
-    methods: {
-        async addPlayer() {
-            if (!this.sanitizedPlayerName || !this.game.canAddPlayerWithName(this.sanitizedPlayerName)) {
-                this.playerName = "";
-            } else {
-                await this.$store.dispatch("game/addGamePlayer", { name: this.sanitizedPlayerName });
-                this.playerName = "";
-            }
-        },
-        async createGame() {
-            if (!this.game.canStart) {
-                return this.$toast.warning(this.$t("GameLobby.gameMustContainPlayers"));
-            }
-            try {
-                await this.$store.dispatch("game/setIsCreatingGame", true);
-                const { data: game } = await this.$timesUpAPI.createGame(this.game);
-                this.setGameIdInLocalStorage(game._id);
-                await this.$store.dispatch("game/setGame", game);
-                this.$toast.success(this.$t("GameLobby.gameCreated"));
-                await this.$router.push(`/game/${game._id}`);
-            } catch (err) {
-                this.displayError(err);
-            } finally {
-                await this.$store.dispatch("game/setIsCreatingGame", false);
-            }
-        },
-    },
+        return isConfirmed;
+    }
+    return true;
+});
+
+const addPlayer = async() => {
+    if (!sanitizedPlayerName.value || !game.value.canAddPlayerWithName(sanitizedPlayerName.value)) {
+        playerName.value = "";
+    } else {
+        await store.dispatch("game/addGamePlayer", { name: sanitizedPlayerName.value });
+        playerName.value = "";
+    }
+};
+const createGame = async() => {
+    if (!game.value.canStart) {
+        return Toast.warning(t("GameLobby.gameMustContainPlayers"));
+    }
+    try {
+        await store.dispatch("game/setIsCreatingGame", true);
+        const { data: newGame } = await timesUpAPI.createGame(game.value);
+        setGameIdInLocalStorage(newGame._id);
+        await store.dispatch("game/setGame", newGame);
+        Toast.success(t("GameLobby.gameCreated"));
+        await push(`/game/${newGame._id}`);
+    } catch (err) {
+        displayError(err);
+    } finally {
+        await store.dispatch("game/setIsCreatingGame", false);
+    }
 };
 </script>
 

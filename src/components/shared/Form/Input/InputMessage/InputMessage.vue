@@ -9,40 +9,37 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { defineProps } from "vue";
 import InputErrorMessage from "@/components/shared/Form/Input/InputMessage/InputErrorMessage";
 import InputSuccessMessage from "@/components/shared/Form/Input/InputMessage/InputSuccessMessage";
 
-export default {
-    name: "InputMessage",
-    components: { InputSuccessMessage, InputErrorMessage },
-    props: {
-        isShown: {
-            type: Boolean,
-            required: true,
-        },
-        isInputValid: {
-            type: Boolean,
-            required: true,
-        },
-        errorMessage: {
-            type: String,
-            default: "",
-        },
-        successMessage: {
-            type: String,
-            default: "",
-        },
-        successMessageType: {
-            type: String,
-            default: "success",
-        },
-        isMessageWhite: {
-            type: Boolean,
-            default: false,
-        },
+defineProps({
+    isShown: {
+        type: Boolean,
+        required: true,
     },
-};
+    isInputValid: {
+        type: Boolean,
+        required: true,
+    },
+    errorMessage: {
+        type: String,
+        default: "",
+    },
+    successMessage: {
+        type: String,
+        default: "",
+    },
+    successMessageType: {
+        type: String,
+        default: "success",
+    },
+    isMessageWhite: {
+        type: Boolean,
+        default: false,
+    },
+});
 </script>
 
 <style lang="scss" scoped>

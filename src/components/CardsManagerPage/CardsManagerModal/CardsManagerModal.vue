@@ -7,13 +7,13 @@
                 </div>
                 <VForm #default="{ isSubmitting }" :validation-schema="formSchema" @submit="submit" @invalid-submit="submitError">
                     <div class="modal-body">
-                        <TextInput ref="labelTextInput" :label="$t('CardsManagerModal.label')" :is-required="true" name="label"
+                        <TextInput ref="labelTextInput" :label="$t('CardsManagerModal.label')" is-required name="label"
                                    :is-disabled="isSubmitting" :success-message="labelInputSuccessMessage"
                                    :success-message-type="labelInputSuccessMessageType" @change="setLabel"/>
                         <div>
                             <label class="form-label" v-html="$t('CardsManagerModal.categories')"/>
                             <RedAsterisk/>
-                            <VField v-model="categories" name="categories" type="text" class="d-none" :disabled="true"/>
+                            <VField v-model="categories" name="categories" type="text" class="d-none" disabled/>
                             <VSelect id="card-categories" v-model="selectedCardCategories" :options="selectableCategories"
                                      :close-on-select="false" :placeholder="$t('Form.required')" label="category" multiple
                                      :filter="filterByCategoryLabel" :disabled="isSubmitting" :class="categoriesSelectClasses"
@@ -41,7 +41,7 @@
                         <div class="mb-2">
                             <label class="form-label" for="card-easy-difficulty" v-html="$t('CardsManagerModal.difficulty')"/>
                             <RedAsterisk/>
-                            <VField v-model="difficulty" name="difficulty" type="number" class="d-none" :disabled="true"/>
+                            <VField v-model="difficulty" name="difficulty" type="number" class="d-none" disabled/>
                             <div class="d-flex justify-content-center">
                                 <div class="btn-group" role="group">
                                     <input id="card-easy-difficulty" v-model="difficulty" type="radio" class="btn-check" name="difficulty"

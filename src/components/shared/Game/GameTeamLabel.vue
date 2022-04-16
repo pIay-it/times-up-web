@@ -10,35 +10,30 @@
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+<script setup>
+import { computed, defineProps } from "vue";
+import { useI18n } from "vue-i18n";
 import ColoredCircle from "@/components/shared/misc/ColoredCircle";
+import useGame from "@/composables/Game/useGame";
 
-export default {
-    name: "GameTeamLabel",
-    components: { ColoredCircle },
-    props: {
-        team: {
-            type: Object,
-            required: true,
-        },
-        hasAppendIcon: {
-            type: Boolean,
-            default: false,
-        },
+const props = defineProps({
+    team: {
+        type: Object,
+        required: true,
     },
-    setup() {
-        const store = useStore();
-        return { game: computed(() => store.state.game.game) };
+    hasAppendIcon: {
+        type: Boolean,
+        default: false,
     },
-    computed: {
-        teamProblemTooltipText() {
-            const missingPlayerCount = this.game.getMissingPlayerCountInTeam(this.team.name);
-            return this.$t("GameTeamLabel.itMissesPlayers", { missingPlayerCount }, missingPlayerCount);
-        },
-    },
-};
+});
+
+const { game } = useGame();
+const { t } = useI18n();
+
+const teamProblemTooltipText = computed(() => {
+    const missingPlayerCount = game.value.getMissingPlayerCountInTeam(props.team.name);
+    return t("GameTeamLabel.itMissesPlayers", { missingPlayerCount }, missingPlayerCount);
+});
 </script>
 
 <style lang="scss" scoped>

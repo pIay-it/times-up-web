@@ -3,7 +3,3 @@
         <slot/>
     </h1>
 </template>
-
-<script>
-export default { name: "PageTitle" };
-</script>

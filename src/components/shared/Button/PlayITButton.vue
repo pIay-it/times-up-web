@@ -27,10 +27,6 @@
     </a>
 </template>
 
-<script>
-export default { name: "PlayITButton" };
-</script>
-
 <style lang="scss">
     #play-it-button {
         transition: all 0.5s ease;

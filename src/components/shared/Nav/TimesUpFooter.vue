@@ -10,23 +10,20 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { defineProps } from "vue";
 import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 
-export default {
-    name: "TimesUpFooter",
-    components: { DefaultLoader },
-    props: {
-        isLoading: {
-            type: Boolean,
-            default: false,
-        },
-        loadingText: {
-            type: String,
-            default: "",
-        },
+defineProps({
+    isLoading: {
+        type: Boolean,
+        default: false,
     },
-};
+    loadingText: {
+        type: String,
+        default: "",
+    },
+});
 </script>
 
 <style lang="scss">

@@ -1,5 +1,5 @@
 <template>
-    <VueGoodTable id="cards-manager-table" :columns="columns" :rows="cards" :line-numbers="true"
+    <VueGoodTable id="cards-manager-table" :columns="columns" :rows="cards" line-numbers
                   :pagination-options="paginationOptions" :search-options="searchOptions" :sort-options="sortOptions">
         <template #table-actions>
             <button type="button" class="btn btn-primary me-2" @click.prevent="emitShowCardsManagerModal(null)">
