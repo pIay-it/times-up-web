@@ -14,10 +14,6 @@
     </div>
 </template>
 
-<script>
-export default { name: "HomePage" };
-</script>
-
 <style lang="scss">
     #home-page-title {
         font-size: 5rem;

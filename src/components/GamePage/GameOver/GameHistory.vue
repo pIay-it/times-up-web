@@ -12,20 +12,14 @@
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+<script setup>
+import { defineEmits } from "vue";
 import PageTitle from "@/components/shared/Title/PageTitle";
 import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
 import GameScoreboard from "@/components/shared/Game/GameScoreboard/GameScoreboard";
+import useGame from "@/composables/Game/useGame";
 
-export default {
-    name: "GameHistory",
-    components: { GameScoreboard, TimesUpFooter, PageTitle },
-    emits: { "show-game-summary": () => true },
-    setup() {
-        const store = useStore();
-        return { game: computed(() => store.state.game.game) };
-    },
-};
+defineEmits({ "show-game-summary": () => true });
+
+const { game } = useGame();
 </script>

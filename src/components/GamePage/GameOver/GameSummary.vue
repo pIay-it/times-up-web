@@ -18,34 +18,26 @@
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+<script setup>
+import { computed, defineEmits } from "vue";
+import { useI18n } from "vue-i18n";
 import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
 import PageTitle from "@/components/shared/Title/PageTitle";
+import useGame from "@/composables/Game/useGame";
 import champagneGlassesSVG from "@/assets/svg/game/champagne-glasses.svg";
 
-export default {
-    name: "GameSummary",
-    components: { PageTitle, TimesUpFooter },
-    emits: { "show-game-history": () => true },
-    setup() {
-        const store = useStore();
-        return {
-            champagneGlassesSVG,
-            game: computed(() => store.state.game.game),
-        };
-    },
-    computed: {
-        winningTeamText() {
-            const { isTieBetweenTeams, winningTeam } = this.game;
-            return isTieBetweenTeams ? this.$t("GameOver.tieBetweenTeams") : this.$t("GameOver.gameWonByTeam", { winningTeam });
-        },
-        highestFinalScoreText() {
-            const { winningTeams } = this.game;
-            const score = this.game.getTeamFinalScore(winningTeams[0]);
-            return this.$t("GameOver.score", { score }, score);
-        },
-    },
-};
+defineEmits({ "show-game-history": () => true });
+
+const { t } = useI18n();
+const { game } = useGame();
+
+const winningTeamText = computed(() => {
+    const { isTieBetweenTeams, winningTeam } = game.value;
+    return isTieBetweenTeams ? t("GameOver.tieBetweenTeams") : t("GameOver.gameWonByTeam", { winningTeam });
+});
+const highestFinalScoreText = computed(() => {
+    const { winningTeams } = game.value;
+    const score = game.value.getTeamFinalScore(winningTeams[0]);
+    return t("GameOver.score", { score }, score);
+});
 </script>

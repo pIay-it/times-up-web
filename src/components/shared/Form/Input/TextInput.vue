@@ -9,100 +9,90 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed, defineEmits, defineProps, ref } from "vue";
 import { useField } from "vee-validate";
+import { useI18n } from "vue-i18n";
 import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessage";
 import RedAsterisk from "@/components/shared/Form/RedAsterisk";
 
-export default {
-    name: "TextInput",
-    components: { RedAsterisk, InputMessage },
-    props: {
-        value: {
-            type: String,
-            default: "",
-        },
-        isRequired: {
-            type: Boolean,
-            default: false,
-        },
-        isDisabled: {
-            type: Boolean,
-            default: false,
-        },
-        name: {
-            type: String,
-            required: true,
-        },
-        label: {
-            type: String,
-            required: true,
-        },
-        successMessage: {
-            type: String,
-            default: "",
-        },
-        successMessageType: {
-            type: String,
-            default: "success",
-        },
-        placeholder: {
-            type: String,
-            default: "",
-        },
+const emit = defineEmits({
+    change: () => true,
+    blur: () => true,
+});
+
+const props = defineProps({
+    value: {
+        type: String,
+        default: "",
     },
-    emits: { change: () => true, blur: () => true },
-    setup(props) {
-        const options = { initialValue: props.value };
-        const {
-            value: inputValue,
-            errorMessage,
-            handleBlur,
-            handleChange,
-            meta,
-            resetField: reset,
-            validate,
-        } = useField(props.name, undefined, options);
-        return { handleChange, handleBlur, errorMessage, inputValue, meta, reset, validate };
+    isRequired: {
+        type: Boolean,
+        default: false,
     },
-    computed: {
-        placeholderText() {
-            if (this.placeholder) {
-                return this.placeholder;
-            }
-            return this.isRequired ? this.$t("Form.required") : this.$t("Form.optional");
-        },
-        isTouchedOrDirty() {
-            const { dirty, touched } = this.meta;
-            return dirty || touched;
-        },
-        inputClasses() {
-            const { valid } = this.meta;
-            return {
-                "is-valid": this.isTouchedOrDirty && valid,
-                "is-invalid": this.isTouchedOrDirty && !valid,
-            };
-        },
+    isDisabled: {
+        type: Boolean,
+        default: false,
     },
-    methods: {
-        focus() {
-            this.$refs.input.focus();
-        },
-        setValue(value) {
-            this.inputValue = value;
-        },
-        getValue() {
-            return this.inputValue;
-        },
-        onChange(value) {
-            this.handleChange(value);
-            this.$emit("change", this.inputValue);
-        },
-        onBlur(event) {
-            this.$emit("blur", event);
-            this.validate();
-            this.handleBlur(event);
-        },
+    name: {
+        type: String,
+        required: true,
     },
+    label: {
+        type: String,
+        required: true,
+    },
+    successMessage: {
+        type: String,
+        default: "",
+    },
+    successMessageType: {
+        type: String,
+        default: "success",
+    },
+    placeholder: {
+        type: String,
+        default: "",
+    },
+});
+
+const input = ref(null);
+const options = { initialValue: props.value };
+const { errorMessage, handleBlur, handleChange, meta, validate } = useField(props.name, undefined, options);
+let { value: inputValue } = useField(props.name, undefined, options);
+const { t } = useI18n();
+
+const placeholderText = computed(() => {
+    if (props.placeholder) {
+        return props.placeholder;
+    }
+    return props.isRequired ? t("Form.required") : t("Form.optional");
+});
+const isTouchedOrDirty = computed(() => {
+    const { dirty, touched } = meta;
+    return dirty || touched;
+});
+const inputClasses = computed(() => {
+    const { valid } = meta;
+    return {
+        "is-valid": isTouchedOrDirty.value && valid,
+        "is-invalid": isTouchedOrDirty.value && !valid,
+    };
+});
+
+// eslint-disable-next-line no-unused-vars
+const focus = () => input.value.focus();
+// eslint-disable-next-line no-unused-vars
+const setValue = value => (inputValue = value);
+// eslint-disable-next-line no-unused-vars
+const getValue = () => inputValue;
+const onChange = value => {
+    handleChange(value);
+    emit("change", inputValue);
+};
+const onBlur = event => {
+    emit("blur", event);
+    validate();
+    handleBlur(event);
 };
 </script>

@@ -3,17 +3,18 @@
 </template>
 
 <script setup>
-import { computed, onMounted, inject } from "vue";
+import { onMounted, inject } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
+import useGame from "@/composables/Game/useGame";
 
 const timesUpAPI = inject("timesUpAPI");
 const store = useStore();
 const { t } = useI18n();
-const game = computed(() => store.state.game.game);
+const { game } = useGame();
 const { push } = useRouter();
 const { DefaultConfirmSwal } = useSweetAlert();
 const { removeGameIdInLocalStorage } = useGameFromLocalStorage();
@@ -28,7 +29,7 @@ onMounted(async() => {
         allowEscapeKey: false,
     });
     if (isConfirmed) {
-        return push(`/game/${this.game._id}`);
+        return push(`/game/${game.value._id}`);
     }
     timesUpAPI.updateGame(game.value._id, { status: "canceled" });
     removeGameIdInLocalStorage();

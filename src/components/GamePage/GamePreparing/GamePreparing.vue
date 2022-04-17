@@ -62,7 +62,7 @@ const startPlayingGame = async() => {
         await timesUpAPI.updateGamePlayers(game.value._id, { players: game.value.players });
         const { data: updatedGame } = await timesUpAPI.updateGame(game.value._id, { status: "playing" });
         await store.dispatch("game/setGame", updatedGame);
-        Toast.success(this.$t("GamePreparing.gameStarts"));
+        Toast.success(t("GamePreparing.gameStarts"));
     } catch (err) {
         displayError(err);
     } finally {

@@ -2,16 +2,15 @@
     <div class="colored-circle" :style="{ backgroundColor: color }"/>
 </template>
 
-<script>
-export default {
-    name: "ColoredCircle",
-    props: {
-        color: {
-            type: String,
-            required: true,
-        },
+<script setup>
+import { defineProps } from "vue";
+
+defineProps({
+    color: {
+        type: String,
+        required: true,
     },
-};
+});
 </script>
 
 <style scoped lang="scss">

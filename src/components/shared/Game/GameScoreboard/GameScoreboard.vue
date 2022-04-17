@@ -11,41 +11,26 @@
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+<script setup>
+import { defineProps } from "vue";
 import GameTeamScore from "@/components/shared/Game/GameScoreboard/GameTeamScore";
+import useGame from "@/composables/Game/useGame";
 import champagneGlassesSVG from "@/assets/svg/game/champagne-glasses-mini.svg";
 import GameSummaryScore from "@/classes/GameSummaryScore";
 
-export default {
-    name: "GameScoreboard",
-    components: { GameTeamScore },
-    props: {
-        scores: {
-            type: [Object],
-            required: true,
-            validator: scores => scores.every(score => score instanceof GameSummaryScore),
-        },
+const props = defineProps({
+    scores: {
+        type: [Object],
+        required: true,
+        validator: scores => scores.every(score => score instanceof GameSummaryScore),
     },
-    setup(props) {
-        const store = useStore();
-        const game = computed(() => store.state.game.game);
-        const getTeamScore = team => props.scores.find(score => team === score.team);
-        const firstTeamScore = getTeamScore(game.value.firstTeam?.name);
-        const secondTeamScore = getTeamScore(game.value.secondTeam?.name);
-        const isTieBetweenTeams = firstTeamScore.score === secondTeamScore.score;
-        const hasFirstTeamWon = !isTieBetweenTeams && firstTeamScore.score > secondTeamScore.score;
-        const hasSecondTeamWon = !isTieBetweenTeams && !hasFirstTeamWon;
-        return {
-            champagneGlassesSVG,
-            game,
-            firstTeamScore,
-            secondTeamScore,
-            isTieBetweenTeams,
-            hasFirstTeamWon,
-            hasSecondTeamWon,
-        };
-    },
-};
+});
+
+const { game } = useGame();
+const getTeamScore = team => props.scores.find(score => team === score.team);
+const firstTeamScore = getTeamScore(game.value.firstTeam?.name);
+const secondTeamScore = getTeamScore(game.value.secondTeam?.name);
+const isTieBetweenTeams = firstTeamScore.score === secondTeamScore.score;
+const hasFirstTeamWon = !isTieBetweenTeams && firstTeamScore.score > secondTeamScore.score;
+const hasSecondTeamWon = !isTieBetweenTeams && !hasFirstTeamWon;
 </script>

@@ -8,38 +8,30 @@
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+<script setup>
+import { computed, defineProps } from "vue";
+import { useI18n } from "vue-i18n";
 import GameTeamLabel from "@/components/shared/Game/GameTeamLabel";
+import useGame from "@/composables/Game/useGame";
 import GameSummaryScore from "@/classes/GameSummaryScore";
 
-export default {
-    name: "GameTeamScore",
-    components: { GameTeamLabel },
-    props: {
-        score: {
-            type: GameSummaryScore,
-            required: true,
-        },
-        isWinner: {
-            type: Boolean,
-            required: true,
-        },
+const props = defineProps({
+    score: {
+        type: GameSummaryScore,
+        required: true,
     },
-    setup() {
-        const store = useStore();
-        const game = computed(() => store.state.game.game);
-        return { game };
+    isWinner: {
+        type: Boolean,
+        required: true,
     },
-    computed: {
-        scoreLabel() {
-            const { score } = this.score;
-            return this.$t("GameTeamScore.score", { score }, score);
-        },
-        scoreTeam() {
-            return this.game.getTeamWithName(this.score.team);
-        },
-    },
-};
+});
+
+const { t } = useI18n();
+const { game } = useGame();
+
+const scoreLabel = computed(() => {
+    const { score } = props.score;
+    return t("GameTeamScore.score", { score }, score);
+});
+const scoreTeam = computed(() => game.value.getTeamWithName(props.score.team));
 </script>

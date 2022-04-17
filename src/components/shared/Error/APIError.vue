@@ -11,9 +11,8 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: "APIError",
-    emits: { retry: () => true },
-};
+<script setup>
+import { defineEmits } from "vue";
+
+defineEmits({ retry: () => true });
 </script>

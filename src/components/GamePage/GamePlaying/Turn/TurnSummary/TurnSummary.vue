@@ -24,7 +24,7 @@
                 <span v-html="$t('TurnSummary.noCardPlayed')"/>
             </h3>
         </div>
-        <TimesUpFooter :is-loading="isGameUpdating" :loading-text="$t('TurnSummary.validatingTurn')">
+        <TimesUpFooter :is-loading="isUpdatingGame" :loading-text="$t('TurnSummary.validatingTurn')">
             <div class="turn-summary-footer-button-container">
                 <a href="#" type="button" class="text-white me-2" @click.prevent="resetTurn">
                     <i class="fa-solid fa-arrow-rotate-right fa-flip-horizontal fa-3x"/>
@@ -37,82 +37,63 @@
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+<script setup>
+import { computed, defineProps, defineEmits } from "vue";
+import { useI18n } from "vue-i18n";
 import TurnSummaryPlayedCard from "@/components/GamePage/GamePlaying/Turn/TurnSummary/TurnSummaryPlayedCard";
-import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 import PageTitle from "@/components/shared/Title/PageTitle";
-import useError from "@/composables/Error/useError";
 import PlayITButton from "@/components/shared/Button/PlayITButton";
 import ColoredCircle from "@/components/shared/misc/ColoredCircle";
 import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
+import useGame from "@/composables/Game/useGame";
 
-export default {
-    name: "TurnSummary",
-    components: { TimesUpFooter, ColoredCircle, PlayITButton, PageTitle, TurnSummaryPlayedCard },
-    props: {
-        play: {
-            type: Object,
-            required: true,
-        },
+const props = defineProps({
+    play: {
+        type: Object,
+        required: true,
     },
-    emits: {
-        "update-played-card-status": card => card._id && card.status,
-        "validated-turn": () => true,
-        "reset-turn": () => true,
-    },
-    setup() {
-        const store = useStore();
-        const { DefaultConfirmSwal } = useSweetAlert();
-        const { displayError } = useError();
-        return {
-            DefaultConfirmSwal, displayError,
-            game: store.state.game.game,
-            isGameUpdating: computed(() => store.state.game.isUpdating),
-        };
-    },
-    computed: {
-        score() {
-            return this.play.cards.reduce((acc, card) => card.isGuessed ? acc + 1 : acc, 0);
-        },
-    },
-    methods: {
-        updatePlayedCardStatus(payload) {
-            this.$emit("update-played-card-status", payload);
-        },
-        confirmResetTurn() {
-            return this.DefaultConfirmSwal.fire({
-                title: this.$t("TurnSummary.areYouSureYouWantToResetTurn"),
-                icon: "warning",
-            });
-        },
-        async resetTurn() {
-            const { isConfirmed } = await this.confirmResetTurn();
-            if (isConfirmed) {
-                this.$emit("reset-turn");
-            }
-        },
-        validateTurn() {
-            this.$emit("validated-turn");
-        },
-    },
+});
+
+const emit = defineEmits({
+    "update-played-card-status": card => card._id && card.status,
+    "validated-turn": () => true,
+    "reset-turn": () => true,
+});
+
+const { DefaultConfirmSwal } = useSweetAlert();
+const { t } = useI18n();
+const { game, isUpdatingGame } = useGame();
+
+const score = computed(() => props.play.cards.reduce((acc, card) => card.isGuessed ? acc + 1 : acc, 0));
+
+const updatePlayedCardStatus = payload => emit("update-played-card-status", payload);
+const confirmResetTurn = () => DefaultConfirmSwal.fire({
+    title: t("TurnSummary.areYouSureYouWantToResetTurn"),
+    icon: "warning",
+});
+const resetTurn = async() => {
+    const { isConfirmed } = await confirmResetTurn();
+    if (isConfirmed) {
+        emit("reset-turn");
+    }
 };
+const validateTurn = () => emit("validated-turn");
 </script>
 
 <style lang="scss">
-    .card-status-label {
-        display: flex;
-        align-items: center;
-    }
+.card-status-label {
+    display: flex;
+    align-items: center;
+}
 
-    #turn-summary-cards-container {
-        overflow-y: scroll;
-    }
+#turn-summary-cards-container {
+    overflow-y: scroll;
+}
 
-    #no-card-text {
-        height: 100%;
-        margin-bottom: 0;
-        font-style: italic;
-    }
+#no-card-text {
+    height: 100%;
+    margin-bottom: 0;
+    font-style: italic;
+}
 </style>

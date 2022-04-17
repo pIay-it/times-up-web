@@ -4,33 +4,29 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: "DualRingSpinner",
-    props: {
-        size: {
-            type: Number,
-            default: 80,
-        },
-        color: {
-            type: String,
-            default: "white",
-        },
-        duration: {
-            type: String,
-            default: "1.2s",
-        },
+<script setup>
+import { defineProps, reactive } from "vue";
+
+const props = defineProps({
+    size: {
+        type: Number,
+        default: 80,
     },
-    data() {
-        return {
-            spinnerStyle: {
-                borderWidth: `${this.size * 0.075}px`,
-                borderColor: `${this.color} transparent`,
-                animationDuration: this.duration,
-            },
-        };
+    color: {
+        type: String,
+        default: "white",
     },
-};
+    duration: {
+        type: String,
+        default: "1.2s",
+    },
+});
+
+const spinnerStyle = reactive({
+    borderWidth: `${props.size * 0.075}px`,
+    borderColor: `${props.color} transparent`,
+    animationDuration: props.duration,
+});
 </script>
 
 <style scoped>

@@ -1,4 +1,4 @@
-export const GAME_STATES = Object.freeze({
+export const GAME_STATE = Object.freeze({
     ROUND_STARTING: "round-starting",
     TURN_STARTING: "turn-starting",
     TURN_PLAYING: "turn-playing",
