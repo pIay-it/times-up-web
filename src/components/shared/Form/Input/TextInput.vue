@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import { computed, defineEmits, defineProps, ref } from "vue";
+import { computed, defineEmits, defineExpose, defineProps, ref } from "vue";
 import { useField } from "vee-validate";
 import { useI18n } from "vue-i18n";
 import InputMessage from "@/components/shared/Form/Input/InputMessage/InputMessage";
@@ -58,8 +58,7 @@ const props = defineProps({
 
 const input = ref(null);
 const options = { initialValue: props.value };
-const { errorMessage, handleBlur, handleChange, meta, validate } = useField(props.name, undefined, options);
-let { value: inputValue } = useField(props.name, undefined, options);
+const { errorMessage, handleBlur, handleChange, meta, validate, resetField: reset, value: inputValue } = useField(props.name, undefined, options);
 const { t } = useI18n();
 
 const placeholderText = computed(() => {
@@ -80,19 +79,22 @@ const inputClasses = computed(() => {
     };
 });
 
-// eslint-disable-next-line no-unused-vars
 const focus = () => input.value.focus();
-// eslint-disable-next-line no-unused-vars
-const setValue = value => (inputValue = value);
-// eslint-disable-next-line no-unused-vars
-const getValue = () => inputValue;
+const setValue = value => (inputValue.value = value);
+const getValue = () => inputValue.value;
 const onChange = value => {
     handleChange(value);
-    emit("change", inputValue);
+    emit("change", inputValue.value);
 };
 const onBlur = event => {
     emit("blur", event);
     validate();
     handleBlur(event);
 };
+defineExpose({
+    focus,
+    setValue,
+    getValue,
+    reset,
+});
 </script>

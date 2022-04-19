@@ -10,30 +10,29 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed, defineProps } from "vue";
+import { useI18n } from "vue-i18n";
 import GameHistory from "@/classes/GameHistory";
 import GamePlayerIcon from "@/components/shared/Game/GamePlayer/GamePlayerIcon";
 
-export default {
-    name: "RoundSummaryTurn",
-    components: { GamePlayerIcon },
-    props: {
-        historyEntry: {
-            type: GameHistory,
-            required: true,
-        },
+const props = defineProps({
+    historyEntry: {
+        type: GameHistory,
+        required: true,
     },
-    computed: {
-        turnSpeakerText() {
-            const { turn, speaker } = this.historyEntry;
-            return this.$t("RoundSummaryTurn.turnSpeaker", { turn, speakerName: speaker.name });
-        },
-        scoreText() {
-            const { score } = this.historyEntry;
-            return this.$t("RoundSummaryTurn.score", { score }, score);
-        },
-    },
-};
+});
+
+const { t } = useI18n();
+
+const turnSpeakerText = computed(() => {
+    const { turn, speaker } = props.historyEntry;
+    return t("RoundSummaryTurn.turnSpeaker", { turn, speakerName: speaker.name });
+});
+const scoreText = computed(() => {
+    const { score } = props.historyEntry;
+    return t("RoundSummaryTurn.score", { score }, score);
+});
 </script>
 
 <style lang="scss">

@@ -19,48 +19,35 @@
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
-import Card from "@/classes/Card";
+<script setup>
+import { computed, defineEmits, defineProps } from "vue";
+import { useI18n } from "vue-i18n";
 import CardImage from "@/components/shared/Card/Image/CardImage";
+import useGame from "@/composables/Game/useGame";
+import Card from "@/classes/Card";
 
-export default {
-    name: "TurnSummaryPlayedCard",
-    components: { CardImage },
-    props: {
-        card: {
-            type: Card,
-            required: true,
-        },
+const emit = defineEmits({ "update-played-card-status": card => card._id && card.status });
+
+const props = defineProps({
+    card: {
+        type: Card,
+        required: true,
     },
-    emits: { "update-played-card-status": card => card._id && card.status },
-    setup() {
-        const store = useStore();
-        return { game: computed(() => store.state.game.game) };
-    },
-    computed: {
-        cardStatus: {
-            get() {
-                return this.card.status;
-            },
-            set(status) {
-                this.$emit("update-played-card-status", { _id: this.card._id, status });
-            },
-        },
-        playedCardFalseValue() {
-            return this.game.round === 1 ? "discarded" : "skipped";
-        },
-        playingTimeText() {
-            return this.$t("TurnSummaryPlayedCard.cardPlayedInSeconds", { playingTime: this.card.playingTime });
-        },
-    },
-    methods: {
-        getCardStatusSwitcherLabel(isChecked) {
-            const icon = isChecked ? "fa-check" : "fa-times";
-            return `<i class="fa-solid ${icon}"></i>`;
-        },
-    },
+});
+
+const { t } = useI18n();
+const { game } = useGame();
+
+const cardStatus = computed({
+    get: () => props.card.status,
+    set: status => emit("update-played-card-status", { _id: props.card._id, status }),
+});
+const playedCardFalseValue = computed(() => game.value.round === 1 ? "discarded" : "skipped");
+const playingTimeText = computed(() => t("TurnSummaryPlayedCard.cardPlayedInSeconds", { playingTime: props.card.playingTime }));
+
+const getCardStatusSwitcherLabel = isChecked => {
+    const icon = isChecked ? "fa-check" : "fa-times";
+    return `<i class="fa-solid ${icon}"></i>`;
 };
 </script>
 

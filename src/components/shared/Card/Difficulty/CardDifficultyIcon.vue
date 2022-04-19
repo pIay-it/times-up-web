@@ -2,23 +2,19 @@
     <i :class="difficultyIconClasses"/>
 </template>
 
-<script>
-export default {
-    name: "CardDifficultyIcon",
-    props: {
-        difficulty: {
-            type: Number,
-            required: true,
-        },
+<script setup>
+import { computed, defineProps } from "vue";
+
+const props = defineProps({
+    difficulty: {
+        type: Number,
+        required: true,
     },
-    computed: {
-        difficultyIconClasses() {
-            return {
-                "fa fa-seedling": this.difficulty === 1,
-                "fa fa-cloud-rain": this.difficulty === 2,
-                "fa fa-fire-flame-curved": this.difficulty === 3,
-            };
-        },
-    },
-};
+});
+
+const difficultyIconClasses = computed(() => ({
+    "fa fa-seedling": props.difficulty === 1,
+    "fa fa-cloud-rain": props.difficulty === 2,
+    "fa fa-fire-flame-curved": props.difficulty === 3,
+}));
 </script>

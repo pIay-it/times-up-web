@@ -41,76 +41,61 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed, defineEmits, defineExpose, ref, watch } from "vue";
 import uniqid from "uniqid";
-import useError from "@/composables/Error/useError";
 import CardImage from "@/components/shared/Card/Image/CardImage";
 import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
+import useError from "@/composables/Error/useError";
+import useTimesUpAPI from "@/composables/API/useTimesUpAPI";
 import { timeout } from "@/helpers/functions/Misc";
 import wikipediaLogo from "@/assets/png/logos/wikipedia.png";
 import flickrLogo from "@/assets/png/logos/flickr.png";
 
-export default {
-    name: "CardImageFinder",
-    components: { DefaultLoader, CardImage },
-    emits: { "image-url-selected": URL => typeof URL === "string" },
-    setup() {
-        const { displayError } = useError();
-        return { displayError };
-    },
-    data() {
-        return {
-            images: [],
-            search: "",
-            isFetchingImages: false,
-            requestId: undefined,
-        };
-    },
-    computed: {
-        cleanSearch() {
-            return this.search.trim();
-        },
-    },
-    watch: {
-        async search(newSearch, oldSearch) {
-            if (this.cleanSearch && oldSearch.trim() !== newSearch.trim()) {
-                await this.getImages();
-            }
-        },
-    },
-    methods: {
-        async getImages() {
-            const search = this.cleanSearch;
-            const requestId = uniqid();
-            this.requestId = requestId;
-            this.isFetchingImages = true;
-            await timeout(1000);
-            if (requestId !== this.requestId) {
-                return;
-            }
-            try {
-                const { data } = await this.$timesUpAPI.getImages({ search });
-                this.images = data;
-            } catch (err) {
-                this.displayError(err);
-            } finally {
-                this.isFetchingImages = false;
-            }
-        },
-        getImageSourceLogo(source) {
-            return source === "flickr" ? flickrLogo : wikipediaLogo;
-        },
-        selectImageURL(imageURL) {
-            this.$emit("image-url-selected", imageURL);
-        },
-        reset() {
-            this.search = "";
-        },
-        setSearch(search) {
-            this.search = search;
-        },
-    },
+const emit = defineEmits({ "image-url-selected": URL => typeof URL === "string" });
+
+const { displayError } = useError();
+const { timesUpAPI } = useTimesUpAPI();
+const images = ref([]);
+const search = ref("");
+const isFetchingImages = ref(false);
+const requestId = ref(undefined);
+
+const cleanSearch = computed(() => search.value.trim());
+
+const getImages = async() => {
+    const newSearch = cleanSearch.value;
+    const newRequestId = uniqid();
+    requestId.value = newRequestId;
+    isFetchingImages.value = true;
+    await timeout(1000);
+    if (newRequestId !== requestId.value) {
+        return;
+    }
+    try {
+        const { data } = await timesUpAPI.getImages({ search: newSearch });
+        images.value = data;
+    } catch (err) {
+        displayError(err);
+    } finally {
+        isFetchingImages.value = false;
+    }
 };
+const getImageSourceLogo = source => source === "flickr" ? flickrLogo : wikipediaLogo;
+const selectImageURL = imageURL => emit("image-url-selected", imageURL);
+const setSearch = value => (search.value = value);
+const reset = () => setSearch("");
+
+watch(cleanSearch, async(newSearch, oldSearch) => {
+    if (cleanSearch.value && oldSearch.trim() !== newSearch.trim()) {
+        await getImages();
+    }
+});
+
+defineExpose({
+    reset,
+    setSearch,
+});
 </script>
 
 <style lang="scss" scoped>

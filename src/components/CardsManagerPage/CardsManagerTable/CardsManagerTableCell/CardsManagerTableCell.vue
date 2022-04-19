@@ -18,12 +18,13 @@
                 @click.prevent="emitShowCardsManagerModal">
             <i class="fa fa-pen mx-1"/>
         </button>
-        <DeleteCardButton :card="props.row" @card-deleted="emitCardDeleted"/>
+        <DeleteCardButton :card="props.props.row" @card-deleted="emitCardDeleted"/>
     </div>
     <span v-else v-html="formattedValue"/>
 </template>
 
-<script>
+<script setup>
+import { computed, defineEmits, defineProps } from "vue";
 import NotDefinedText from "@/components/shared/misc/NotDefinedText";
 import DeleteCardButton from "@/components/CardsManagerPage/CardsManagerTable/CardsManagerTableCell/DeleteCardButton";
 import CardDifficultyPillBadge from "@/components/shared/Card/Difficulty/CardDifficultyPillBadge";
@@ -32,35 +33,23 @@ import CardImage from "@/components/shared/Card/Image/CardImage";
 import Card from "@/classes/Card";
 import { getFormattedDate } from "@/helpers/functions/Date";
 
-export default {
-    name: "CardsManagerTableCell",
-    components: { CardImage, CardCategoryPillBadge, CardDifficultyPillBadge, DeleteCardButton, NotDefinedText },
+const props = defineProps({
     props: {
-        props: {
-            type: Object,
-            required: true,
-        },
+        type: Object,
+        required: true,
     },
-    emits: {
-        "show-cards-manager-modal": card => card instanceof Card,
-        "card-deleted": card => card instanceof Card,
-    },
-    computed: {
-        column() {
-            return this.props.column.field;
-        },
-        formattedValue() {
-            return this.props.formattedRow[this.column];
-        },
-    },
-    methods: {
-        emitShowCardsManagerModal() {
-            this.$emit("show-cards-manager-modal", new Card(this.props.row));
-        },
-        emitCardDeleted(card) {
-            this.$emit("card-deleted", card);
-        },
-        getFormattedDate,
-    },
+});
+
+const emit = defineEmits({
+    "show-cards-manager-modal": card => card instanceof Card,
+    "card-deleted": card => card instanceof Card,
+});
+
+const column = computed(() => props.props.column.field);
+const formattedValue = computed(() => props.props.formattedRow[column.value]);
+
+const emitShowCardsManagerModal = () => {
+    emit("show-cards-manager-modal", new Card(props.props.row));
 };
+const emitCardDeleted = card => emit("card-deleted", card);
 </script>

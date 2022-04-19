@@ -5,29 +5,24 @@
     </span>
 </template>
 
-<script>
+<script setup>
+import { computed, defineProps } from "vue";
+import { useI18n } from "vue-i18n";
 import CardDifficultyIcon from "@/components/shared/Card/Difficulty/CardDifficultyIcon";
 
-export default {
-    name: "CardDifficultyPillBadge",
-    components: { CardDifficultyIcon },
-    props: {
-        difficulty: {
-            type: Number,
-            required: true,
-        },
+const props = defineProps({
+    difficulty: {
+        type: Number,
+        required: true,
     },
-    computed: {
-        badgeClasses() {
-            return {
-                "bg-success": this.difficulty === 1,
-                "bg-primary": this.difficulty === 2,
-                "bg-danger": this.difficulty === 3,
-            };
-        },
-        badgeText() {
-            return this.$t(`CardDifficultyPillBadge.difficultyLevel.${this.difficulty}`);
-        },
-    },
-};
+});
+
+const { t } = useI18n();
+
+const badgeClasses = computed(() => ({
+    "bg-success": props.difficulty === 1,
+    "bg-primary": props.difficulty === 2,
+    "bg-danger": props.difficulty === 3,
+}));
+const badgeText = computed(() => t(`CardDifficultyPillBadge.difficultyLevel.${props.difficulty}`));
 </script>

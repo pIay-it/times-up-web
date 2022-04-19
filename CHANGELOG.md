@@ -41,7 +41,7 @@
 * `fuse.js` installed with version `6.5.3`.
 * `image-search-google` installed with version `1.3.0`.
 * `qs` installed with version `6.10.3`.
-* `sass` installed with version `1.50.0`.
+* `sass` installed with version `1.50.1`.
 * `sass-loader` installed with version `12.6.0`.
 * `sweetalert2` installed with version `11.4.8`.
 * `uniqid` installed with version `5.4.0`.
