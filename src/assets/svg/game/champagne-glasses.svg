@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="120.152" height="129.511" viewBox="0 0 120.152 129.511">
+  <defs>
+    <filter id="Rectangle_109" x="49.081" y="0" width="22" height="27" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" dy="3"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="champagne-glasses-solid" x="0" y="29.341" width="120.152" height="100.169" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" dy="3"/>
+      <feGaussianBlur stdDeviation="3" result="blur-2"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_110" x="62.081" y="4.5" width="25.199" height="27.848" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" dy="3"/>
+      <feGaussianBlur stdDeviation="3" result="blur-3"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_111" x="71.428" y="14.536" width="27.794" height="25.964" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" dy="3"/>
+      <feGaussianBlur stdDeviation="3" result="blur-4"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur-4"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_113" x="32.882" y="4.5" width="25.199" height="27.848" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" dy="3"/>
+      <feGaussianBlur stdDeviation="3" result="blur-5"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur-5"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_114" x="20.568" y="14.536" width="27.794" height="25.964" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" dy="3"/>
+      <feGaussianBlur stdDeviation="3" result="blur-6"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur-6"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Groupe_1328" transform="translate(-5387.919 -8024)">
+    <g transform="matrix(1, 0, 0, 1, 5387.92, 8024)" filter="url(#Rectangle_109)">
+      <g id="Rectangle_109-2" transform="translate(55.08 6)" fill="#fff" stroke="rgba(249,149,37,0.68)" stroke-width="1">
+        <rect width="4" height="9" stroke="none"/>
+        <rect x="0.5" y="0.5" width="3" height="8" fill="none"/>
+      </g>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 5387.92, 8024)" filter="url(#champagne-glasses-solid)">
+      <path id="champagne-glasses-solid-2" d="M99.91,67.749a6.22,6.22,0,0,0-8.144-3.378L88.31,65.816l-6.055-15.8A18.236,18.236,0,0,0,87.646,26.16L74.112,2.644A4.834,4.834,0,0,0,68,.516l-17.844,7.4-18-7.541a5.01,5.01,0,0,0-6.25,2.129L12.372,26.015a18.292,18.292,0,0,0,5.383,23.859L11.7,65.8,8.252,64.358A6.227,6.227,0,0,0,.108,67.736a1.24,1.24,0,0,0,.664,1.641L26.147,79.9a1.27,1.27,0,0,0,1.62-.664,6.287,6.287,0,0,0-3.378-8.183l-3.456-1.426,6.152-16.187a19.112,19.112,0,0,0,2.05.2A18,18,0,0,0,46.853,40.32l3.164-11.775L53.181,40.32c2.047,8.162,9.628,13.319,17.719,13.319a19.075,19.075,0,0,0,2.05-.2l6.133,16.187-3.456,1.426a6.222,6.222,0,0,0-3.378,8.183,1.247,1.247,0,0,0,1.641.664L99.263,69.377A1.269,1.269,0,0,0,99.91,67.749Zm-56.8-42.422L25.6,18.062l5.7-9.9,14.766,6.12Zm13.781,0L53.946,14.274,68.71,8.162l5.7,9.9Z" transform="translate(7.08 36.49)" fill="#fff" stroke="rgba(249,149,37,0.68)" stroke-width="2"/>
+    </g>
+    <path id="Tracé_3229" d="M0,0H20.867S22,17.876,15.325,22.153a11.4,11.4,0,0,1-5.248,2.174c-.116.034-1.028.086-1.028.086s-1.225.14-3.778-1.624C-.348,18.906,0,0,0,0Z" transform="translate(5419.282 8079.093) rotate(22.5)" fill="rgba(249,149,37,0.5)"/>
+    <path id="Tracé_3230" d="M0,0H20.867S22,17.876,15.325,22.153a11.4,11.4,0,0,1-5.248,2.174c-.116.034-1.028.086-1.028.086s-1.225.14-3.778-1.624C-.348,18.906,0,0,0,0Z" transform="translate(5451.004 8087.105) rotate(-22.5)" fill="rgba(249,149,37,0.5)"/>
+    <g transform="matrix(1, 0, 0, 1, 5387.92, 8024)" filter="url(#Rectangle_110)">
+      <g id="Rectangle_110-2" transform="matrix(0.92, 0.39, -0.39, 0.92, 71.6, 10.5)" fill="#fff" stroke="rgba(249,149,37,0.68)" stroke-width="1">
+        <rect width="4" height="9" stroke="none"/>
+        <rect x="0.5" y="0.5" width="3" height="8" fill="none"/>
+      </g>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 5387.92, 8024)" filter="url(#Rectangle_111)">
+      <g id="Rectangle_111-2" transform="translate(85.22 20.54) rotate(60)" fill="#fff" stroke="rgba(249,149,37,0.68)" stroke-width="1">
+        <rect width="4" height="9" stroke="none"/>
+        <rect x="0.5" y="0.5" width="3" height="8" fill="none"/>
+      </g>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 5387.92, 8024)" filter="url(#Rectangle_113)">
+      <g id="Rectangle_113-2" transform="matrix(0.92, -0.39, 0.39, 0.92, 38.88, 12.06)" fill="#fff" stroke="rgba(249,149,37,0.68)" stroke-width="1">
+        <rect width="4" height="9" stroke="none"/>
+        <rect x="0.5" y="0.5" width="3" height="8" fill="none"/>
+      </g>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 5387.92, 8024)" filter="url(#Rectangle_114)">
+      <g id="Rectangle_114-2" transform="translate(26.57 24) rotate(-60)" fill="#fff" stroke="rgba(249,149,37,0.68)" stroke-width="1">
+        <rect width="4" height="9" stroke="none"/>
+        <rect x="0.5" y="0.5" width="3" height="8" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>

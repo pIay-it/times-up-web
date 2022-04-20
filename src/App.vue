@@ -8,18 +8,12 @@
     <FullScreenCountdown/>
 </template>
 
-<script>
+<script setup>
 import { useMeta } from "vue-meta";
 import FullScreenCountdown from "@/components/FullscreenCountdown/FullScreenCountdown";
 
-export default {
-    name: "App",
-    components: { FullScreenCountdown },
-    setup() {
-        useMeta({
-            title: "Time's Up by Play-IT",
-            htmlAttrs: { lang: "fr", amp: true },
-        });
-    },
-};
+useMeta({
+    title: "Time's Up by Play-IT",
+    htmlAttrs: { lang: "fr", amp: true },
+});
 </script>

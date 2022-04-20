@@ -6,7 +6,7 @@
     </Transition>
 </template>
 
-<script>
+<script setup>
 import { computed, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
@@ -16,36 +16,28 @@ import useUserAuth from "@/composables/User/useUserAuth";
 import useError from "@/composables/Error/useError";
 import GameCurrentlyPlaying from "@/components/GameLobbyPage/GameCurrentlyPlaying";
 
-export default {
-    name: "GameLobbyPage",
-    components: { GameCurrentlyPlaying, GameLobby, DefaultLoader },
-    setup() {
-        const store = useStore();
-        const { checkUserAuthentication } = useUserAuth();
-        const { displayError, isAPIErrorType } = useError();
-        const { gameIdLocalStorage, getAndSetGameFromLocalStorage } = useGameFromLocalStorage();
-        onBeforeMount(async() => {
-            try {
-                if (gameIdLocalStorage.value) {
-                    await store.dispatch("game/setIsFetchingGame", true);
-                }
-                await checkUserAuthentication();
-                if (gameIdLocalStorage.value) {
-                    await getAndSetGameFromLocalStorage();
-                } else {
-                    await store.dispatch("game/resetGame");
-                }
-            } catch (err) {
-                displayError(err);
-            } finally {
-                await store.dispatch("game/setIsFetchingGame", false);
-            }
-        });
-        return {
-            gameIdLocalStorage, getAndSetGameFromLocalStorage, displayError, isAPIErrorType,
-            game: computed(() => store.state.game.game),
-            isFetchingGame: computed(() => store.state.game.isFetching),
-        };
-    },
-};
+const store = useStore();
+const { checkUserAuthentication } = useUserAuth();
+const { displayError } = useError();
+const { gameIdLocalStorage, getAndSetGameFromLocalStorage } = useGameFromLocalStorage();
+const game = computed(() => store.state.game.game);
+const isFetchingGame = computed(() => store.state.game.isFetching);
+onBeforeMount(async() => {
+    try {
+        if (gameIdLocalStorage.value) {
+            await store.dispatch("game/setIsFetchingGame", true);
+        }
+        await checkUserAuthentication();
+        if (gameIdLocalStorage.value) {
+            await getAndSetGameFromLocalStorage();
+        }
+    } catch (err) {
+        displayError(err);
+    } finally {
+        if (!gameIdLocalStorage.value || !game.value.isPreparing && !game.value.isPlaying) {
+            await store.dispatch("game/resetGame");
+        }
+        await store.dispatch("game/setIsFetchingGame", false);
+    }
+});
 </script>

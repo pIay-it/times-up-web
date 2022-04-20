@@ -6,11 +6,11 @@
             <h4 class="text-center" v-html="$t('TurnSummary.cards', { score }, score)"/>
             <div class="d-flex justify-content-around">
                 <div class="card-status-label">
-                    <div id="guessed-card-circle" class="card-status-circle me-2"/>
+                    <ColoredCircle color="#8CB32D" class="me-2"/>
                     <span v-html="$t('TurnSummary.guessed')"/>
                 </div>
                 <div class="card-status-label">
-                    <div id="skipped-card-circle" class="card-status-circle me-2"/>
+                    <ColoredCircle color="#C82333" class="me-2"/>
                     <span v-html="$t('TurnSummary.skipped')"/>
                 </div>
             </div>
@@ -24,131 +24,76 @@
                 <span v-html="$t('TurnSummary.noCardPlayed')"/>
             </h3>
         </div>
-        <div id="turn-summary-footer">
-            <Transition class="mt-3" mode="out-in" name="translate-from-top">
-                <div v-if="!isGameUpdating" key="turn-summary-footer" class="d-flex justify-content-center align-items-center">
-                    <div class="turn-summary-footer-button-container">
-                        <a href="#" type="button" class="text-white me-2" @click.prevent="resetTurn">
-                            <i class="fa-solid fa-arrow-rotate-right fa-flip-horizontal fa-3x"/>
-                        </a>
-                    </div>
-                    <div class="turn-summary-footer-button-container pt-2">
-                        <PlayITButton @click="validateTurn"/>
-                    </div>
-                </div>
-                <DefaultLoader v-else key="turn-summary-footer-loader" :text="$t('TurnSummary.validatingTurn')"/>
-            </Transition>
-        </div>
+        <TimesUpFooter :is-loading="isUpdatingGame" :loading-text="$t('TurnSummary.validatingTurn')">
+            <div class="turn-summary-footer-button-container">
+                <a href="#" type="button" class="text-white me-2" @click.prevent="resetTurn">
+                    <i class="fa-solid fa-arrow-rotate-right fa-flip-horizontal fa-3x"/>
+                </a>
+            </div>
+            <div class="turn-summary-footer-button-container pt-2">
+                <PlayITButton @click="validateTurn"/>
+            </div>
+        </TimesUpFooter>
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+<script setup>
+import { computed, defineProps, defineEmits } from "vue";
+import { useI18n } from "vue-i18n";
 import TurnSummaryPlayedCard from "@/components/GamePage/GamePlaying/Turn/TurnSummary/TurnSummaryPlayedCard";
-import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 import PageTitle from "@/components/shared/Title/PageTitle";
-import useError from "@/composables/Error/useError";
 import PlayITButton from "@/components/shared/Button/PlayITButton";
-import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
+import ColoredCircle from "@/components/shared/misc/ColoredCircle";
+import TimesUpFooter from "@/components/shared/Nav/TimesUpFooter";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
+import useGame from "@/composables/Game/useGame";
 
-export default {
-    name: "TurnSummary",
-    components: { DefaultLoader, PlayITButton, PageTitle, TurnSummaryPlayedCard },
-    props: {
-        play: {
-            type: Object,
-            required: true,
-        },
+const props = defineProps({
+    play: {
+        type: Object,
+        required: true,
     },
-    emits: {
-        "update-played-card-status": card => card._id && card.status,
-        "validated-turn": () => true,
-        "reset-turn": () => true,
-    },
-    setup() {
-        const store = useStore();
-        const { DefaultConfirmSwal } = useSweetAlert();
-        const { displayError } = useError();
-        return {
-            DefaultConfirmSwal, displayError,
-            game: computed(() => store.state.game.game),
-            isGameUpdating: computed(() => store.state.game.isUpdating),
-        };
-    },
-    computed: {
-        score() {
-            return this.play.cards.reduce((acc, card) => card.isGuessed ? acc + 1 : acc, 0);
-        },
-    },
-    methods: {
-        updatePlayedCardStatus(payload) {
-            this.$emit("update-played-card-status", payload);
-        },
-        confirmResetTurn() {
-            return this.DefaultConfirmSwal.fire({
-                title: this.$t("TurnSummary.areYouSureYouWantToResetTurn"),
-                icon: "warning",
-            });
-        },
-        async resetTurn() {
-            const { isConfirmed } = await this.confirmResetTurn();
-            if (isConfirmed) {
-                this.$emit("reset-turn");
-            }
-        },
-        async validateTurn() {
-            try {
-                await this.$store.dispatch("game/setIsUpdatingGame", true);
-                const { data: game } = this.$timesUpAPI.makeGamePlay(this.game._id, this.play);
-                await this.$store.dispatch("game/setGame", game);
-                this.$emit("validated-turn");
-            } catch (err) {
-                this.displayError(err);
-            } finally {
-                await this.$store.dispatch("game/setIsUpdatingGame", false);
-            }
-        },
-    },
+});
+
+const emit = defineEmits({
+    "update-played-card-status": card => card._id && card.status,
+    "validated-turn": () => true,
+    "reset-turn": () => true,
+});
+
+const { DefaultConfirmSwal } = useSweetAlert();
+const { t } = useI18n();
+const { game, isUpdatingGame } = useGame();
+
+const score = computed(() => props.play.cards.reduce((acc, card) => card.isGuessed ? acc + 1 : acc, 0));
+
+const updatePlayedCardStatus = payload => emit("update-played-card-status", payload);
+const confirmResetTurn = () => DefaultConfirmSwal.fire({
+    title: t("TurnSummary.areYouSureYouWantToResetTurn"),
+    icon: "warning",
+});
+const resetTurn = async() => {
+    const { isConfirmed } = await confirmResetTurn();
+    if (isConfirmed) {
+        emit("reset-turn");
+    }
 };
+const validateTurn = () => emit("validated-turn");
 </script>
 
 <style lang="scss">
-    .card-status-label {
-        display: flex;
-        align-items: center;
+.card-status-label {
+    display: flex;
+    align-items: center;
+}
 
-        .card-status-circle {
-            border-radius: 50px;
-            height: 15px;
-            width: 15px;
-            box-shadow: 1px 1px 3px #000000;
+#turn-summary-cards-container {
+    overflow-y: scroll;
+}
 
-            &#guessed-card-circle {
-                background-color: #8CB32D;
-            }
-
-            &#skipped-card-circle {
-                background-color: #C82333;
-            }
-        }
-    }
-
-    #turn-summary-cards-container {
-        overflow-y: scroll;
-    }
-
-    #no-card-text {
-        height: 100%;
-        margin-bottom: 0;
-        font-style: italic;
-    }
-
-    .turn-summary-footer-button-container {
-        width: 100px;
-        height: 65px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+#no-card-text {
+    height: 100%;
+    margin-bottom: 0;
+    font-style: italic;
+}
 </style>

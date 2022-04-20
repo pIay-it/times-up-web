@@ -8,30 +8,23 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed, defineProps } from "vue";
+import { useI18n } from "vue-i18n";
 import CardCategoryIcon from "@/components/shared/Card/Category/CardCategoryIcon";
 
-export default {
-    name: "CardCategoryPillBadge",
-    components: { CardCategoryIcon },
-    props: {
-        category: {
-            type: String,
-            required: true,
-        },
+const props = defineProps({
+    category: {
+        type: String,
+        required: true,
     },
-    computed: {
-        badgeClasses() {
-            return { [`${this.category}-card-category-border-color`]: true };
-        },
-        badgeText() {
-            return this.$t(`CardCategory.${this.category}.label`);
-        },
-        badgeTooltipText() {
-            return this.$t(`CardCategory.${this.category}.description`);
-        },
-    },
-};
+});
+
+const { t } = useI18n();
+
+const badgeClasses = computed(() => ({ [`${props.category}-card-category-border-color`]: true }));
+const badgeText = computed(() => t(`CardCategory.${props.category}.label`));
+const badgeTooltipText = computed(() => t(`CardCategory.${props.category}.description`));
 </script>
 
 <style lang="scss" scoped>

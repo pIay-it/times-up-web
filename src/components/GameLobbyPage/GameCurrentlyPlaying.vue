@@ -2,39 +2,37 @@
     <div id="game-currently-playing"/>
 </template>
 
-<script>
-import { computed } from "vue";
+<script setup>
+import { onMounted, inject } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import useGameFromLocalStorage from "@/composables/Game/useGameFromLocalStorage";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
+import useGame from "@/composables/Game/useGame";
 
-export default {
-    name: "GameCurrentlyPlaying",
-    setup() {
-        const store = useStore();
-        const { DefaultConfirmSwal } = useSweetAlert();
-        const { removeGameIdInLocalStorage } = useGameFromLocalStorage();
-        return {
-            DefaultConfirmSwal, removeGameIdInLocalStorage,
-            game: computed(() => store.state.game.game),
-        };
-    },
-    async mounted() {
-        const { isConfirmed } = await this.DefaultConfirmSwal.fire({
-            title: this.$t("GameCurrentlyPlaying.gameCurrentlyPlaying"),
-            text: this.$t("GameCurrentlyPlaying.continueOrCancelGame"),
-            icon: "info",
-            confirmButtonText: this.$t("GameCurrentlyPlaying.goToGame"),
-            cancelButtonText: this.$t("GameCurrentlyPlaying.cancelGame"),
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-        });
-        if (isConfirmed) {
-            return this.$router.push(`/game/${this.game._id}`);
-        }
-        this.$timesUpAPI.updateGame(this.game._id, { status: "canceled" });
-        this.removeGameIdInLocalStorage();
-        await this.$store.dispatch("game/resetGame");
-    },
-};
+const timesUpAPI = inject("timesUpAPI");
+const store = useStore();
+const { t } = useI18n();
+const { game } = useGame();
+const { push } = useRouter();
+const { DefaultConfirmSwal } = useSweetAlert();
+const { removeGameIdInLocalStorage } = useGameFromLocalStorage();
+onMounted(async() => {
+    const { isConfirmed } = await DefaultConfirmSwal.fire({
+        title: t("GameCurrentlyPlaying.gameCurrentlyPlaying"),
+        text: t("GameCurrentlyPlaying.continueOrCancelGame"),
+        icon: "info",
+        confirmButtonText: t("GameCurrentlyPlaying.goToGame"),
+        cancelButtonText: t("GameCurrentlyPlaying.cancelGame"),
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+    });
+    if (isConfirmed) {
+        return push(`/game/${game.value._id}`);
+    }
+    timesUpAPI.updateGame(game.value._id, { status: "canceled" });
+    removeGameIdInLocalStorage();
+    await store.dispatch("game/resetGame");
+});
 </script>

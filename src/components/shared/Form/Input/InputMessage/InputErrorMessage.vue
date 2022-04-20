@@ -5,16 +5,15 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: "InputErrorMessage",
-    props: {
-        text: {
-            type: String,
-            default: "",
-        },
+<script setup>
+import { defineProps } from "vue";
+
+defineProps({
+    text: {
+        type: String,
+        default: "",
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>

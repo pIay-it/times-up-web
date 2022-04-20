@@ -5,36 +5,30 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed, defineProps } from "vue";
 import DualRingSpinner from "@/components/shared/Loader/DualRingSpinner";
 
-export default {
-    name: "DefaultLoader",
-    components: { DualRingSpinner },
-    props: {
-        text: {
-            type: String,
-            default: "",
-        },
-        color: {
-            type: String,
-            default: "white",
-        },
-        iconSize: {
-            type: Number,
-            default: 45,
-        },
-        textSize: {
-            type: Number,
-            default: 26,
-        },
+const props = defineProps({
+    text: {
+        type: String,
+        default: "",
     },
-    computed: {
-        loadingTextStyle() {
-            return { "font-size": `${this.textSize}px` };
-        },
+    color: {
+        type: String,
+        default: "white",
     },
-};
+    iconSize: {
+        type: Number,
+        default: 45,
+    },
+    textSize: {
+        type: Number,
+        default: 26,
+    },
+});
+
+const loadingTextStyle = computed(() => ({ "font-size": `${props.textSize}px` }));
 </script>
 
 <style lang="scss" scoped>

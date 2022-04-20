@@ -9,7 +9,7 @@
                 </h2>
                 <hr/>
                 <CardsManagerTable :cards="cards" @show-cards-manager-modal="showCardsManagerModal" @card-deleted="deleteCard"/>
-                <CardsManagerModal ref="cardsManagerPage" :cards="cards" @card-created="addCard" @card-updated="updateCard"/>
+                <CardsManagerModal ref="cardsManagerModal" :cards="cards" @card-created="addCard" @card-updated="updateCard"/>
             </div>
             <APIError v-else key="cards" class="h-100" @retry="fetchCards"/>
         </Transition>
@@ -19,63 +19,52 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import DefaultLoader from "@/components/shared/Loader/DefaultLoader";
 import APIError from "@/components/shared/Error/APIError";
 import CardsManagerModal from "@/components/CardsManagerPage/CardsManagerModal/CardsManagerModal";
 import CardsManagerTable from "@/components/CardsManagerPage/CardsManagerTable/CardsManagerTable";
-import useError from "@/composables/Error/useError";
-import Card from "@/classes/Card";
 import BackButton from "@/components/shared/Button/BackButton";
+import useError from "@/composables/Error/useError";
+import useTimesUpAPI from "@/composables/API/useTimesUpAPI";
+import Card from "@/classes/Card";
 
-export default {
-    name: "CardsManagerPage",
-    components: { BackButton, CardsManagerTable, CardsManagerModal, APIError, DefaultLoader },
-    setup() {
-        const { displayError } = useError();
-        return { displayError };
-    },
-    data() {
-        return {
-            cards: undefined,
-            isFetchingCards: true,
-        };
-    },
-    async created() {
-        await this.fetchCards();
-    },
-    methods: {
-        async fetchCards() {
-            try {
-                this.isFetchingCards = true;
-                const { data: cards } = await this.$timesUpAPI.getCards();
-                this.cards = cards.map(card => new Card(card));
-            } catch (err) {
-                this.displayError(err);
-            } finally {
-                this.isFetchingCards = false;
-            }
-        },
-        showCardsManagerModal(card) {
-            this.$refs.cardsManagerPage.show(card);
-        },
-        addCard(newCard) {
-            this.cards.push(newCard);
-        },
-        updateCard(card) {
-            const cardIndex = this.cards.findIndex(({ _id }) => _id === card._id);
-            if (cardIndex !== -1) {
-                this.cards.splice(cardIndex, 1, new Card(card));
-            }
-        },
-        deleteCard(card) {
-            const cardIndex = this.cards.findIndex(({ _id }) => _id === card._id);
-            if (cardIndex !== -1) {
-                this.cards.splice(cardIndex, 1);
-            }
-        },
-    },
+const { timesUpAPI } = useTimesUpAPI();
+const { displayError } = useError();
+
+const cards = ref(undefined);
+const cardsManagerModal = ref(null);
+const isFetchingCards = ref(true);
+
+const fetchCards = async() => {
+    try {
+        isFetchingCards.value = true;
+        const { data: fetchedCards } = await timesUpAPI.getCards();
+        cards.value = fetchedCards.map(card => new Card(card));
+    } catch (err) {
+        cards.value = null;
+        displayError(err);
+    } finally {
+        isFetchingCards.value = false;
+    }
 };
+const showCardsManagerModal = card => cardsManagerModal.value.show(card);
+const addCard = newCard => cards.value.push(newCard);
+const updateCard = updatedCard => {
+    const cardIndex = cards.value.findIndex(({ _id }) => _id === updatedCard._id);
+    if (cardIndex !== -1) {
+        cards.value.splice(cardIndex, 1, new Card(updatedCard));
+    }
+};
+const deleteCard = deletedCard => {
+    const cardIndex = cards.value.findIndex(({ _id }) => _id === deletedCard._id);
+    if (cardIndex !== -1) {
+        cards.value.splice(cardIndex, 1);
+    }
+};
+
+fetchCards();
 </script>
 
 <style>
