@@ -5,36 +5,33 @@
     </a>
 </template>
 
-<script>
-import Player from "@/classes/Player";
+<script setup>
+import { defineProps } from "vue";
+import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
+import Player from "@/classes/Player";
 
-export default {
-    name: "GamePlayerDeleteButton",
-    props: {
-        player: {
-            type: Player,
-            required: true,
-        },
+const props = defineProps({
+    player: {
+        type: Player,
+        required: true,
     },
-    setup() {
-        const { DefaultConfirmSwal } = useSweetAlert();
-        return { DefaultConfirmSwal };
-    },
-    methods: {
-        confirmDeletePlayer() {
-            return this.DefaultConfirmSwal.fire({
-                title: this.$t("GamePlayerDeleteButton.areYouSureYouWantToDeletePlayer", { playerName: this.player.name }),
-                icon: "warning",
-            });
-        },
-        async deletePlayer() {
-            const { isConfirmed } = await this.confirmDeletePlayer();
-            if (isConfirmed) {
-                await this.$store.dispatch("game/removeGamePlayerByName", this.player.name);
-            }
-        },
-    },
+});
+
+const store = useStore();
+const { DefaultConfirmSwal } = useSweetAlert();
+const { t } = useI18n();
+
+const confirmDeletePlayer = () => DefaultConfirmSwal.fire({
+    title: t("GamePlayerDeleteButton.areYouSureYouWantToDeletePlayer", { playerName: props.player.name }),
+    icon: "warning",
+});
+const deletePlayer = async() => {
+    const { isConfirmed } = await confirmDeletePlayer();
+    if (isConfirmed) {
+        await store.dispatch("game/removeGamePlayerByName", props.player.name);
+    }
 };
 </script>
 

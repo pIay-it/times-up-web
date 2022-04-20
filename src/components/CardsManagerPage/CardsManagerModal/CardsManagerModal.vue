@@ -7,13 +7,13 @@
                 </div>
                 <VForm #default="{ isSubmitting }" :validation-schema="formSchema" @submit="submit" @invalid-submit="submitError">
                     <div class="modal-body">
-                        <TextInput ref="labelTextInput" :label="$t('CardsManagerModal.label')" :is-required="true" name="label"
+                        <TextInput ref="labelTextInput" :label="$t('CardsManagerModal.label')" is-required name="label"
                                    :is-disabled="isSubmitting" :success-message="labelInputSuccessMessage"
                                    :success-message-type="labelInputSuccessMessageType" @change="setLabel"/>
                         <div>
                             <label class="form-label" v-html="$t('CardsManagerModal.categories')"/>
                             <RedAsterisk/>
-                            <VField v-model="categories" name="categories" type="text" class="d-none" :disabled="true"/>
+                            <VField v-model="categories" name="categories" type="text" class="d-none" disabled/>
                             <VSelect id="card-categories" v-model="selectedCardCategories" :options="selectableCategories"
                                      :close-on-select="false" :placeholder="$t('Form.required')" label="category" multiple
                                      :filter="filterByCategoryLabel" :disabled="isSubmitting" :class="categoriesSelectClasses"
@@ -41,7 +41,7 @@
                         <div class="mb-2">
                             <label class="form-label" for="card-easy-difficulty" v-html="$t('CardsManagerModal.difficulty')"/>
                             <RedAsterisk/>
-                            <VField v-model="difficulty" name="difficulty" type="number" class="d-none" :disabled="true"/>
+                            <VField v-model="difficulty" name="difficulty" type="number" class="d-none" disabled/>
                             <div class="d-flex justify-content-center">
                                 <div class="btn-group" role="group">
                                     <input id="card-easy-difficulty" v-model="difficulty" type="radio" class="btn-check" name="difficulty"
@@ -92,11 +92,13 @@
     </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { computed, defineEmits, defineProps, onErrorCaptured, ref, defineExpose } from "vue";
 import Fuse from "fuse.js";
 import { useField } from "vee-validate";
 import { object as createSchema, string as checkString, array as checkArray, number as checkNumber } from "yup";
+import { useI18n } from "vue-i18n";
+import { useToast } from "vue-toastification";
 import CardCategoryIcon from "@/components/shared/Card/Category/CardCategoryIcon";
 import RedAsterisk from "@/components/shared/Form/RedAsterisk";
 import SubmitButton from "@/components/shared/Form/SubmitButton";
@@ -108,233 +110,195 @@ import CardImage from "@/components/shared/Card/Image/CardImage";
 import CardImageFinder from "@/components/CardsManagerPage/CardsManagerModal/CardImageFinder";
 import useError from "@/composables/Error/useError";
 import useBootstrapModal from "@/composables/Bootstrap/useBootstrapModal";
+import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
+import useTimesUpAPI from "@/composables/API/useTimesUpAPI";
+import Card from "@/classes/Card";
 import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import { getCardCategories } from "@/helpers/functions/Card";
-import Card from "@/classes/Card";
-import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 
-export default {
-    name: "CardsManagerModal",
-    components: {
-        CardImageFinder,
-        CardImage,
-        CardsManagerModalResetButton,
-        InputMessage,
-        TextInput,
-        CardDifficultyIcon,
-        SubmitButton,
-        RedAsterisk,
-        CardCategoryIcon,
+const props = defineProps({
+    cards: {
+        type: Array,
+        required: true,
+        validator: cards => cards.every(card => card instanceof Card),
     },
-    props: {
-        cards: {
-            type: Array,
-            required: true,
-            validator: cards => cards.every(card => card instanceof Card),
-        },
-    },
-    emits: {
-        "card-created": card => card instanceof Card,
-        "card-updated": card => card instanceof Card,
-    },
-    setup() {
-        const cardsManagerModal = ref(null);
-        const { displayError } = useError();
-        const { DefaultConfirmSwal } = useSweetAlert();
-        const { showModal, hideModal, lockModal, unlockModal } = useBootstrapModal(cardsManagerModal);
-        const { value: categories, setTouched: setCategoriesTouched, meta: metaCategories } = useField("categories", undefined, { initialValue: [] });
-        const { value: difficulty } = useField("difficulty", undefined, { initialValue: 1 });
-        return {
-            displayError, DefaultConfirmSwal,
-            categories, setCategoriesTouched, metaCategories,
-            difficulty,
-            cardsManagerModal, showModal, hideModal, lockModal, unlockModal,
-        };
-    },
-    data() {
-        return {
-            card: new Card(),
-            label: undefined,
-            imageURL: undefined,
-        };
-    },
-    computed: {
-        mode() {
-            return this.card.doesExistInDB ? "update" : "create";
-        },
-        modalTitleText() {
-            return this.mode === "create" ? this.$t("CardsManagerModal.createCard") : this.$t("CardsManagerModal.updateCard");
-        },
-        modalSubmitButtonText() {
-            return this.mode === "create" ? this.$t("CardsManagerModal.create") : this.$t("CardsManagerModal.update");
-        },
-        formSchema() {
-            return createSchema().shape({
-                label: checkString().trim().required().label(this.$t("CardsManagerModal.theCardLabel")),
-                categories: checkArray().min(1).required(),
-                difficulty: checkNumber(),
-                description: checkString().optional().trim(),
-                imageURL: checkString().optional().trim().url().label(this.$t("CardsManagerModal.theCardImageURL")),
-            });
-        },
-        selectableCategories() {
-            const categories = getCardCategories();
-            let filteredCategories = categories.filter(category => !this.categories.includes(category));
-            filteredCategories = this.getFormattedCardCategoriesForSelect(filteredCategories);
-            sortAlphabeticallyByKey(filteredCategories, "displayedLabel");
-            return filteredCategories;
-        },
-        selectedCardCategories: {
-            get() {
-                return this.getFormattedCardCategoriesForSelect(this.categories);
-            },
-            set(categories) {
-                this.categories = categories.map(({ category }) => category);
-            },
-        },
-        areCategoriesValid() {
-            return this.categories.length;
-        },
-        categoriesErrorMessage() {
-            return !this.areCategoriesValid && this.metaCategories.touched ? this.$t("CardsManagerModal.oneCategoryRequired") : undefined;
-        },
-        categoriesSelectClasses() {
-            return {
-                "is-valid": this.areCategoriesValid && this.metaCategories.touched,
-                "is-invalid": !this.areCategoriesValid && this.metaCategories.touched,
-            };
-        },
-        noOptionsText() {
-            return this.selectableCategories.length ? this.$t("CardsManagerModal.noMatchingCategory") : this.$t("CardsManagerModal.noMoreCategory");
-        },
-        lookAlikeCards() {
-            const fuse = new Fuse(this.cards, {
-                keys: ["label"],
-                threshold: 0.2,
-                minMatchCharLength: 3,
-                shouldSort: false,
-            });
-            return !this.label?.length ? this.cards : fuse.search(this.label).map(({ item }) => item);
-        },
-        doesCardLabelLookAlikeAnotherOne() {
-            return this.lookAlikeCards.length && (this.lookAlikeCards.length !== 1 || this.lookAlikeCards[0]._id !== this.card._id);
-        },
-        labelInputSuccessMessageType() {
-            return this.doesCardLabelLookAlikeAnotherOne ? "info" : "success";
-        },
-        labelInputSuccessMessage() {
-            if (this.doesCardLabelLookAlikeAnotherOne) {
-                return this.$t("CardsManagerModal.someCardsLookAlike", { label: this.lookAlikeCards[0].label });
-            }
-            return this.$t("CardsManagerModal.thisCardIsUnique");
-        },
-    },
-    errorCaptured(err) {
-        if (err instanceof TypeError && err.stack?.includes("vue-select")) {
-            // TODO: Remove when fixed on v-select beta
-            // eslint-disable-next-line no-console
-            console.log("v-select beta error, remember to update the npm module later");
-            return false;
-        }
-        throw err;
-    },
-    methods: {
-        show(card = null) {
-            this.card = new Card(card);
-            this.$refs.cardImageFinder.reset();
-            this.resetForm();
-            this.showModal(() => this.$refs.labelTextInput.focus());
-        },
-        filterByCategoryLabel(list, search) {
-            const fuse = new Fuse(list, {
-                keys: ["displayedLabel"],
-                shouldSort: true,
-                threshold: 0.3,
-            });
-            return search.length ? fuse.search(search).map(({ item }) => item) : fuse.list;
-        },
-        getFormattedCardCategoriesForSelect(categories) {
-            return categories.map(category => ({ category, displayedLabel: this.$t(`CardCategory.${category}.label`) }));
-        },
-        async createCard(formValues) {
-            const { data: newCard } = await this.$timesUpAPI.createCard(formValues);
-            this.$emit("card-created", new Card(newCard));
-            this.$toast.success(this.$t("CardsManagerModal.cardCreated"));
-        },
-        async updateCard(formValues) {
-            const { data: updatedCard } = await this.$timesUpAPI.updateCard(this.card._id, formValues);
-            this.$emit("card-updated", new Card(updatedCard));
-            this.$toast.success(this.$t("CardsManagerModal.cardUpdated"));
-        },
-        confirmSubmit() {
-            const titleText = `CardsManagerModal.${this.mode}EvenIfCardLooksAlike`;
-            return this.DefaultConfirmSwal.fire({
-                title: this.$t(titleText),
-                text: this.$t("SweetAlert.youCanChangeThatAfterwards"),
-                icon: "warning",
-            });
-        },
-        async submit(formValues) {
-            formValues = this.formSchema.cast(formValues);
-            if (this.doesCardLabelLookAlikeAnotherOne) {
-                const { isConfirmed } = await this.confirmSubmit();
-                if (!isConfirmed) {
-                    return;
-                }
-            }
-            try {
-                this.lockModal();
-                if (this.mode === "create") {
-                    await this.createCard(formValues);
-                } else {
-                    await this.updateCard(formValues);
-                }
-                this.hideModal();
-            } catch (err) {
-                this.displayError(err);
-            } finally {
-                this.unlockModal();
-            }
-        },
-        submitError() {
-            this.setCategoriesTouched(true);
-        },
-        resetForm() {
-            if (this.mode === "create") {
-                this.$refs.labelTextInput.reset();
-                this.categories = [];
-                this.setCategoriesTouched(false);
-                this.difficulty = 1;
-                this.$refs.descriptionTextInput.reset();
-                this.$refs.imageURLTextInput.reset();
-                this.label = undefined;
-                this.imageURL = undefined;
-            } else {
-                this.$refs.labelTextInput.setValue(this.card.label);
-                this.categories = [...this.card.categories];
-                this.setCategoriesTouched(true);
-                this.difficulty = this.card.difficulty;
-                this.$refs.descriptionTextInput.setValue(this.card.description);
-                this.$refs.imageURLTextInput.setValue(this.card.imageURL);
-                this.label = this.card.label;
-                this.imageURL = this.card.imageURL;
-            }
-            this.$refs.cardImageFinder.reset();
-            this.$refs.labelTextInput.focus();
-        },
-        setLabel(label) {
-            this.label = label;
-            this.$refs.cardImageFinder.setSearch(label);
-        },
-        setImageURL(imageURL) {
-            this.imageURL = imageURL;
-        },
-        imageSelectedFromCardImageFinder(imageURL) {
-            this.$refs.imageURLTextInput.setValue(imageURL);
-            this.imageURL = imageURL;
-        },
-    },
+});
+
+const emit = defineEmits({
+    "card-created": card => card instanceof Card,
+    "card-updated": card => card instanceof Card,
+});
+
+const { displayError } = useError();
+const { DefaultConfirmSwal } = useSweetAlert();
+const cardsManagerModal = ref(null);
+const { showModal, hideModal, lockModal, unlockModal } = useBootstrapModal(cardsManagerModal);
+const { t } = useI18n();
+const Toast = useToast();
+const { timesUpAPI } = useTimesUpAPI();
+const { value: categories, setTouched: setCategoriesTouched, meta: metaCategories } = useField("categories", undefined, { initialValue: [] });
+const { value: difficulty } = useField("difficulty", undefined, { initialValue: 1 });
+
+const i18nKey = "CardsManagerModal";
+const formSchema = createSchema().shape({
+    label: checkString().trim().required().label(t(`${i18nKey}.theCardLabel`)),
+    categories: checkArray().min(1).required(),
+    difficulty: checkNumber(),
+    description: checkString().optional().trim(),
+    imageURL: checkString().optional().trim().url().label(t(`${i18nKey}.theCardImageURL`)),
+});
+const label = ref(undefined);
+const imageURL = ref(undefined);
+const cardImageFinder = ref(null);
+const labelTextInput = ref(null);
+const descriptionTextInput = ref(null);
+const imageURLTextInput = ref(null);
+const card = ref(new Card());
+
+const mode = computed(() => card.value.doesExistInDB ? "update" : "create");
+const modalTitleText = computed(() => mode.value === "create" ? t(`${i18nKey}.createCard`) : t(`${i18nKey}.updateCard`));
+const modalSubmitButtonText = computed(() => mode.value === "create" ? t(`${i18nKey}.create`) : t(`${i18nKey}.update`));
+const getFormattedCardCategoriesForSelect = categoriesToFormat => categoriesToFormat.map(category => ({
+    category,
+    displayedLabel: t(`CardCategory.${category}.label`),
+}));
+const selectableCategories = computed(() => {
+    const cardCategories = getCardCategories();
+    let filteredCategories = cardCategories.filter(category => !categories.value.includes(category));
+    filteredCategories = getFormattedCardCategoriesForSelect(filteredCategories);
+    sortAlphabeticallyByKey(filteredCategories, "displayedLabel");
+    return filteredCategories;
+});
+const selectedCardCategories = computed({
+    get: () => getFormattedCardCategoriesForSelect(categories.value),
+    set: newCategories => (categories.value = newCategories.map(({ category }) => category)),
+});
+const isCategoriesInputValid = computed(() => categories.value.length);
+const categoriesErrorMessage = computed(() => {
+    if (!isCategoriesInputValid.value && metaCategories.touched) {
+        return t(`${i18nKey}.oneCategoryRequired`);
+    }
+    return undefined;
+});
+const categoriesSelectClasses = computed(() => ({
+    "is-valid": isCategoriesInputValid.value && metaCategories.touched,
+    "is-invalid": !isCategoriesInputValid.value && metaCategories.touched,
+}));
+const noOptionsText = computed(() => selectableCategories.value.length ? t(`${i18nKey}.noMatchingCategory`) : t(`${i18nKey}.noMoreCategory`));
+const lookAlikeCards = computed(() => {
+    const fuse = new Fuse(props.cards, {
+        keys: ["label"],
+        threshold: 0.2,
+        minMatchCharLength: 3,
+        shouldSort: false,
+    });
+    return label.value?.length ? fuse.search(label.value).map(({ item }) => item) : props.cards;
+});
+const doesCardLabelLookAlikeAnotherOne = computed(() => lookAlikeCards.value.length &&
+    (lookAlikeCards.value.length !== 1 || lookAlikeCards.value[0]._id !== card.value._id));
+const labelInputSuccessMessageType = computed(() => doesCardLabelLookAlikeAnotherOne.value ? "info" : "success");
+const labelInputSuccessMessage = computed(() => {
+    if (doesCardLabelLookAlikeAnotherOne.value) {
+        return t(`${i18nKey}.someCardsLookAlike`, { label: lookAlikeCards.value[0].label });
+    }
+    return t(`${i18nKey}.thisCardIsUnique`);
+});
+
+onErrorCaptured(err => {
+    if (err instanceof TypeError && err.stack?.includes("vue-select")) {
+        // TODO: Remove when fixed on v-select beta
+        // eslint-disable-next-line no-console
+        console.log("v-select beta error, remember to update the npm module later");
+        return false;
+    }
+    throw err;
+});
+
+const resetForm = () => {
+    if (mode.value === "create") {
+        labelTextInput.value.reset();
+        categories.value = [];
+        setCategoriesTouched(false);
+        difficulty.value = 1;
+        descriptionTextInput.value.reset();
+        imageURLTextInput.value.reset();
+        label.value = undefined;
+        imageURL.value = undefined;
+    } else {
+        labelTextInput.value.setValue(card.value.label);
+        categories.value = [...card.value.categories];
+        setCategoriesTouched(true);
+        difficulty.value = card.value.difficulty;
+        descriptionTextInput.value.setValue(card.value.description);
+        imageURLTextInput.value.setValue(card.value.imageURL);
+        label.value = card.value.label;
+        imageURL.value = card.value.imageURL;
+    }
+    cardImageFinder.value.reset();
+    labelTextInput.value.focus();
 };
+const show = (cardToEdit = null) => {
+    card.value = new Card(cardToEdit);
+    cardImageFinder.value.reset();
+    resetForm();
+    showModal(() => labelTextInput.value.focus());
+};
+const filterByCategoryLabel = (list, search) => {
+    const fuse = new Fuse(list, {
+        keys: ["displayedLabel"],
+        shouldSort: true,
+        threshold: 0.3,
+    });
+    return search.length ? fuse.search(search).map(({ item }) => item) : fuse.list;
+};
+const createCard = async formValues => {
+    const { data: newCard } = await timesUpAPI.createCard(formValues);
+    emit("card-created", new Card(newCard));
+    Toast.success(t(`${i18nKey}.cardCreated`));
+};
+const updateCard = async formValues => {
+    const { data: updatedCard } = await timesUpAPI.updateCard(card.value._id, formValues);
+    emit("card-updated", new Card(updatedCard));
+    Toast.success(t(`${i18nKey}.cardUpdated`));
+};
+const confirmSubmit = () => DefaultConfirmSwal.fire({
+    title: t(`${i18nKey}.${mode.value}EvenIfCardLooksAlike`),
+    text: t("SweetAlert.youCanChangeThatAfterwards"),
+    icon: "warning",
+});
+const submit = async formValues => {
+    formValues = formSchema.cast(formValues);
+    if (doesCardLabelLookAlikeAnotherOne.value) {
+        const { isConfirmed } = await confirmSubmit();
+        if (!isConfirmed) {
+            return;
+        }
+    }
+    try {
+        lockModal();
+        if (mode.value === "create") {
+            await createCard(formValues);
+        } else {
+            await updateCard(formValues);
+        }
+        hideModal();
+    } catch (err) {
+        displayError(err);
+    } finally {
+        unlockModal();
+    }
+};
+const submitError = () => setCategoriesTouched(true);
+const setLabel = newLabel => {
+    label.value = newLabel;
+    cardImageFinder.value.setSearch(newLabel);
+};
+const setImageURL = newImageURL => (imageURL.value = newImageURL);
+const imageSelectedFromCardImageFinder = selectedImageURL => {
+    imageURLTextInput.value.setValue(selectedImageURL);
+    imageURL.value = selectedImageURL;
+};
+defineExpose({ show });
 </script>
 
 <style lang="scss" scoped>

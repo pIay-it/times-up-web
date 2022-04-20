@@ -90,7 +90,7 @@ class Game {
     }
 
     get isNewRound() {
-        return this.round === 1 && this.turn === 1 || this.lastPlay?.round !== this.round;
+        return (this.round === 1 || this.lastPlay?.round !== this.round) && this.turn === 1;
     }
 
     get winningPlayers() {
@@ -115,6 +115,10 @@ class Game {
 
     get secondTeam() {
         return this.teams.length ? this.teams[1] : null;
+    }
+
+    get lastRoundNumber() {
+        return this.isPlaying ? this.round - 1 : this.round;
     }
 
     doesTeamHaveEnoughPlayers(team) {
@@ -192,13 +196,25 @@ class Game {
         }
     }
 
+    getRoundTurns(roundNumber) {
+        return this.history.filter(({ round }) => roundNumber === round);
+    }
+
+    getRoundSummary(roundNumber) {
+        return this.summary.getRoundSummary(roundNumber);
+    }
+
     getRoundTeamScore(roundNumber, team) {
         return this.summary.getRoundTeamScore(roundNumber, team);
     }
 
+    getRoundWinningTeams(roundNumber) {
+        return this.summary.getRoundWinningTeams(roundNumber);
+    }
+
     getTeamFinalScore(team) {
-        const teamFinalScore = this.summary.getTeamFinalScore(team);
-        return this.isOver && teamFinalScore !== undefined ? teamFinalScore : undefined;
+        const teamFinalScore = this?.summary?.getTeamFinalScore(team);
+        return this?.isOver && teamFinalScore !== undefined ? teamFinalScore : undefined;
     }
 }
 

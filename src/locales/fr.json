@@ -86,12 +86,13 @@
         "guessed": "Trouver",
         "skipped": "Passer",
         "toGuess": "À faire deviner :",
-        "noCardDescription": "Aucune description pour cette carte…"
+        "noCardDescription": "Aucune description pour cette carte…",
+        "youCantSkipOnFirstRound": "Vous ne pouvez pas passer une carte durant la première manche"
     },
     "TurnSummary": {
         "areYouSureYouWantToResetTurn": "Êtes-vous sûr de vouloir rejouer ce tour ?",
         "turnSummary": "Résultats du tour {turn}",
-        "playerHasGuessed": "{player} a trouvé :",
+        "playerHasGuessed": "{player} a fait deviner :",
         "cards": "Aucune carte | 1 carte | {score} cartes",
         "guessed": "Trouvée",
         "skipped": "Passée",
@@ -101,7 +102,31 @@
     "TurnSummaryPlayedCard": {
         "skipped": "Passée",
         "guessed": "Trouvée",
-        "discarded": "Défaussée"
+        "discarded": "Défaussée",
+        "cardPlayedInSeconds": "Jouée en { playingTime } secondes"
+    },
+    "RoundSummary": {
+        "roundSummary": "Résultats de la manche {round}"
+    },
+    "GameScoreboard": {
+        "teams": "Équipes"
+    },
+    "GameTeamScore": {
+        "score": "0 pt | 1 pt | {score} pts"
+    },
+    "RoundSummaryTurn": {
+        "turnSpeaker": "Tour {turn} ({speakerName})",
+        "score": "0 pt | 1 pt | {score} pts"
+    },
+    "GameOver": {
+        "gameResults": "Résultats de la partie",
+        "gameWonByTeam": "L'équipe {winningTeam} remporte la partie",
+        "score": "0 pt | 1 pt | {score} pts",
+        "newGame": "Nouvelle partie",
+        "tieBetweenTeams": "Égalité entre les équipes !"
+    },
+    "GameHistory": {
+        "gameHistory": "Historique de la partie"
     },
     "CardsManagerPage": {
         "fetchingCards": "Récupération des cartes",

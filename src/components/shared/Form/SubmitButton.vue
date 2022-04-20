@@ -13,38 +13,35 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { defineProps, defineEmits } from "vue";
 import DualRingSpinner from "@/components/shared/Loader/DualRingSpinner";
 
-export default {
-    name: "SubmitButton",
-    components: { DualRingSpinner },
-    props: {
-        classes: {
-            type: String,
-            default: "",
-        },
-        isLoading: {
-            type: Boolean,
-            required: true,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
-        loaderSize: {
-            type: Number,
-            default: 24,
-        },
+const emit = defineEmits({ click: () => true });
+
+const props = defineProps({
+    classes: {
+        type: String,
+        default: "",
     },
-    emits: { click: () => true },
-    methods: {
-        click(e) {
-            if (!this.isLoading) {
-                this.$emit("click", e);
-            }
-        },
+    isLoading: {
+        type: Boolean,
+        required: true,
     },
+    disabled: {
+        type: Boolean,
+        default: false,
+    },
+    loaderSize: {
+        type: Number,
+        default: 24,
+    },
+});
+
+const click = event => {
+    if (!props.isLoading) {
+        emit("click", event);
+    }
 };
 </script>
 

@@ -1,8 +1,8 @@
 <template>
-    <div class="game-team-label d-flex align-items-center">
-        <div class="team-color-circle me-2" :style="{ backgroundColor: team.color }"/>
+    <div class="game-team-label d-flex justify-content-center align-items-center">
+        <ColoredCircle :color="team.color" class="me-2"/>
         <span v-html="team.name"/>
-        <div v-tooltip="teamProblemTooltipText" class="text-center team-problem-container">
+        <div v-if="hasAppendIcon" v-tooltip="teamProblemTooltipText" class="text-center team-problem-container">
             <Transition mode="out-in" name="fade">
                 <i v-if="!game.doesTeamHaveEnoughPlayers(team.name)" class="fa-solid fa-exclamation-triangle"/>
             </Transition>
@@ -10,39 +10,33 @@
     </div>
 </template>
 
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+<script setup>
+import { computed, defineProps } from "vue";
+import { useI18n } from "vue-i18n";
+import ColoredCircle from "@/components/shared/misc/ColoredCircle";
+import useGame from "@/composables/Game/useGame";
 
-export default {
-    name: "GameTeamLabel",
-    props: {
-        team: {
-            type: Object,
-            required: true,
-        },
+const props = defineProps({
+    team: {
+        type: Object,
+        required: true,
     },
-    setup() {
-        const store = useStore();
-        return { game: computed(() => store.state.game.game) };
+    hasAppendIcon: {
+        type: Boolean,
+        default: false,
     },
-    computed: {
-        teamProblemTooltipText() {
-            const missingPlayerCount = this.game.getMissingPlayerCountInTeam(this.team.name);
-            return this.$t("GameTeamLabel.itMissesPlayers", { missingPlayerCount }, missingPlayerCount);
-        },
-    },
-};
+});
+
+const { game } = useGame();
+const { t } = useI18n();
+
+const teamProblemTooltipText = computed(() => {
+    const missingPlayerCount = game.value.getMissingPlayerCountInTeam(props.team.name);
+    return t("GameTeamLabel.itMissesPlayers", { missingPlayerCount }, missingPlayerCount);
+});
 </script>
 
 <style lang="scss" scoped>
-    .team-color-circle {
-        border-radius: 50px;
-        height: 15px;
-        width: 15px;
-        box-shadow: 1px 1px 3px #000000;
-    }
-
     .team-problem-container {
         min-width: 30px;
     }

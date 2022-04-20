@@ -12,26 +12,13 @@
     </Transition>
 </template>
 
-<script>
+<script setup>
 import { computed } from "vue";
-import { useStore } from "vuex";
+import useFullScreenCountdown from "@/composables/FullScreenCountdown/useFullScreenCountdown";
 
-export default {
-    name: "FullScreenCountdown",
-    setup() {
-        const store = useStore();
-        return {
-            countdown: computed(() => store.state.fullscreenCountdown.countdown),
-            lastCountdown: computed(() => store.state.fullscreenCountdown.lastCountdown),
-            isCountdownRunning: computed(() => store.state.fullscreenCountdown.isRunning),
-        };
-    },
-    computed: {
-        countdownProgress() {
-            return this.lastCountdown ? 100 - this.countdown * 100 / this.lastCountdown : 0;
-        },
-    },
-};
+const { countdown, lastCountdown, isCountdownRunning } = useFullScreenCountdown();
+
+const countdownProgress = computed(() => lastCountdown.value ? 100 - countdown.value * 100 / lastCountdown.value : 0);
 </script>
 
 <style lang="scss" scoped>
