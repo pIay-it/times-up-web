@@ -1,0 +1,31 @@
+export const CARD_CATEGORY = Object.freeze({
+    PERSONALITY: "personality",
+    CHARACTER: "character",
+    ACTIVITY: "activity",
+    OBJECT: "object",
+    FOOD: "food",
+    NATURE: "nature",
+    PLACE: "place",
+    EVENT: "event",
+    ART: "art",
+    TECHNOLOGY: "technology",
+    CLOTHES: "clothes",
+    MOVIE: "movie",
+    TV_SERIES: "tv-series",
+    BOOK: "book",
+    VIDEO_GAME: "video-game",
+    PAINTING: "painting",
+    THEATRE_PLAY: "theatre-play",
+    SCULPTURE: "sculpture",
+    ARCHITECTURE: "architecture",
+    MUSIC: "music",
+    ANIMAL: "animal",
+    SPORT: "sport",
+    JOB: "job",
+});
+
+export const CARD_DIFFICULTY = Object.freeze({
+    EASY: 1,
+    MEDIUM: 2,
+    HARD: 3,
+});

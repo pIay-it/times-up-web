@@ -1,7 +1,7 @@
 <template>
-    <div id="turn-starting" class="d-flex flex-column h-100 align-items-center">
+    <div id="turn-starting" class="d-flex flex-column h-100 align-items-center justify-content-between">
         <PageTitle v-html="$t('TurnStarting.turnOf')"/>
-        <h1 class="d-flex flex-grow-1 align-items-center justify-content-center player-name" v-html="game.speaker.name"/>
+        <h1 class="player-name mt-3 mb-0" v-html="game.speaker.name"/>
         <TimesUpFooter class="w-100">
             <div class="container-fluid w-100">
                 <div class="row align-items-center">
@@ -54,6 +54,7 @@ const showRoundRules = () => emit("show-round-rules");
 
 <style lang="scss">
     .player-name {
-        font-size: 3rem;
+        text-align: center;
+        font-size: 3.5rem;
     }
 </style>

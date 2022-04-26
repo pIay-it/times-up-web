@@ -23,9 +23,9 @@
         </div>
         <div id="turn-playing-card-section" class="flex-grow-1 d-flex flex-column turn-playing-section">
             <Transition mode="out-in" name="card-transition" @before-leave="beforeLeaveList">
-                <h1 id="card-to-guess-label" :key="currentToGuessCard._id"
+                <h1 id="card-to-guess-label" :key="currentToGuessCard?._id"
                     class="d-flex flex-grow-1 justify-content-center align-items-center text-center"
-                    v-html="currentToGuessCard.label"/>
+                    v-html="currentToGuessCard?.label"/>
             </Transition>
         </div>
         <div id="turn-playing-actions-section" class="d-flex flex-grow-1 justify-content-between turn-playing-section">

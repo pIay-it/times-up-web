@@ -9,6 +9,7 @@
 import { computed, defineProps } from "vue";
 import { useI18n } from "vue-i18n";
 import CardDifficultyIcon from "@/components/shared/Card/Difficulty/CardDifficultyIcon";
+import { CARD_DIFFICULTY } from "@/helpers/constants/Card";
 
 const props = defineProps({
     difficulty: {
@@ -20,9 +21,9 @@ const props = defineProps({
 const { t } = useI18n();
 
 const badgeClasses = computed(() => ({
-    "bg-success": props.difficulty === 1,
-    "bg-primary": props.difficulty === 2,
-    "bg-danger": props.difficulty === 3,
+    "bg-success": props.difficulty === CARD_DIFFICULTY.EASY,
+    "bg-primary": props.difficulty === CARD_DIFFICULTY.MEDIUM,
+    "bg-danger": props.difficulty === CARD_DIFFICULTY.HARD,
 }));
 const badgeText = computed(() => t(`CardDifficultyPillBadge.difficultyLevel.${props.difficulty}`));
 </script>

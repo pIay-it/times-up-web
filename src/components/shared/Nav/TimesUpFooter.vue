@@ -1,5 +1,5 @@
 <template>
-    <div id="times-up-footer" class="mt-3 w-100 d-flex justify-content-center align-items-center">
+    <div id="times-up-footer" class="mt-2 w-100 d-flex justify-content-center align-items-center">
         <Transition mode="out-in" name="translate-from-top">
             <div v-if="!isLoading" id="times-up-footer-content" key="times-up-footer-content"
                  class="d-flex justify-content-around align-items-center flex-grow-1">
@@ -28,7 +28,9 @@ defineProps({
 
 <style lang="scss">
     #times-up-footer {
-        height: 80px;
+        height: 75px;
+        min-height: 75px;
+        max-height: 75px;
 
         #times-up-footer-content {
             & > * {

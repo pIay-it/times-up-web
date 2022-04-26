@@ -1,5 +1,5 @@
-import cardCategories from "../constants/cardCategories.json";
+import { CARD_CATEGORY } from "@/helpers/constants/Card";
 
 export function getCardCategories() {
-    return JSON.parse(JSON.stringify(cardCategories));
+    return Object.values(CARD_CATEGORY);
 }
