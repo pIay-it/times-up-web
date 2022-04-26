@@ -15,6 +15,7 @@ import VueToastification from "./vue-toastification";
 import "./yup";
 import TimesUpAPI from "./APIs/TimesUpAPI";
 import Config from "../../config";
+import InlineSvg from "vue-inline-svg";
 
 export function usePlugins(app) {
     if (Config.sentry.isEnabled) {
@@ -35,4 +36,5 @@ export function usePlugins(app) {
     app.component("VueFormToggleButton", VueFormToggleButton);
     app.component(VueCountdown.name, VueCountdown);
     app.component("VSelect", VSelect);
+    app.component("InlineSVG", InlineSvg);
 }

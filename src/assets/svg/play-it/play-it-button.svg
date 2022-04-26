@@ -1,4 +1,4 @@
-<svg width="89" height="102" viewBox="0 0 89 102" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="589" height="602" viewBox="0 0 89 102" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_2_9)" filter="url(#filter0_d_2_9)">
 <g filter="url(#filter1_d_2_9)">
 <path d="M80.7877 39.6421L17.9286 5.09285C12.8212 2.28699 5 5.00924 5 11.949V81.031C4.9986 82.4368 5.39758 83.8178 6.15638 85.0338C6.91519 86.2497 8.00676 87.2572 9.32014 87.9538C10.6335 88.6504 12.1219 89.0113 13.6339 88.9997C15.1459 88.9882 16.6277 88.6047 17.9286 87.8881L80.7877 53.3554C82.0707 52.6519 83.134 51.6493 83.8727 50.4469C84.6115 49.2444 85 47.8835 85 46.4988C85 45.114 84.6115 43.7531 83.8727 42.5507C83.134 41.3482 82.0707 40.3456 80.7877 39.6421V39.6421Z" fill="#DA0E20"/>
@@ -32,7 +32,7 @@
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_9" result="shape"/>
 </filter>
 <clipPath id="clip0_2_9">
-<rect width="89" height="102" fill="white"/>
+<rect width="589" height="602" fill="white"/>
 </clipPath>
 </defs>
 </svg>

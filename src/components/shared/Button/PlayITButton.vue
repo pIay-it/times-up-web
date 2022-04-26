@@ -1,6 +1,6 @@
 <template>
     <a id="play-it-button" href="#" type="button" class="d-flex align-items-center justify-content-center">
-        <img :src="PlayITButtonSVG" alt="Play-IT Button" height="75"/>
+        <InlineSVG :src="PlayITButtonSVG" height="75" width="100"/>
     </a>
 </template>
 

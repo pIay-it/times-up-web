@@ -2,7 +2,7 @@
     <div id="round-starting" class="d-flex flex-column h-100 align-items-center">
         <PageTitle v-html="$t('RoundStarting.roundNumber', { number: game.round })"/>
         <div class="flex-grow-1 text-center">
-            <img :src="roundIcon" alt="Round Icon" width="200"/>
+            <InlineSVG :src="roundIcon" alt="Round Icon" width="250"/>
             <h3 class="mt-2" v-html="roundTitle"/>
             <p class="mt-2" v-html="roundDescription"/>
         </div>

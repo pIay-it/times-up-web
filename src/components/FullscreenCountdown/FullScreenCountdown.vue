@@ -29,8 +29,8 @@ const countdownProgress = computed(() => lastCountdown.value ? 100 - countdown.v
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        width: 100vw;
+        height: 100%;
+        width: 100%;
         background: rgba(0, 0, 0, 0.75);
 
         .countdown-value-container {
