@@ -47,19 +47,19 @@
                                     <input id="card-easy-difficulty" v-model="difficulty" type="radio" class="btn-check" name="difficulty"
                                            :value="1" :disabled="isSubmitting"/>
                                     <label class="btn btn-outline-success" for="card-easy-difficulty">
-                                        <CardDifficultyIcon :difficulty="1" class="me-2"/>
+                                        <CardDifficultyIcon :difficulty="CARD_DIFFICULTY.EASY" class="me-2"/>
                                         <span v-html="$t('CardsManagerModal.easy')"/>
                                     </label>
                                     <input id="card-medium-difficulty" v-model="difficulty" type="radio" class="btn-check" name="difficulty"
                                            :value="2" :disabled="isSubmitting"/>
                                     <label class="btn btn-outline-primary" for="card-medium-difficulty">
-                                        <CardDifficultyIcon :difficulty="2" class="me-2"/>
+                                        <CardDifficultyIcon :difficulty="CARD_DIFFICULTY.MEDIUM" class="me-2"/>
                                         <span v-html="$t('CardsManagerModal.medium')"/>
                                     </label>
                                     <input id="card-hard-difficulty" v-model="difficulty" type="radio" class="btn-check" name="difficulty"
                                            :value="3" :disabled="isSubmitting"/>
                                     <label class="btn btn-outline-danger" for="card-hard-difficulty">
-                                        <CardDifficultyIcon :difficulty="3" class="me-2"/>
+                                        <CardDifficultyIcon :difficulty="CARD_DIFFICULTY.HARD" class="me-2"/>
                                         <span v-html="$t('CardsManagerModal.hard')"/>
                                     </label>
                                 </div>
@@ -113,6 +113,7 @@ import useBootstrapModal from "@/composables/Bootstrap/useBootstrapModal";
 import useSweetAlert from "@/composables/SweetAlert/useSweetAlert";
 import useTimesUpAPI from "@/composables/API/useTimesUpAPI";
 import Card from "@/classes/Card";
+import { CARD_DIFFICULTY } from "@/helpers/constants/Card";
 import { sortAlphabeticallyByKey } from "@/helpers/functions/Array";
 import { getCardCategories } from "@/helpers/functions/Card";
 
@@ -219,7 +220,7 @@ const resetForm = () => {
         labelTextInput.value.reset();
         categories.value = [];
         setCategoriesTouched(false);
-        difficulty.value = 1;
+        difficulty.value = CARD_DIFFICULTY.EASY;
         descriptionTextInput.value.reset();
         imageURLTextInput.value.reset();
         label.value = undefined;

@@ -50,11 +50,20 @@ const setGameState = state => {
     }
 };
 const resetTurn = async() => {
-    gameState.value = GAME_STATE.TURN_STARTING;
-    for (const playedCard of play.cards) {
-        await store.dispatch("game/updateGameCardById", { _id: playedCard._id, data: { status: "to-guess", playingTime: undefined } });
+    try {
+        await store.dispatch("game/setIsUpdatingGame", true);
+        const { data } = await timesUpAPI.shuffleGameCards(game.value._id);
+        await store.dispatch("game/setGame", data);
+        gameState.value = GAME_STATE.TURN_STARTING;
+        for (const playedCard of play.cards) {
+            await store.dispatch("game/updateGameCardById", { _id: playedCard._id, data: { status: "to-guess", playingTime: undefined } });
+        }
+        resetPlay();
+    } catch (err) {
+        displayError(err);
+    } finally {
+        await store.dispatch("game/setIsUpdatingGame", false);
     }
-    resetPlay();
 };
 const cardPlayed = async card => {
     if (card._id && !play.cards.find(({ _id }) => _id === card._id)) {

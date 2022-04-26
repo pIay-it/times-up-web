@@ -24,13 +24,13 @@
                 <span v-html="$t('TurnSummary.noCardPlayed')"/>
             </h3>
         </div>
-        <TimesUpFooter :is-loading="isUpdatingGame" :loading-text="$t('TurnSummary.validatingTurn')">
+        <TimesUpFooter :is-loading="isUpdatingGame">
             <div class="turn-summary-footer-button-container">
                 <a href="#" type="button" class="text-white me-2" @click.prevent="resetTurn">
                     <i class="fa-solid fa-arrow-rotate-right fa-flip-horizontal fa-3x"/>
                 </a>
             </div>
-            <div class="turn-summary-footer-button-container pt-2">
+            <div class="turn-summary-footer-button-container">
                 <PlayITButton @click="validateTurn"/>
             </div>
         </TimesUpFooter>

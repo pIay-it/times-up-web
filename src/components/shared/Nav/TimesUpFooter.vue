@@ -28,7 +28,9 @@ defineProps({
 
 <style lang="scss">
     #times-up-footer {
-        height: 80px;
+        height: 75px;
+        min-height: 75px;
+        max-height: 75px;
 
         #times-up-footer-content {
             & > * {

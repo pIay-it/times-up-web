@@ -2,9 +2,9 @@
     <div id="round-starting" class="d-flex flex-column h-100 align-items-center">
         <PageTitle v-html="$t('RoundStarting.roundNumber', { number: game.round })"/>
         <div class="flex-grow-1 text-center">
-            <img :src="roundIcon" alt="Round Icon" class="round-icon mt-1"/>
-            <h4 class="mt-4" v-html="roundTitle"/>
-            <p class="mt-4" v-html="roundDescription"/>
+            <img :src="roundIcon" alt="Round Icon" width="200"/>
+            <h3 class="mt-2" v-html="roundTitle"/>
+            <p class="mt-2" v-html="roundDescription"/>
         </div>
         <TimesUpFooter>
             <PlayITButton @click="$emit('start-turn')"/>
@@ -43,9 +43,3 @@ const roundIcon = computed(() => {
     return icons[roundRank.value];
 });
 </script>
-
-<style lang="scss">
-    .round-icon {
-        max-width: 150px;
-    }
-</style>

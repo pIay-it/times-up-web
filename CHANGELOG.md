@@ -1,4 +1,3 @@
-
 # 📈 LIST OF CHANGES FOR TIME'S UP WEB BY PLAY-IT
 
 ## 0.1.0 (2022-??-??)
@@ -34,16 +33,16 @@
 * `@vueform/toggle` installed with version `2.0.1`.
 * `@fortawesome/fontawesome-free` installed with version `6.1.1`.
 * `@popperjs/core` installed with version `2.11.4`.
-* `@sentry/tracing` installed with version `6.19.6`.
-* `@sentry/vue` installed with version `6.19.6`.
-* `axios` installed with version `0.24.0`.
+* `@sentry/tracing` installed with version `6.19.7`.
+* `@sentry/vue` installed with version `6.19.7`.
+* `axios` installed with version `0.27.1`.
 * `bootstrap` installed with version `5.1.3`.
 * `fuse.js` installed with version `6.5.3`.
 * `image-search-google` installed with version `1.3.0`.
 * `qs` installed with version `6.10.3`.
-* `sass` installed with version `1.50.1`.
+* `sass` installed with version `1.51.0`.
 * `sass-loader` installed with version `12.6.0`.
-* `sweetalert2` installed with version `11.4.8`.
+* `sweetalert2` installed with version `11.4.9`.
 * `uniqid` installed with version `5.4.0`.
 * `v-tooltip` installed with version `4.0.0-beta.17`.
 * `vee-validate` installed with version `4.5.11`.
